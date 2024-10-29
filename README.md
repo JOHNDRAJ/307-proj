@@ -12,7 +12,7 @@ All code contributions must pass the style checks enforced by our tools (ESLint 
 
 ### Contributors
 1. John Raj
-2. Brennan Andress
+2. Brennan Andruss
 3. Karthik Balaji
 4. Alec Odell
 
