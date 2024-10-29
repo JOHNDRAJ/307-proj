@@ -3,7 +3,6 @@ import Login from "./Components/Auth/Login";
 import SignUp from "./Components/Auth/SignUp";
 
 const MyApp = () => {
-  const [loginToggle, setLoginToggle] = useState(false);
 
   return (
     <div className="container">
