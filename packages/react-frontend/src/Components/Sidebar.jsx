@@ -1,6 +1,7 @@
 import React from "react";
 
 //will make everything props once backend is good
+//also have to create the search bar
 
 function Sidebar({ onSelectContact }) {
   return (
