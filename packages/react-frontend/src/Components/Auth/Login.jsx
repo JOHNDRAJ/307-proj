@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useNavigate } from 'react-router-dom';
+import './Login.css'
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -60,6 +61,7 @@ const Login = () => {
 
   return (
     <form onSubmit={handleSubmitEvent}>
+      <h2>PolyMessages</h2>
       <div className="form_control">
         <label htmlFor="user-email">Email:</label>
         <input
