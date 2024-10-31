@@ -16,8 +16,8 @@ function ContactsList({ onSelectContact }) {
   const contacts = [
     { id: 1, name: "John", lastMessage: "Hi" },
     { id: 2, name: "Alec", lastMessage: "Yo" },
-    { id: 1, name: "Brennan", lastMessage: "Hello" },
-    { id: 2, name: "Karthik", lastMessage: "Whats up" },
+    { id: 3, name: "Brennan", lastMessage: "Hello" },
+    { id: 4, name: "Karthik", lastMessage: "Whats up" },
   ];
 
   //change later to include more for Contact object
