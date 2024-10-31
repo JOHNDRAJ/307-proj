@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const SignUp = () => {
   const [input, setInput] = useState({
@@ -7,10 +8,13 @@ const SignUp = () => {
     password: "",
   });
 
+  const navigate = useNavigate();  // useNavigate hook for navigation
+
   const handleSubmitEvent = async (e) => {
     e.preventDefault();
 
     console.log(input);
+    //navigate('/profile-setup')
 
     if (input.email !== "" && input.password !== "") {
       try {
@@ -28,6 +32,7 @@ const SignUp = () => {
           // Handle successful login
           console.log("Sign up successful", data);
           alert("Sign up Successful");
+          navigate('/profile-setup');
           // You can store the JWT token or redirect the user here
         } else {
           // Handle errors (e.g., invalid credentials)

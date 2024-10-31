@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [input, setInput] = useState({
@@ -6,13 +7,16 @@ const Login = () => {
     password: "",
   });
 
+  const navigate = useNavigate();  // useNavigate hook for navigation
+
   const handleSubmitEvent = async (e) => {
     e.preventDefault();
 
     console.log(input)
+    //navigate('/profile-setup');
 
     if (input.email !== "" && input.password !== "") {
-      try {
+      try { 
         const response = await fetch("http://localhost:5001/api/auth/signin", {
           method: "POST",
           headers: {
@@ -27,6 +31,7 @@ const Login = () => {
           // Handle successful login
           console.log("Login successful", data);
           alert('Login Successful')
+          navigate('/profile-setup');
           // You can store the JWT token or redirect the user here
         } else {
           // Handle errors (e.g., invalid credentials)
@@ -47,6 +52,10 @@ const Login = () => {
       ...prev,
       [name]: value,
     }));
+  };
+
+  const handleSignUpNavigate = () => {
+    navigate('/signup');  // Navigate to the sign-up page
   };
 
   return (
@@ -82,6 +91,8 @@ const Login = () => {
         </div>
       </div>
       <button className="btn-submit">Submit</button>
+      {/* Navigate to Sign Up Page Button */}
+      <button type="button" onClick={handleSignUpNavigate}>Don't Have an Account? Sign Up</button>
     </form>
   );
 };
