@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route, useNavigate } from 'react-route
 import Login from './Components/Auth/Login';  // Correct path for Login component
 import ProfileSetup from './Prof/ProfileSetup';  // Correct path for ProfileSetup component
 import SignUp from './Components/Auth/SignUp';
+import Home from './Home';
 
 const MyApp = () => {
   return (
@@ -10,6 +11,8 @@ const MyApp = () => {
       <Routes>
         {/* Route for the login page */}
         <Route path="/" element={<Login />} />
+
+        <Route path="/home" element={<Home />} />
 
         <Route path="/signup" element={<SignUp />} />
 

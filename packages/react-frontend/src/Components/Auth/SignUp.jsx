@@ -102,7 +102,7 @@ const SignUp = () => {
           your password should be more than 8 character
         </div>
       </div>
-      <button className="btn-submit">Submit</button>
+      <button className="btn-submit">Sign Up</button>
     </form>
   );
 };

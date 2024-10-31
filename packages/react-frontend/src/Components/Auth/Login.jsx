@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
 
     console.log(input)
-    //navigate('/profile-setup');
+    navigate('/home');
 
     if (input.email !== "" && input.password !== "") {
       try { 
@@ -32,7 +32,7 @@ const Login = () => {
           // Handle successful login
           console.log("Login successful", data);
           alert('Login Successful')
-          navigate('/profile-setup');
+          navigate('/home');
           // You can store the JWT token or redirect the user here
         } else {
           // Handle errors (e.g., invalid credentials)
@@ -92,7 +92,7 @@ const Login = () => {
           your password should be more than 8 character
         </div>
       </div>
-      <button className="btn-submit">Submit</button>
+      <button className="btn-submit">Login</button>
       {/* Navigate to Sign Up Page Button */}
       <button type="button" onClick={handleSignUpNavigate}>Don't Have an Account? Sign Up</button>
     </form>

@@ -40,3 +40,44 @@
 .read-the-docs {
   color: #888;
 }
+
+.Home {
+  display: flex;
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 250px; /* Fixed width for the sidebar */
+  background-color: #333; /* Dark background color for contrast */
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+}
+
+/* Contact list within sidebar */
+.contactList {
+  margin-top: 20px;
+}
+
+/* Individual contact item styling */
+.contact-item {
+  padding: 10px;
+  border-bottom: 1px solid #444;
+  cursor: pointer;
+}
+
+.contact-item:hover {
+  background-color: #555;
+}
+
+/* Chat window styling */
+.chatWindow {
+  flex: 1; /* Takes the remaining space to the right of the sidebar */
+  background-color: #f0f0f0;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
