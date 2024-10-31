@@ -14,7 +14,7 @@ const Login = () => {
     e.preventDefault();
 
     console.log(input)
-    navigate('/home');
+    // navigate('/home');
 
     if (input.email !== "" && input.password !== "") {
       try { 

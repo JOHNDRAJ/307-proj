@@ -14,7 +14,7 @@ const SignUp = () => {
     e.preventDefault();
 
     console.log(input);
-    navigate('/profile-setup')
+    // navigate('/profile-setup')
 
     if (input.email !== "" && input.password !== "") {
       try {
