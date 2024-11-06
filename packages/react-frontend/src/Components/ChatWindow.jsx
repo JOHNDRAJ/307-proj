@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "./ChatWindow.css";
 
 //will make everything props once backend is good
 

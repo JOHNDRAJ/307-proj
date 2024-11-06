@@ -1,0 +1,56 @@
+/* Sidebar styling */
+.sidebar {
+  width: 30%;
+  max-width: 432px;
+  background-color: #474947; /* Dark background color for contrast */
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h1 {
+  padding: 1.5rem;
+}
+
+.search-button {
+  width: fit-content;
+  margin: 0.75rem 1.5rem;
+}
+
+/* Contact list within sidebar */
+.contact-list {
+  position: sticky;
+  overflow-y: auto;
+}
+
+/* Individual contact item styling */
+.contact-item {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0.75em 1.5em;
+  border-bottom: 1px solid #444;
+  cursor: pointer;
+}
+
+.contact-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.contact-preview {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+}
+
+.contact-pic {
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.contact-details {
+  display: flex;
+  flex-direction: column;
+}
