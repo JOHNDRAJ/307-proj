@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import "./ChatWindow.css";
+import "./Channel.css";
 
 //will make everything props once backend is good
 
 //add MessageList when needed
-function ChatWindow({ contactName }) {
+function Channel({ contactName }) {
   return (
-    <div className="chatWindow">
+    <div className="channel">
       <ContactHeader name={contactName} />
       <MessageInput />
     </div>
@@ -74,4 +74,4 @@ function MessageInput(props) {
   );
 }
 
-export default ChatWindow;
+export default Channel;

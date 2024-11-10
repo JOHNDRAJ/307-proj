@@ -17,10 +17,6 @@
   margin: 0.75rem 1.5rem;
 }
 
-.fa-solid {
-  padding-right: 0.25em;
-}
-
 /* Contact list within sidebar */
 .contact-list {
   position: sticky;
