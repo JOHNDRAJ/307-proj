@@ -1,14 +1,14 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Sidebar from "./Components/Sidebar";
 import ChatWindow from "./Components/ChatWindow";
 
 function Home() {
-  const[selectedContact, setSelectedContact] = useState("John");
+  const [selectedContact, setSelectedContact] = useState("John");
 
   return (
-    <div className="Home">
-      <Sidebar onSelectContact={setSelectedContact}/>
-      <ChatWindow contactName={selectedContact}/>
+    <div className="home">
+      <Sidebar onSelectContact={setSelectedContact} />
+      <ChatWindow contactName={selectedContact} />
     </div>
   );
 }
