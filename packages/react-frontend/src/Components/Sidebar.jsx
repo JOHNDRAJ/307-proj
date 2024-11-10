@@ -8,7 +8,9 @@ function Sidebar({ onSelectContact }) {
   return (
     <div className="sidebar">
       <h1>PolyMessages</h1>
-      <button className="search-button">Search</button>
+      <button className="search-button">
+        <i class="fa-solid fa-magnifying-glass"></i> Search
+      </button>
       <ContactsList onSelectContact={onSelectContact} />
     </div>
   );
