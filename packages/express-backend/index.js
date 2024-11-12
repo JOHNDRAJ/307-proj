@@ -2,6 +2,7 @@ import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
+import userRoutes from "./routes/userRoutes.js"
 import cors from "cors";
 
 dotenv.config();
@@ -21,6 +22,7 @@ mongoose
   .catch((error) => console.log("MongoDB connection failed:", error));
 
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
 
 app.get("/", (req, res) => {
   res.send("Welcome to our messaging app...");

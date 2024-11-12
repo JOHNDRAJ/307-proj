@@ -29,6 +29,7 @@ const Login = () => {
         const data = await response.json();
 
         if (response.ok) {
+          localStorage.setItem('token', data.token);  // Store token
           // Handle successful login
           navigate("/home");
           // You can store the JWT token or redirect the user here

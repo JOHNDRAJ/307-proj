@@ -21,6 +21,30 @@ const userSchema = new mongoose.Schema({
     minLength: 8,
     maxLength: 1024,
   },
+  grade: {
+    type: String,
+    required: false,
+    maxLength: 30,
+    default: "",
+  },
+  major: {
+    type: String,
+    required: false,
+    maxLength: 30,
+    default: "",
+  },
+  bio: {
+    type: String,
+    required: false,
+    maxLength: 150,
+    default: "",
+  },
+  classes: {
+    type: String,
+    required: false,
+    maxLength: 150,
+    default: "",
+  }
 });
 
 userSchema.pre("save", async function (next) {
