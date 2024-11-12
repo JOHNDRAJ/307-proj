@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Sidebar from "./Components/Sidebar";
 import Profile from "./Components/Prof/Profile";
 import Channel from "./Components/Channel";
+import Search from "./Components/Search";
 
 // Enum for the different page views on the app
 const View = Object.freeze({
@@ -19,8 +20,8 @@ function Home() {
   might need to change previous view to a stack of multiple previous views
   (ex: Home > Search > Profile)
   */
-  const [previousView, setPreviousView] = useState(View.CHANNEL);
-  const [currentView, setCurrentView] = useState(View.CHANNEL);
+  const [previousView, setPreviousView] = useState(View.HOME);
+  const [currentView, setCurrentView] = useState(View.HOME);
 
   const handleSelectView = (view) => {
     const prev = currentView;
@@ -39,11 +40,34 @@ function Home() {
           src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
         />
       </div>
-      <Sidebar onSelectContact={setSelectedContact} />
+      <Sidebar
+        onSelectContact={(name) => {
+          setSelectedContact(name);
+          handleSelectView(View.CHANNEL);
+        }}
+        onSelectSearch={() => handleSelectView(View.SEARCH)}
+      />
       <main>
         {/* Add other conditionally rendered views once they get made */}
+        {currentView === View.HOME && (
+          <h3>insert hero image here (in the center)</h3>
+        )}
         {currentView === View.CHANNEL && (
           <Channel contactName={selectedContact} />
+        )}
+        {currentView === View.SEARCH && (
+          <>
+            <h2 className="page-header">
+              <button
+                className="back-btn"
+                onClick={() => handleSelectView(previousView)}
+              >
+                <i class="fa-solid fa-arrow-left"></i>
+              </button>
+              Search
+            </h2>
+            <Search />
+          </>
         )}
         {currentView === View.PROFILE && (
           <>
@@ -54,7 +78,7 @@ function Home() {
               >
                 <i class="fa-solid fa-arrow-left"></i>
               </button>
-              User Name
+              Profile
             </h2>
             <Profile />
           </>
