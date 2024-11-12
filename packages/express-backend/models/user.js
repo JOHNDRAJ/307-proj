@@ -44,7 +44,7 @@ const userSchema = new mongoose.Schema({
     required: false,
     maxLength: 150,
     default: "",
-  }
+  },
 });
 
 userSchema.pre("save", async function (next) {
