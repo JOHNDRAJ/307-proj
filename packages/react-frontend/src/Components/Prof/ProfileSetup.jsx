@@ -1,50 +1,54 @@
-import React, { useState } from 'react';
-import axios from 'axios';  // For making HTTP requests
-import { useNavigate } from 'react-router-dom';  // For navigation
-import './ProfileSetup.css'
+import React, { useState } from "react";
+import axios from "axios"; // For making HTTP requests
+import { useNavigate } from "react-router-dom"; // For navigation
+import "./ProfileSetup.css";
 
 const ProfileSetup = () => {
   // State to store the form input values
   const [input, setInput] = useState({
-    bio: '',
-    grade: '',
-    major: '',
-    classes: '',
+    bio: "",
+    grade: "",
+    major: "",
+    classes: "",
   });
 
-  const navigate = useNavigate();  // To redirect the user after submitting the profile
+  const navigate = useNavigate(); // To redirect the user after submitting the profile
 
   // Handle input changes for the form fields
   const handleInput = (e) => {
     const { name, value } = e.target;
     setInput((prev) => ({
-      ...prev,  // Spread the previous state to maintain other fields
-      [name]: value,  // Update the field that is being changed (based on input name)
+      ...prev, // Spread the previous state to maintain other fields
+      [name]: value, // Update the field that is being changed (based on input name)
     }));
   };
 
   // Handle form submission
   const handleSubmitEvent = async (e) => {
-    e.preventDefault();  // Prevent the default form submission (which would reload the page)
+    e.preventDefault(); // Prevent the default form submission (which would reload the page)
 
     // Proceed with form submission regardless of whether fields are filled
     try {
-      const token = localStorage.getItem('token');  // Get the JWT token from localStorage
+      const token = localStorage.getItem("token"); // Get the JWT token from localStorage
 
       // Send a POST request to the backend to submit the profile data
-      const response = await axios.post("http://localhost:5001/api/profile/setup", input, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,  // Send the token for authenticated requests
-        },
-      });
+      const response = await axios.post(
+        "http://localhost:5001/api/profile/setup",
+        input,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Send the token for authenticated requests
+          },
+        }
+      );
 
       if (response.status === 200) {
         // Profile setup was successful
-        alert('Profile updated successfully');
-        navigate('/dashboard');  // Redirect the user to the dashboard after success
+        alert("Profile updated successfully");
+        navigate("/home"); // Redirect the user to the dashboard after success
       } else {
-        alert(response.data.message);  // Display any error message from the server
+        alert(response.data.message); // Display any error message from the server
       }
     } catch (error) {
       console.error("Error:", error);
@@ -67,7 +71,6 @@ const ProfileSetup = () => {
             onChange={handleInput}
           />
         </div>
-
         {/* Grade */}
         <div className="form_control">
           <label htmlFor="grade">Grade:</label>
@@ -80,7 +83,6 @@ const ProfileSetup = () => {
             onChange={handleInput}
           />
         </div>
-
         {/* Major */}
         <div className="form_control">
           <label htmlFor="major">Major:</label>
@@ -93,7 +95,6 @@ const ProfileSetup = () => {
             onChange={handleInput}
           />
         </div>
-
         {/* Classes */}
         <div className="form_control">
           <label htmlFor="classes">Classes:</label>
@@ -105,9 +106,11 @@ const ProfileSetup = () => {
             onChange={handleInput}
           />
         </div>
-
         {/* Save Button */}
-        <button type="submit" className="btn-submit">Save</button>  {/* Changed label to "Save" */}
+        <button type="submit" className="btn-submit">
+          Save
+        </button>{" "}
+        {/* Changed label to "Save" */}
       </form>
     </div>
   );

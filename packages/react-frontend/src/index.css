@@ -66,9 +66,9 @@ button {
   border: none;
   padding: 0.5em 1em;
   margin: 0.5em;
-  font-size: 1.25rem;
+  font-size: 1.125rem;
   font-weight: bold;
-  font-family: inherit;
+  font-family: "Source Sans 3", Inter, Arial, sans-serif;
   background-color: #789f90;
   color: #282828;
   cursor: pointer;

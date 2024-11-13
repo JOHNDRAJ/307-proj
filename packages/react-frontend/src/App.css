@@ -23,7 +23,15 @@ main {
   flex: 1;
 }
 
-.back-btn {
+.channel-view {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.back-btn,
+.profile-btn {
   background: none;
   border: none;
   padding: 0;
