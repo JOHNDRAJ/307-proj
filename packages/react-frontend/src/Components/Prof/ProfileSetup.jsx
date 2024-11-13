@@ -39,12 +39,12 @@ const ProfileSetup = () => {
     e.preventDefault();
     
     try {
-      const response = await fetch(`http://localhost:5001/api/user/${userId}/profile`, {
+      const response = await fetch(`http://localhost:5001/api/user/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(input),
+        body: JSON.stringify({input, userId}),
       });
   
       const data = await response.json();

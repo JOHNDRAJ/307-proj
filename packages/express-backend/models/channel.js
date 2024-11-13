@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import Message from "./message";
+import Message from "./message.js";
 
 const channelSchema = new mongoose.Schema({
   name: {
@@ -11,7 +11,7 @@ const channelSchema = new mongoose.Schema({
   recentMessage: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Message",
-    required: false, //assuming false because a blank channel will have no messages
+    required: false, 
   },
   //recentTimestamp field will just be updated whenever recentMessage is updated
   recentTimestamp: {
@@ -27,4 +27,6 @@ const channelSchema = new mongoose.Schema({
   ],
 });
 
-export default mongoose.model("Channel", channelSchema);
+const Channel = mongoose.model("Channel", channelSchema);
+
+export default Channel

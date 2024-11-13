@@ -1,8 +1,7 @@
 import mongoose from "mongoose";
-import User from "./user";
-import Channel from "./channel";
 
-const messageSchema = mongoose.Schema({
+
+const CxuSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User",
@@ -15,4 +14,6 @@ const messageSchema = mongoose.Schema({
   },
 });
 
-export default mongoose.model("Message", messageSchema);
+const Cxu = mongoose.model("Cxu", CxuSchema);
+
+export default Cxu

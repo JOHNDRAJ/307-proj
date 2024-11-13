@@ -1,8 +1,8 @@
 import mongoose from "mongoose";
-import User from "./user";
-import Channel from "./channel";
+import User from "./user.js";
+import Channel from "./channel.js";
 
-const messageSchema = mongoose.Schema({
+const messageSchema = new mongoose.Schema({
   timestamp: {
     type: Date,
     default: Date.now,
@@ -18,11 +18,8 @@ const messageSchema = mongoose.Schema({
     ref: "User",
     required: true,
   },
-  channel: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "Channel",
-    required: true,
-  },
 });
 
-export default mongoose.model("Message", messageSchema);
+const Message = mongoose.model("Message", messageSchema);
+
+export default Message
