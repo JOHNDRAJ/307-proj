@@ -17,11 +17,13 @@ export const signUp = async (req, res) => {
     await user.save();
 
     // Create JWT token
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
     res.status(201).json({ message: "User registered successfully", token });
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(500).json({ message: "Server error", error });
   }
 };
@@ -43,11 +45,12 @@ export const signIn = async (req, res) => {
     }
 
     // Create JWT token
-    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, { expiresIn: "1h" });
+    const token = jwt.sign({ _id: user._id }, process.env.JWT_SECRET, {
+      expiresIn: "1h",
+    });
 
-    res.json({ message: "Logged in successfully", token });
+    res.status(200).json({ message: "Logged in successfully", token });
   } catch (error) {
     res.status(500).json({ message: "Server error", error });
   }
 };
-
