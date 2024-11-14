@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 
-
 const CxuSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -16,4 +15,4 @@ const CxuSchema = new mongoose.Schema({
 
 const Cxu = mongoose.model("Cxu", CxuSchema);
 
-export default Cxu
+export default Cxu;

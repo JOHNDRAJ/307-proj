@@ -7,7 +7,7 @@ import './ProfileSetup.css'
 
 const ProfileSetup = () => {
   // State to store the form input values
-  const [userId, setUserId] = useState(null);
+  const [token, setToken] = useState(null);
   const [input, setInput] = useState({
     bio: "",
     grade: "",
@@ -16,24 +16,6 @@ const ProfileSetup = () => {
   });
 
   const navigate = useNavigate();
-  // Decode the token and retrieve userId when the component mounts
-  useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      try {
-        const decodedToken = jwtDecode(token);
-        console.log(decodedToken._id)
-        setUserId(decodedToken._id); // Assuming `userId` is part of the token payload
-      } catch (error) {
-        console.error("Failed to decode token:", error);
-        alert('Invalid token. Please log in again.', decodedToken._id);
-        navigate('/login');
-      }
-    } else {
-      alert('User not authenticated');
-      // navigate('/login'); // Redirect to login if token is missing
-    }
-  }, [navigate]);
 
   const handleSubmitEvent = async (e) => {
     e.preventDefault();
@@ -43,8 +25,9 @@ const ProfileSetup = () => {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
         },
-        body: JSON.stringify({input, userId}),
+        body: JSON.stringify({input}),
       });
   
       const data = await response.json();

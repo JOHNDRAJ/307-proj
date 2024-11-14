@@ -11,7 +11,7 @@ const channelSchema = new mongoose.Schema({
   recentMessage: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Message",
-    required: false, 
+    required: false,
   },
   //recentTimestamp field will just be updated whenever recentMessage is updated
   recentTimestamp: {
@@ -29,4 +29,4 @@ const channelSchema = new mongoose.Schema({
 
 const Channel = mongoose.model("Channel", channelSchema);
 
-export default Channel
+export default Channel;

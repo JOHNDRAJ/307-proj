@@ -4,12 +4,11 @@ import { updateProfile } from "../controllers/profileControllers.js";
 
 const router = express.Router();
 
-
 // curl -X POST http://localhost:5001/api/auth/signup \
 // -H "Content-Type: application/json" \
 // -d '{
-//   "name": "Jane Smith",       
-//   "email": "jane@example.com", 
+//   "name": "Jane Smith",
+//   "email": "jane@example.com",
 //   "password": "anotherpassword"
 // }'
 router.post("/signup", signUp);
