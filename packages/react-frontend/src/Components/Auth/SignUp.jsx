@@ -28,7 +28,7 @@ const SignUp = () => {
 
         const data = await response.json();
         if (response.ok) {
-          localStorage.setItem('token', data.token);  // Store token
+          localStorage.setItem("token", data.token); // Store token
           // Handle successful login
           navigate("/profile-setup");
           // You can store the JWT token or redirect the user here

@@ -45,11 +45,9 @@ export const updateMessage = [
       }
       if (message.sender != userId) {
         console.log("Sender != user: ", message.sender, " | ", userId);
-        return res
-          .status(401)
-          .json({
-            message: "Access Denied. you are not allowed to edit this message.",
-          });
+        return res.status(401).json({
+          message: "Access Denied. you are not allowed to edit this message.",
+        });
       }
       message.contents = contents;
       await message.save();

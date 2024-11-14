@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { jwtDecode } from 'jwt-decode'
-import axios from 'axios';  // For making HTTP requests
-import { useNavigate } from 'react-router-dom';  // For navigation
-import './ProfileSetup.css'
+import React, { useState, useEffect } from "react";
+import { jwtDecode } from "jwt-decode";
+import axios from "axios"; // For making HTTP requests
+import { useNavigate } from "react-router-dom"; // For navigation
+import "./ProfileSetup.css";
 
 const ProfileSetup = () => {
   // State to store the form input values
@@ -18,38 +18,38 @@ const ProfileSetup = () => {
 
   const handleSubmitEvent = async (e) => {
     e.preventDefault();
-    
+
     try {
       const response = await fetch(`http://localhost:5001/api/user/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
-          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
         },
-        body: JSON.stringify({input}),
+        body: JSON.stringify({ input }),
       });
-  
+
       const data = await response.json();
-      console.log("Response data:", data);  // Debugging output
-  
+      console.log("Response data:", data); // Debugging output
+
       if (response.ok) {
-        alert('Profile updated successfully');
-        navigate('/home');
+        alert("Profile updated successfully");
+        navigate("/home");
       } else {
-        alert(data.message || "An error occurred.");  // Corrected error message handling
+        alert(data.message || "An error occurred."); // Corrected error message handling
       }
     } catch (error) {
-      console.error("Error during fetch:", error);  // More specific error output
+      console.error("Error during fetch:", error); // More specific error output
       alert("An error occurred during profile setup.");
     }
   };
-  
+
   // Handle input changes for the form fields
   const handleInput = (e) => {
     const { name, value } = e.target;
     setInput((prev) => ({
-      ...prev,  // Spread the previous state to maintain other fields
-      [name]: value,  // Update the field that is being changed (based on input name)
+      ...prev, // Spread the previous state to maintain other fields
+      [name]: value, // Update the field that is being changed (based on input name)
     }));
   };
 

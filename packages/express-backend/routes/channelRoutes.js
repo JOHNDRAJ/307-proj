@@ -4,7 +4,7 @@ import {
   createChannel,
   updateChannelName,
   getChannels,
-  getUsers
+  getUsers,
 } from "../controllers/channelControllers.js";
 
 const router = express.Router();

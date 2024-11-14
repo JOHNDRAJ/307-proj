@@ -3,8 +3,8 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
-import channelRoutes from "./routes/channelRoutes.js"
-import messageRoutes from "./routes/messageRouter.js"
+import channelRoutes from "./routes/channelRoutes.js";
+import messageRoutes from "./routes/messageRouter.js";
 import cors from "cors";
 
 dotenv.config();

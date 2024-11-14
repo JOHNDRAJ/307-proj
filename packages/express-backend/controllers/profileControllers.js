@@ -6,7 +6,7 @@ import { authenticateToken } from "../tokenAuth.js";
 export const updateProfile = [
   authenticateToken,
   async (req, res) => {
-    const userId = req.user._id
+    const userId = req.user._id;
     const { input } = req.body;
     console.log("Received updates:", input);
     try {
@@ -30,8 +30,8 @@ export const updateProfile = [
 export const getUser = [
   authenticateToken,
   async (req, res) => {
-    const userId = req.user._id
-    console.log("user:", userId)
+    const userId = req.user._id;
+    console.log("user:", userId);
     try {
       const user = await User.findById(userId);
       if (!user) {
