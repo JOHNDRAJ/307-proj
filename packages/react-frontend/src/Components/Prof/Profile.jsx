@@ -19,11 +19,11 @@ function Profile() {
       </div>
       {isCurrentUser ? (
         <button className="profile-action-btn">
-          <i class="fa-solid fa-pencil"></i>Edit Profile
+          <i className="fa-solid fa-pencil"></i>Edit Profile
         </button>
       ) : (
         <button className="profile-action-btn">
-          <i class="fa-solid fa-message"></i>Send Message
+          <i className="fa-solid fa-message"></i>Send Message
         </button>
       )}
       <p>
@@ -32,10 +32,10 @@ function Profile() {
       </p>
       <div className="profile-tags">
         <p className="profile-tag info-tag">
-          <i class="fa-solid fa-graduation-cap"></i>Sophomore
+          <i className="fa-solid fa-graduation-cap"></i>Sophomore
         </p>
         <p className="profile-tag info-tag">
-          <i class="fa-solid fa-book"></i>Computer Science
+          <i className="fa-solid fa-book"></i>Computer Science
         </p>
         <p className="profile-tag class-tag">CSC 307</p>
         <p className="profile-tag class-tag">CSC 349</p>

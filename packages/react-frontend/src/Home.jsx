@@ -65,7 +65,7 @@ function Home() {
                 className="back-btn"
                 onClick={() => handleSelectView(previousView)}
               >
-                <i class="fa-solid fa-arrow-left"></i>
+                <i className="fa-solid fa-arrow-left"></i>
               </button>
               Search
             </h2>
@@ -79,7 +79,7 @@ function Home() {
                 className="back-btn"
                 onClick={() => handleSelectView(previousView)}
               >
-                <i class="fa-solid fa-arrow-left"></i>
+                <i className="fa-solid fa-arrow-left"></i>
               </button>
               Profile
             </h2>

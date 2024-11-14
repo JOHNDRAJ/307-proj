@@ -18,9 +18,13 @@ function Channel({ contactName }) {
 function ContactHeader({ name }) {
   return (
     <div className="contact-header">
+      <img
+        className="profile-pic-medium"
+        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+      />
       <h2>{name}</h2>
       <button className="view-profile-btn">
-        <i class="fa-solid fa-user"></i>View Profile
+        <i className="fa-solid fa-user"></i>View Profile
       </button>
     </div>
   );

@@ -9,7 +9,7 @@ function Sidebar({ onSelectContact, onSelectSearch }) {
     <div className="sidebar">
       <h1>PolyMessages</h1>
       <button className="search-button" onClick={() => onSelectSearch()}>
-        <i class="fa-solid fa-magnifying-glass"></i> Search
+        <i className="fa-solid fa-magnifying-glass"></i> Search
       </button>
       <ContactsList onSelectContact={onSelectContact} />
     </div>

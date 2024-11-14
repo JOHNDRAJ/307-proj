@@ -14,6 +14,14 @@
   align-items: center;
 }
 
+.profile-pic-medium {
+  width: 6em;
+  height: 6em;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0.5em;
+}
+
 /* 
 make this a secondary button type later 
 green button = main style, gray button = secondary style
