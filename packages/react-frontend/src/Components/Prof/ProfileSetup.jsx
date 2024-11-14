@@ -4,7 +4,6 @@ import axios from 'axios';  // For making HTTP requests
 import { useNavigate } from 'react-router-dom';  // For navigation
 import './ProfileSetup.css'
 
-
 const ProfileSetup = () => {
   // State to store the form input values
   const [token, setToken] = useState(null);
@@ -45,7 +44,6 @@ const ProfileSetup = () => {
     }
   };
   
-
   // Handle input changes for the form fields
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -70,7 +68,6 @@ const ProfileSetup = () => {
             onChange={handleInput}
           />
         </div>
-
         {/* Grade */}
         <div className="form_control">
           <label htmlFor="grade">Grade:</label>
@@ -83,7 +80,6 @@ const ProfileSetup = () => {
             onChange={handleInput}
           />
         </div>
-
         {/* Major */}
         <div className="form_control">
           <label htmlFor="major">Major:</label>
@@ -96,7 +92,6 @@ const ProfileSetup = () => {
             onChange={handleInput}
           />
         </div>
-
         {/* Classes */}
         <div className="form_control">
           <label htmlFor="classes">Classes:</label>
@@ -108,9 +103,11 @@ const ProfileSetup = () => {
             onChange={handleInput}
           />
         </div>
-
         {/* Save Button */}
-        <button type="submit" className="btn-submit">Save</button>  {/* Changed label to "Save" */}
+        <button type="submit" className="btn-submit">
+          Save
+        </button>{" "}
+        {/* Changed label to "Save" */}
       </form>
     </div>
   );

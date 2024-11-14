@@ -1,12 +1,13 @@
 import React, { useState } from "react";
-import "./ChatWindow.css";
+import "./Channel.css";
 
 //will make everything props once backend is good
 
 //add MessageList when needed
-function ChatWindow({ contactName }) {
+//maybe update contactName to be the whole user object?
+function Channel({ contactName }) {
   return (
-    <div className="chatWindow">
+    <div className="channel">
       <ContactHeader name={contactName} />
       <MessageInput />
     </div>
@@ -16,8 +17,11 @@ function ChatWindow({ contactName }) {
 //name changed based on button click, and what name gets passed in
 function ContactHeader({ name }) {
   return (
-    <div className="contactHeader">
-      <h2>Chat with {name}</h2>
+    <div className="contact-header">
+      <h2>{name}</h2>
+      <button className="view-profile-btn">
+        <i class="fa-solid fa-user"></i>View Profile
+      </button>
     </div>
   );
 }
@@ -62,16 +66,19 @@ function MessageInput(props) {
   };
 
   return (
-    <div className="messageInput">
+    <div>
       <input
+        className="message-input"
         type="text"
         value={text}
         onChange={(e) => setText(e.target.value)}
-        placeholder="Type a message..."
+        placeholder="Message..."
       />
-      <button onClick={sendMessage}>Send</button>
+      <button className="send-btn" onClick={sendMessage}>
+        <i class="fa-solid fa-paper-plane"></i>
+      </button>
     </div>
   );
 }
 
-export default ChatWindow;
+export default Channel;

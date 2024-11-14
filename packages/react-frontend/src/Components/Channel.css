@@ -1,0 +1,48 @@
+/* Chat window styling */
+.channel {
+  width: 85%;
+  margin-left: auto;
+  margin-right: auto;
+  display: flex;
+  flex-direction: column;
+  padding: 1.5em;
+}
+
+.contact-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* 
+make this a secondary button type later 
+green button = main style, gray button = secondary style
+*/
+.view-profile-btn {
+  border-radius: 0.5em;
+  border: none;
+  padding: 0.25em 0.75em;
+  margin: 0.5em;
+  font-size: 1.125rem;
+  font-weight: bold;
+  font-family: inherit;
+  background-color: #474947;
+  color: #fff;
+  cursor: pointer;
+  transition: border-color 0.25s;
+}
+
+.message-input {
+  width: 90%;
+  border: none;
+  border-radius: 1.5em;
+  background: #474947;
+  padding: 0.75em 1.5em;
+  font-size: 0.875rem;
+}
+
+.send-btn {
+  padding: 0.5em;
+  border-radius: 1.5em;
+  font-size: 1rem;
+}
