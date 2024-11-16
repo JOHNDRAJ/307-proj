@@ -7,10 +7,15 @@ import "./Channel.css";
 //maybe update contactName to be the whole user object?
 function Channel({ contactName }) {
   return (
-    <div className="channel">
-      <ContactHeader name={contactName} />
+    <>
+      <div className="channel">
+        <div className="channel-contents">
+          <ContactHeader name={contactName} />
+          <MessageList />
+        </div>
+      </div>
       <MessageInput />
-    </div>
+    </>
   );
 }
 
@@ -31,33 +36,83 @@ function ContactHeader({ name }) {
 }
 
 //again will do messaging in database once set up
-/*function MessageList(props) {
+function MessageList(props) {
   const messages = [
-    { id: 1, sender: "John", message: "I am John" },
-    { id: 2, sender: "Alec", message: "I am Alec" },
+    {
+      id: 1,
+      timestamp: Date.now(),
+      sender: "John",
+      contents: "A short message.",
+    },
+    {
+      id: 2,
+      timestamp: Date.now(),
+      sender: "John",
+      contents:
+        "A long message, from the sender. The max width should cause the message to wrap at some point.",
+    },
+    {
+      id: 3,
+      timestamp: Date.now(),
+      sender: "Alec",
+      contents: "A short message, from the receiver.",
+    },
+    {
+      id: 4,
+      timestamp: Date.now(),
+      sender: "John",
+      contents: "A short message, switching back to the sender.",
+    },
+    {
+      id: 5,
+      timestamp: Date.now(),
+      sender: "John",
+      contents:
+        "A long message. There should be extra spacing when switching between the sender and the receiver.",
+    },
+    {
+      id: 6,
+      timestamp: Date.now(),
+      sender: "Alec",
+      contents:
+        "A long message, from the receiver. A timestamp should appear under the last sent message in the thread.",
+    },
+    {
+      id: 7,
+      timestamp: Date.now(),
+      sender: "Alec",
+      contents:
+        "A long message. The area where messages and the contact header are stored should be contained within its own scrollable area, keeping the input at the bottom of the page. The last message should be shown when the channel is open, so that area should be scrolled all the way to the bottom by default.",
+    },
+    {
+      id: 8,
+      timestamp: Date.now(),
+      sender: "John",
+      contents:
+        "A long message. If the plan was to still lazy load in message as they come then you'd need to come up with some clever way to load in the contact header at the top once you reach it, meaning once there are no more messages to load. Otherwise I guess just assume that it won't be a problem. ChatGPT loads in all messages at once and it isn't that much of a problem.",
+    },
   ];
 
   return (
     <div className="message-list">
       {messages.map((message) => (
-        <MessageItem key={message.id} message={message} />
+        // <MessageItem key={message.id} message={message} />
+        <Message key={message.id} user={"John"} message={message} />
       ))}
     </div>
   );
 }
 
-function MessageItem({ message }) {
+function Message({ user, message }) {
   return (
-    <div
-      className={`message-item ${message.sender === "Me" ? "sent" : "received"}`}
-    >
-      <p>
-        <strong>{message.sender}:</strong> {message.content}
-      </p>
+    <div className={`message ${message.sender === user ? "sent" : "received"}`}>
+      {/* <p>{message.contents}</p> */}
+      <div>
+        <p>{message.contents}</p>
+      </div>
     </div>
   );
 }
-*/
 
 //console.log replace with whatever prop to display on the chat window
 function MessageInput(props) {
@@ -70,17 +125,18 @@ function MessageInput(props) {
   };
 
   return (
-    <div>
-      <input
-        className="message-input"
-        type="text"
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-        placeholder="Message..."
-      />
-      <button className="send-btn" onClick={sendMessage}>
-        <i class="fa-solid fa-paper-plane"></i>
-      </button>
+    <div className="message-input">
+      <div className="message-input-container">
+        <input
+          type="text"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
+          placeholder="Message..."
+        />
+        <button onClick={sendMessage}>
+          <i className="fa-solid fa-paper-plane"></i>
+        </button>
+      </div>
     </div>
   );
 }
