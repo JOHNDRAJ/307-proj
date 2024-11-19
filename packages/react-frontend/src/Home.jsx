@@ -53,10 +53,10 @@ function Home() {
           <h3>insert hero image here (in the center)</h3>
         )}
         {currentView === View.CHANNEL && (
-          <div class="channel-view">
+          <>
             <h2 className="page-header">{selectedContact}</h2>
             <Channel contactName={selectedContact} />
-          </div>
+          </>
         )}
         {currentView === View.SEARCH && (
           <>

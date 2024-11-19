@@ -1,10 +1,13 @@
 /* Chat window styling */
 .channel {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.channel-contents {
+  flex: 1;
   width: 85%;
-  margin-left: auto;
-  margin-right: auto;
-  display: flex;
-  flex-direction: column;
+  margin: 0 auto;
   padding: 1.5em;
 }
 
@@ -26,6 +29,7 @@
 make this a secondary button type later 
 green button = main style, gray button = secondary style
 */
+
 .view-profile-btn {
   border-radius: 0.5em;
   border: none;
@@ -40,8 +44,103 @@ green button = main style, gray button = secondary style
   transition: border-color 0.25s;
 }
 
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125em;
+}
+
+.message {
+  display: flex;
+  max-width: min(80%, 500px);
+}
+
+.message p {
+  padding: 0.5em 1em;
+  border-radius: 1.25em;
+}
+
+.message.sent {
+  flex-direction: row-reverse;
+}
+
+.message.received {
+  flex-direction: row;
+}
+
+/* Adds extra spacing between messages from different users */
+.sent + .received,
+.received + .sent {
+  margin-top: 0.5em;
+}
+
+.sent {
+  align-self: flex-end;
+}
+
+.sent p {
+  background: #789f90;
+  color: #282828;
+}
+
+.received {
+  align-self: flex-start;
+}
+
+.received p {
+  background: #474947;
+  color: #fff;
+}
+
+.message-actions {
+  display: flex;
+  flex-direction: row;
+}
+
+.message-actions {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.message:hover .message-actions {
+  visibility: visible;
+  opacity: 1;
+}
+
+.edit-btn,
+.delete-btn {
+  background: none;
+  padding: 0;
+  margin: 0;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.125rem;
+}
+
+.received .fa-solid {
+  margin-left: 0.5em;
+  margin-right: 0;
+}
+
 .message-input {
-  width: 90%;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+.message-input-container {
+  width: 85%;
+  margin: auto;
+  padding: 0.75em 1.5em;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.message-input-container input {
+  flex: 1;
   border: none;
   border-radius: 1.5em;
   background: #474947;
@@ -49,8 +148,11 @@ green button = main style, gray button = secondary style
   font-size: 0.875rem;
 }
 
-.send-btn {
-  padding: 0.5em;
-  border-radius: 1.5em;
+.message-input button {
+  border-radius: 2em;
   font-size: 1rem;
+}
+
+.message-input .fa-solid {
+  margin-right: 0;
 }
