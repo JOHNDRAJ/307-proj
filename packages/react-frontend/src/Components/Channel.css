@@ -51,9 +51,21 @@ green button = main style, gray button = secondary style
 }
 
 .message {
-  padding: 0.5em;
-  border-radius: 1em;
-  max-width: 60%;
+  display: flex;
+  max-width: min(80%, 500px);
+}
+
+.message p {
+  padding: 0.5em 1em;
+  border-radius: 1.25em;
+}
+
+.message.sent {
+  flex-direction: row-reverse;
+}
+
+.message.received {
+  flex-direction: row;
 }
 
 /* Adds extra spacing between messages from different users */
@@ -64,20 +76,51 @@ green button = main style, gray button = secondary style
 
 .sent {
   align-self: flex-end;
-  background: #789f90;
 }
 
 .sent p {
+  background: #789f90;
   color: #282828;
 }
 
 .received {
   align-self: flex-start;
-  background: #474947;
 }
 
 .received p {
+  background: #474947;
   color: #fff;
+}
+
+.message-actions {
+  display: flex;
+  flex-direction: row;
+}
+
+.message-actions {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.message:hover .message-actions {
+  visibility: visible;
+  opacity: 1;
+}
+
+.edit-btn,
+.delete-btn {
+  background: none;
+  padding: 0;
+  margin: 0;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 1.125rem;
+}
+
+.received .fa-solid {
+  margin-left: 0.5em;
+  margin-right: 0;
 }
 
 .message-input {

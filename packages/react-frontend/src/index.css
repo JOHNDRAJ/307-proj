@@ -61,6 +61,10 @@ p {
   color: #c4cac8;
 }
 
+input {
+  font-family: inherit;
+}
+
 button {
   border-radius: 1em;
   border: none;
@@ -68,7 +72,7 @@ button {
   margin: 0.5em;
   font-size: 1.125rem;
   font-weight: bold;
-  font-family: "Source Sans 3", Inter, Arial, sans-serif;
+  font-family: inherit;
   background-color: #789f90;
   color: #282828;
   cursor: pointer;

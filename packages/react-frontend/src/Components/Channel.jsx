@@ -40,53 +40,53 @@ function MessageList(props) {
   const messages = [
     {
       id: 1,
-      timestamp: Date.now(),
+      timestamp: new Date(),
       sender: "John",
       contents: "A short message.",
     },
     {
       id: 2,
-      timestamp: Date.now(),
+      timestamp: new Date(),
       sender: "John",
       contents:
         "A long message, from the sender. The max width should cause the message to wrap at some point.",
     },
     {
       id: 3,
-      timestamp: Date.now(),
+      timestamp: new Date(),
       sender: "Alec",
       contents: "A short message, from the receiver.",
     },
     {
       id: 4,
-      timestamp: Date.now(),
+      timestamp: new Date(),
       sender: "John",
       contents: "A short message, switching back to the sender.",
     },
     {
       id: 5,
-      timestamp: Date.now(),
+      timestamp: new Date(),
       sender: "John",
       contents:
         "A long message. There should be extra spacing when switching between the sender and the receiver.",
     },
     {
       id: 6,
-      timestamp: Date.now(),
+      timestamp: new Date(),
       sender: "Alec",
       contents:
         "A long message, from the receiver. A timestamp should appear under the last sent message in the thread.",
     },
     {
       id: 7,
-      timestamp: Date.now(),
+      timestamp: new Date(),
       sender: "Alec",
       contents:
         "A long message. The area where messages and the contact header are stored should be contained within its own scrollable area, keeping the input at the bottom of the page. The last message should be shown when the channel is open, so that area should be scrolled all the way to the bottom by default.",
     },
     {
       id: 8,
-      timestamp: Date.now(),
+      timestamp: new Date(),
       sender: "John",
       contents:
         "A long message. If the plan was to still lazy load in message as they come then you'd need to come up with some clever way to load in the contact header at the top once you reach it, meaning once there are no more messages to load. Otherwise I guess just assume that it won't be a problem. ChatGPT loads in all messages at once and it isn't that much of a problem.",
@@ -104,13 +104,41 @@ function MessageList(props) {
 }
 
 function Message({ user, message }) {
+  const [showTimestamp, setShowTimestamp] = useState(false);
+
+  const toggleTimestamp = () => {
+    setShowTimestamp(!showTimestamp);
+  };
+
   return (
-    <div className={`message ${message.sender === user ? "sent" : "received"}`}>
-      {/* <p>{message.contents}</p> */}
-      <div>
-        <p>{message.contents}</p>
+    <>
+      <div
+        className={`message ${message.sender === user ? "sent" : "received"}`}
+      >
+        <p onClick={toggleTimestamp}>{message.contents}</p>
+        {message.sender === user && (
+          <div className="message-actions">
+            <button className="edit-btn">
+              <i className="fa-solid fa-pen"></i>
+            </button>
+            <button className="delete-btn">
+              <i className="fa-solid fa-trash"></i>
+            </button>
+          </div>
+        )}
       </div>
-    </div>
+      {showTimestamp && (
+        <p
+          className={`message-timestamp ${message.sender === user ? "sent" : "received"}`}
+        >
+          {message.timestamp.toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+            hour12: true,
+          })}
+        </p>
+      )}
+    </>
   );
 }
 
