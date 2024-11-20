@@ -20,7 +20,7 @@ const ProfileSetup = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:5001/api/user/profile`, {
+      const response = await fetch(`http://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/profile`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",
