@@ -20,14 +20,17 @@ const ProfileSetup = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/profile`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ input }),
-      });
+      const response = await fetch(
+        `https://blue-mushroom-09a68691e.5.azurestaticapps.net/api/user/profile`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ input }),
+        }
+      );
 
       const data = await response.json();
       console.log("Response data:", data); // Debugging output
