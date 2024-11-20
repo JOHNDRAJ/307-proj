@@ -19,7 +19,7 @@ const Login = () => {
     if (input.email !== "" && input.password !== "") {
       try {
         const response = await fetch(
-          "https://blue-mushroom-09a68691e.5.azurestaticapps.net/api/auth/signin",
+          "poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/auth/signin",
           {
             method: "POST",
             headers: {

@@ -21,7 +21,7 @@ const ProfileSetup = () => {
 
     try {
       const response = await fetch(
-        `https://blue-mushroom-09a68691e.5.azurestaticapps.net/api/user/profile`,
+        `poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/profile`,
         {
           method: "PUT",
           headers: {
