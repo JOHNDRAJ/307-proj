@@ -18,13 +18,16 @@ const Login = () => {
 
     if (input.email !== "" && input.password !== "") {
       try {
-        const response = await fetch("http://localhost:5001/api/auth/signin", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(input),
-        });
+        const response = await fetch(
+          "poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/auth/signin",
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(input),
+          }
+        );
 
         const data = await response.json();
 
