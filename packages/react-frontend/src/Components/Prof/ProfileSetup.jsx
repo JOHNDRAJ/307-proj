@@ -20,14 +20,17 @@ const ProfileSetup = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`http://localhost:5001/api/user/profile`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ input }),
-      });
+      const response = await fetch(
+        `poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/profile`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ input }),
+        }
+      );
 
       const data = await response.json();
       console.log("Response data:", data); // Debugging output
