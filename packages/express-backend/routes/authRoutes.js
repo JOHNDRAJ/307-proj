@@ -19,6 +19,6 @@ router.post("/signup", signUp);
 //   "email": "jane@example.com",
 //   "password": "anotherpassword"
 // }'
-//router.post("/signin", signIn);
+router.post("/signin", signIn);
 
 export default router;
