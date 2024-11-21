@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import authRoutes from "./routes/authRoutes.js";
 import userRoutes from "./routes/userRoutes.js";
+import { signIn } from "./controllers/authControllers.js";
 import channelRoutes from "./routes/channelRoutes.js";
 import messageRoutes from "./routes/messageRouter.js";
 import cors from "cors";
@@ -22,6 +23,9 @@ mongoose
   .connect(connection_string)
   .then(() => console.log("MongoDB connection successful"))
   .catch((error) => console.log("MongoDB connection failed:", error));
+
+
+app.post("/signin", signIn);
 
 app.use("/api/auth", authRoutes);
 
