@@ -1,4 +1,5 @@
 import React from "react";
+import formatTimestamp from "../utils/utils";
 import "./Sidebar.css";
 
 //will make everything props once backend is good
@@ -21,23 +22,90 @@ function ContactsList({ onSelectContact }) {
   const contacts = [
     { id: 1, name: "John", lastMessage: "Hey", lastTimestamp: new Date() },
     { id: 2, name: "Alec", lastMessage: "Yo", lastTimestamp: new Date() },
-    { id: 3, name: "Brennan", lastMessage: "Hello", lastTimestamp: new Date() },
-    { id: 4, name: "Karthik", lastMessage: "Sup", lastTimestamp: new Date() },
-    { id: 5, name: "Karthik", lastMessage: "Sup", lastTimestamp: new Date() },
-    { id: 6, name: "Karthik", lastMessage: "Sup", lastTimestamp: new Date() },
-    { id: 7, name: "Karthik", lastMessage: "Sup", lastTimestamp: new Date() },
-    { id: 8, name: "Karthik", lastMessage: "Sup", lastTimestamp: new Date() },
-    { id: 9, name: "Karthik", lastMessage: "Sup", lastTimestamp: new Date() },
-    { id: 10, name: "Karthik", lastMessage: "Sup", lastTimestamp: new Date() },
-    { id: 11, name: "Karthik", lastMessage: "Sup", lastTimestamp: new Date() },
-    { id: 12, name: "Karthik", lastMessage: "Sup", lastTimestamp: new Date() },
-    { id: 13, name: "Karthik", lastMessage: "Sup", lastTimestamp: new Date() },
+    {
+      id: 3,
+      name: "Brennan",
+      lastMessage: "Hello",
+      lastTimestamp: new Date(new Date().getTime() - 45 * 60 * 1000),
+    },
+    {
+      id: 4,
+      name: "Karthik",
+      lastMessage: "Sup",
+      lastTimestamp: new Date(new Date().getTime() - 2 * 60 * 60 * 1000),
+    },
+    {
+      id: 5,
+      name: "Karthik",
+      lastMessage: "Sup",
+      lastTimestamp: new Date(new Date().getTime() - 24 * 60 * 60 * 1000),
+    },
+    {
+      id: 6,
+      name: "Karthik",
+      lastMessage: "Sup",
+      lastTimestamp: new Date(new Date().getTime() - 4 * 24 * 60 * 60 * 1000),
+    },
+    {
+      id: 7,
+      name: "Karthik",
+      lastMessage: "Sup",
+      lastTimestamp: new Date(new Date().getTime() - 7 * 24 * 60 * 60 * 1000),
+    },
+    {
+      id: 8,
+      name: "Karthik",
+      lastMessage: "Sup",
+      lastTimestamp: new Date(
+        new Date().getTime() - 2 * 30.44 * 24 * 60 * 60 * 1000
+      ),
+    },
+    {
+      id: 9,
+      name: "Karthik",
+      lastMessage: "Sup",
+      lastTimestamp: new Date(
+        new Date().getTime() - 2 * 30.44 * 24 * 60 * 60 * 1000
+      ),
+    },
+    {
+      id: 10,
+      name: "Karthik",
+      lastMessage: "Sup",
+      lastTimestamp: new Date(
+        new Date().getTime() - 13 * 30.44 * 24 * 60 * 60 * 1000
+      ),
+    },
+    {
+      id: 11,
+      name: "Karthik",
+      lastMessage: "Sup",
+      lastTimestamp: new Date(
+        new Date().getTime() - 13 * 30.44 * 24 * 60 * 60 * 1000
+      ),
+    },
+    {
+      id: 12,
+      name: "Karthik",
+      lastMessage: "Sup",
+      lastTimestamp: new Date(
+        new Date().getTime() - 13 * 30.44 * 24 * 60 * 60 * 1000
+      ),
+    },
+    {
+      id: 13,
+      name: "Karthik",
+      lastMessage: "Sup",
+      lastTimestamp: new Date(
+        new Date().getTime() - 13 * 30.44 * 24 * 60 * 60 * 1000
+      ),
+    },
   ];
 
-  //change later to include more for Contact object
   return (
     <div className="contact-list">
       {contacts.map((contact) => (
+        /* Pass in user object for contact */
         <ContactItem
           key={contact.id}
           contact={contact}
@@ -55,6 +123,7 @@ function ContactItem({ contact, onSelectContact }) {
       onClick={() => onSelectContact(contact.name)} // Pass contact name on click
     >
       <div className="contact-preview">
+        {/* Get image from contact object when the actual schema is setup for it */}
         <img
           className="contact-pic"
           src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
@@ -65,13 +134,7 @@ function ContactItem({ contact, onSelectContact }) {
         </div>
       </div>
 
-      <p>
-        {contact.lastTimestamp.toLocaleTimeString("en-US", {
-          hour: "numeric",
-          minute: "2-digit",
-          hour12: true,
-        })}
-      </p>
+      <p>{formatTimestamp(contact.lastTimestamp, true)}</p>
     </div>
   );
 }
