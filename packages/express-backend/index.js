@@ -10,7 +10,16 @@ import cors from "cors";
 dotenv.config();
 
 const app = express();
-app.use(cors());
+
+let corsOptions = {
+  origin: [
+    "http://localhost:5001",
+    "https://blue-mushroom-09a68691e.5.azurestaticapps.net/",
+  ],
+  credentials: true
+};
+app.use(cors(corsOptions));
+
 app.use(express.json());
 
 const connection_string = process.env.CONNECTION_STRING;
