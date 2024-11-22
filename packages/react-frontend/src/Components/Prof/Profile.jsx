@@ -11,7 +11,7 @@ function Profile() {
     <div className="profile">
       <img
         className="profile-pic-large"
-        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        src="/assets/default-profile-pic.webp"
       />
       <div className="user-info">
         <h2>User Name</h2>

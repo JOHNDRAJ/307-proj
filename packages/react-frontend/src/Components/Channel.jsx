@@ -25,7 +25,7 @@ function ContactHeader({ name }) {
     <div className="contact-header">
       <img
         className="profile-pic-medium"
-        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        src="/assets/default-profile-pic.webp"
       />
       <h2>{name}</h2>
       <button className="view-profile-btn">
