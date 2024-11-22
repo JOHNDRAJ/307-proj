@@ -21,7 +21,7 @@ const ProfileSetup = () => {
 
     try {
       const response = await fetch(
-        `poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/profile`,
+        `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/profile`,
         {
           method: "PUT",
           headers: {
