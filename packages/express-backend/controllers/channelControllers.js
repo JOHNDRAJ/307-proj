@@ -65,7 +65,7 @@ export const createChannel = [
   authenticateToken,
   async (req, res) => {
     const userId = req.user._id;
-    const { name, contents, users } = req.body;
+    let { name, contents, users } = req.body;
     try {
       const u = await User.findById(userId);
       if (!u) {
@@ -79,13 +79,20 @@ export const createChannel = [
         messages: [recentMessage],
       });
       await channel.save();
+
+      const channelxUserForRequester = new Cxu({ 
+        user: userId, 
+        channel: channel._id });
+      await channelxUserForRequester.save();
+
       for (const user of users) {
         if (!(await User.findById(user))) {
           return res.status(404).json({ message: "User not found, Cxu" });
         }
         const channelxUser = new Cxu({ user, channel });
-        channelxUser.save();
+        await channelxUser.save();
       }
+
       res
         .status(201)
         .json({ message: "Channel created successfully", channel });
