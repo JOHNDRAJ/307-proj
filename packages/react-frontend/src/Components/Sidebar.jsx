@@ -17,7 +17,6 @@ function Sidebar({ onSelectContact, onSelectSearch }) {
   );
 }
 
-
 //will pass in contacts list through props from backend when it works
 function ContactsList({ onSelectContact }) {
   const [contacts, setContacts] = useState([]);
@@ -40,7 +39,7 @@ function ContactsList({ onSelectContact }) {
         console.log("Response data:", data); // Debugging output
 
         if (response.ok) {
-          const extractedData = data.cxus.map((item) => item.channel)
+          const extractedData = data.cxus.map((item) => item.channel);
           console.log("Extracted data:", extractedData);
           setContacts(extractedData);
           //alert(data.message || "Channels fetched successfully!");

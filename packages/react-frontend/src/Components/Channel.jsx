@@ -11,10 +11,10 @@ function Channel({ channel }) {
       <div className="channel">
         <div className="channel-contents">
           <ContactHeader name={channel.name} />
-          <MessageList channel={channel}/>
+          <MessageList channel={channel} />
         </div>
       </div>
-      <MessageInput channel={channel}/>
+      <MessageInput channel={channel} />
     </>
   );
 }
@@ -36,13 +36,12 @@ function ContactHeader({ name }) {
 }
 
 //again will do messaging in database once set up
-function MessageList({channel}) {
+function MessageList({ channel }) {
   const [messages, setMessages] = useState([]);
-
 
   useEffect(() => {
     if (!channel) return;
-    console.log(channel._id)
+    console.log(channel._id);
     const fetchMessages = async () => {
       try {
         const response = await fetch(
@@ -124,7 +123,7 @@ function Message({ user, message }) {
 }
 
 //console.log replace with whatever prop to display on the chat window
-function MessageInput({channel}) {
+function MessageInput({ channel }) {
   const [text, setText] = useState("");
   const sendMessage = async () => {
     if (text.trim()) {
@@ -144,10 +143,10 @@ function MessageInput({channel}) {
             }),
           }
         );
-  
+
         const data = await response.json();
         console.log("Response data:", data);
-  
+
         if (response.ok) {
           alert(data.message || "Message sent successfully!"); // Notify on success
         } else {
