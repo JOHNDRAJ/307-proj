@@ -12,3 +12,15 @@
   font-size: 1.125rem;
   font-family: "Source Sans 3"; /* move this input style to index.css later as a general input style */
 }
+
+.search-results {
+  flex-grow: 1; /* Allow results to stretch if space is available */
+  min-height: 100px; /* Minimum height for the results container */
+  max-height: calc(100vh - 150px); /* Prevent results from exceeding the viewport height minus the header and padding */
+  overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.contact-item.selected {
+  background-color: #5c8461; /* Light green background for selected users */
+  border-color: #a0e6a0; /* Optional: Change border color for selected users */
+}

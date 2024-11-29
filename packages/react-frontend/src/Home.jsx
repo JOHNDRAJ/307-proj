@@ -29,6 +29,22 @@ function Home() {
     setCurrentView(view);
   };
 
+  const getUser = () => {
+    jwt.verify(
+      localStorage.getItem("token"),
+      process.env.JWT_SECRET,
+      (err, user) => {
+        if (err) {
+          return res.status(403).json({ message: "Invalid token." });
+        }
+        return res.status(400).json({ user: user });
+        // req.user = user; // Attach the user payload to the request object
+      }
+    );
+    if (res.user) return res.user;
+    // handle error...
+  };
+
   return (
     <div className="home">
       <div
@@ -66,7 +82,7 @@ function Home() {
               </button>
               Search
             </h2>
-            <Search />
+            <Search user = {getUser} />
           </>
         )}
         {currentView === View.PROFILE && (
