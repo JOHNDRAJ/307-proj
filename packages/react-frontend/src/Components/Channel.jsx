@@ -84,7 +84,7 @@ function MessageList({ channel, user, refreshMessages, setRefreshMessages }) {
       {messages
         .map((message) => (
         // <MessageItem key={message.id} message={message} />
-        <Message key={message.id} user={user} message={message} />
+        <Message key={message._id} user={user} message={message} />
       ))}
     </div>
   );

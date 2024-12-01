@@ -68,7 +68,7 @@ function Home() {
           handleSelectView(View.CHANNEL);
         }}
         onSelectSearch={() => handleSelectView(View.SEARCH)}
-        // user={user}
+        user={user}
       />
       <main>
         {/* Add other conditionally rendered views once they get made */}

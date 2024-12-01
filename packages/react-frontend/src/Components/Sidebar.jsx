@@ -72,6 +72,7 @@ function ContactsList({ onSelectContact }) {
 
 function ContactItem({ contact, onSelectContact }) {
   const [message, setMessage] = useState({});
+  const [messageSender, setMessageSender] = useState({});
   useEffect(() => {
     const fetchMessage = async () => {
       try {
@@ -92,9 +93,33 @@ function ContactItem({ contact, onSelectContact }) {
         console.error("Error during fetch:", error); // More specific error output
       }
     }
+
     fetchMessage();
   }, [contact.recentMessage]);
-  
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        console.log("sender:", message);
+        const response = await fetch(
+          `http://localhost:5001/api/user/id/${message.userMessage.sender}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        setMessageSender(data);
+        console.log("Fetched messageSender:", data);
+      } catch (error) {
+        console.error("Error during fetch:", error); // More specific error output
+      }
+    }
+    fetchUser();
+  }, [message]);
   return (
     <div
       className="contact-item"
@@ -105,7 +130,13 @@ function ContactItem({ contact, onSelectContact }) {
         <img className="contact-pic" src="/assets/default-profile-pic.webp" />
         <div className="contact-details">
           <h3>{contact.name}</h3>
-          <p>{message.userMessage?.contents || "No Messages"}</p>
+          <p>
+            {message.userMessage?.contents && messageSender.user?.name
+              ? message.userMessage.sender === messageSender.user._id
+                ?`You: ${message.userMessage.contents}` 
+                :`${messageSender.user.name}: ${message.userMessage.contents}` 
+              : "No Messages"}
+          </p>
         </div>
       </div>
 
