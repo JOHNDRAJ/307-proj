@@ -21,7 +21,13 @@ export const sendMessage = [
       const recentMessage = new Message({ contents, sender: userId });
       await recentMessage.save();
       channel.messages.push(recentMessage);
-      channel.recentMessage = recentMessage;
+      const updatedChannel = await Channel.findByIdAndUpdate(
+        channelId,
+        {
+          $set: { recentMessage: recentMessage },
+        },
+      );
+      //channel.recentMessage = recentMessage;
       channel.recentTimestamp = Date.now();
       await channel.save();
       res.status(201).json({ message: "Message sent successfully", channel });
@@ -81,6 +87,24 @@ export const getMessages = [
       res
         .status(200)
         .json({ message: "Messages retrieved successfully", messages });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: `Server error ${error}`, error });
+    }
+  },
+];
+
+export const getMessage = [
+  authenticateToken,
+  async (req, res) => {
+    const {messageId} = req.params;
+    console.log("debug message:", messageId)
+    try {
+      const userMessage = await Message.findById(messageId);
+      if (!userMessage) {
+        return res.status(404).json({ message: "Message not found" });
+      }
+      res.status(200).json({ message: "Message retrieved successfully", userMessage });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: `Server error ${error}`, error });

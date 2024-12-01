@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "./Components/Sidebar";
 import Profile from "./Components/Prof/Profile";
 import Channel from "./Components/Channel";
@@ -13,7 +13,7 @@ const View = Object.freeze({
 });
 
 function Home() {
-  const [selectedContact, setSelectedContact] = useState("John");
+  const [selectedChannel, setSelectedChannel] = useState({});
   /*
   set the default view to home/default once that gets made
   profile and search will have back navigation, home and channel won't
@@ -22,6 +22,7 @@ function Home() {
   */
   const [previousView, setPreviousView] = useState(View.HOME);
   const [currentView, setCurrentView] = useState(View.HOME);
+  const [user, setUser] = useState({});
 
   const handleSelectView = (view) => {
     const prev = currentView;
@@ -29,21 +30,29 @@ function Home() {
     setCurrentView(view);
   };
 
-  const getUser = () => {
-    jwt.verify(
-      localStorage.getItem("token"),
-      process.env.JWT_SECRET,
-      (err, user) => {
-        if (err) {
-          return res.status(403).json({ message: "Invalid token." });
-        }
-        return res.status(400).json({ user: user });
-        // req.user = user; // Attach the user payload to the request object
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5001/api/user/user`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        const data = await response.json();
+        setUser(data);
+        console.log("Fetched User:", data);
+      } catch (error) {
+        console.error("Error fetching user:", error);
       }
-    );
-    if (res.user) return res.user;
-    // handle error...
-  };
+    };
+    fetchUser();
+  }, []);
+
 
   return (
     <div className="home">
@@ -55,10 +64,11 @@ function Home() {
       </div>
       <Sidebar
         onSelectContact={(name) => {
-          setSelectedContact(name);
+          setSelectedChannel(name);
           handleSelectView(View.CHANNEL);
         }}
         onSelectSearch={() => handleSelectView(View.SEARCH)}
+        // user={user}
       />
       <main>
         {/* Add other conditionally rendered views once they get made */}
@@ -67,8 +77,8 @@ function Home() {
         )}
         {currentView === View.CHANNEL && (
           <>
-            <h2 className="page-header">{selectedContact}</h2>
-            <Channel contactName={selectedContact} />
+            <h2 className="page-header">{selectedChannel.name}</h2>
+            <Channel channel={selectedChannel} user = {user}/>
           </>
         )}
         {currentView === View.SEARCH && (
@@ -82,7 +92,7 @@ function Home() {
               </button>
               Search
             </h2>
-            <Search user = {getUser} />
+            <Search user = {user} />
           </>
         )}
         {currentView === View.PROFILE && (

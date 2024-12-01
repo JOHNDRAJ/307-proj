@@ -65,18 +65,23 @@ export const createChannel = [
   authenticateToken,
   async (req, res) => {
     const userId = req.user._id;
-    let { name, contents, users } = req.body;
+    let { name, contents = null, users } = req.body;
+    if (contents === "") {
+      contents = null;
+    }
     try {
       const u = await User.findById(userId);
       if (!u) {
         return res.status(404).json({ message: "User not found, Message" });
       }
-      const recentMessage = new Message({ contents, sender: userId });
-      await recentMessage.save();
+      if (contents) {
+        const recentMessage = new Message({ contents, sender: userId });
+        await recentMessage.save();
+      }
       const channel = new Channel({
         name,
-        recentMessage,
-        messages: [recentMessage],
+        ...(contents && { recentMessage }), // Include recentMessage only if contents is truthy
+        messages: contents ? [recentMessage] : [], // Add recentMessage to messages only if contents is valid
       });
       await channel.save();
 

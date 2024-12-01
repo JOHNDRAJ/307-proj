@@ -3,8 +3,39 @@ import "./Search.css";
 
 function Search({ user }) {
 
+  console.log(user);
+
   const [users, setUsers] = useState([]); // State to store users fetched from the database
   const [searchedUsers, setSearchedUsers] = useState([]);
+
+  /////////////////
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [inputValue, setInputValue] = useState(""); // To store the entered information
+  const [searchedUserNames, setSearchedUsernames] = useState([]);
+
+  const togglePopup = () => {
+    console.log(searchedUsers.length);
+    if (!isPopupVisible) {
+      if (searchedUsers.length === 1) {
+        handleChannelCreation({searchedUsers});
+        setInputValue("");
+        setSearchedUsernames([]);
+      }
+      else {
+        setIsPopupVisible(!isPopupVisible);
+      }
+    }
+    else {
+      setIsPopupVisible(!isPopupVisible);
+      setInputValue("");
+    }
+  };
+
+  const handleInputChange = (e) => {
+    setInputValue(e.target.value);
+  };
+
+  ///////////////
 
   useEffect(() => {
     // Fetch users from backend
@@ -31,17 +62,23 @@ function Search({ user }) {
     fetchUsers();
   }, []);
 
-  const toggleUserSelection = (userId) => {
+  const toggleUserSelection = (userId, userName) => {
     setSearchedUsers((prev) =>
       prev.includes(userId)
         ? prev.filter((id) => id !== userId) // Remove user if already selected
         : [...prev, userId] // Add user if not selected
     );
+    setSearchedUsernames((prev) =>
+      prev.includes(userName)
+        ? prev.filter((name) => name !== userName) // Remove username if already selected
+        : [...prev, userName] // Add username if not selected
+    );
   };
 
   const handleChannelCreation = async ({searchedUsers}) => {
-    
+    console.log(searchedUserNames)
     try {
+      console.log(searchedUserNames);
       const response = await fetch(
         "http://localhost:5001/api/channel/create",
         // 'https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/channel/create',
@@ -52,8 +89,8 @@ function Search({ user }) {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({
-            name: "Study Group",
-            contents: "Welcome to the Study Group!",
+            name: searchedUserNames.length === 1 ? searchedUserNames[0] : inputValue,
+            contents: "",
             users: searchedUsers,
           }),
         }
@@ -93,7 +130,7 @@ function Search({ user }) {
               className={`contact-item ${
                 searchedUsers.includes(user._id) ? "selected" : ""
               }`}
-              onClick={() => toggleUserSelection(user._id)}
+              onClick={() => toggleUserSelection(user._id, user.name)}
             >
               <div className="contact-preview">
                 <img
@@ -103,7 +140,6 @@ function Search({ user }) {
                 />
                 <div className="contact-details">
                   <h3>{user.name}</h3>
-                  <h3>{user._id}</h3>
                   <p>{user.email}</p>
                 </div>
               </div>
@@ -115,11 +151,36 @@ function Search({ user }) {
       </div>
       <button
         className="create-channel-button"
-        onClick={() => handleChannelCreation({ searchedUsers })}
+        onClick={togglePopup}
         disabled={searchedUsers.length === 0} // Disable button if no users selected
       >
         Create Channel
       </button>
+
+      {/* Popup Logic */}
+      {isPopupVisible && (
+        <div className="popup-container">
+          <div className="popup-box">
+            <h2 className="popup-header">Channel Name</h2>
+            <input
+              className="popup-input"
+              type="text"
+              value={inputValue}
+              onChange={handleInputChange}
+              placeholder="Channel Name"
+            />
+            <div className="popup-buttons">
+              <button className="popup-button submit" onClick={() => {handleChannelCreation({searchedUsers}); togglePopup();}}>
+                Create
+              </button>
+              <button className="popup-button close" onClick={togglePopup}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </>
   );
 }

@@ -31,7 +31,6 @@ export const getUser = [
   authenticateToken,
   async (req, res) => {
     const userId = req.user._id;
-    console.log("user:", userId);
     try {
       const user = await User.findById(userId);
       if (!user) {

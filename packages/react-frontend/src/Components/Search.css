@@ -24,3 +24,74 @@
   background-color: #5c8461; /* Light green background for selected users */
   border-color: #a0e6a0; /* Optional: Change border color for selected users */
 }
+
+/* Popup Styles */
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.popup-box {
+  background-color: #474947;
+  padding: 1.5em;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%; /* Responsive width */
+  max-width: 500px; /* Maximum width for the popup */
+}
+
+.popup-header {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+
+.popup-input {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5em;
+  font-size: 1rem;
+  margin-bottom: 1em;
+}
+
+.popup-buttons {
+  display: flex;
+  gap: 0.5em;
+  justify-content: center;
+}
+
+.popup-button {
+  padding: 0.5em 1em;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.popup-button.submit {
+  background-color: #5c8461; /* Same green as selected contact item */
+  color: white;
+}
+
+.popup-button.submit:hover {
+  background-color: #4a6b4f;
+}
+
+.popup-button.close {
+  background-color: #ccc;
+}
+
+.popup-button.close:hover {
+  background-color: #b3b3b3;
+}
