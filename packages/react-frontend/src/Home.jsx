@@ -33,18 +33,15 @@ function Home() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5001/api/user/user`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
+        const response = await fetch(`http://localhost:5001/api/user/user`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         const data = await response.json();
-        setUser(data);
+        setUser(data.user);
         console.log("Fetched User:", data);
       } catch (error) {
         console.error("Error fetching user:", error);
@@ -52,7 +49,6 @@ function Home() {
     };
     fetchUser();
   }, []);
-
 
   return (
     <div className="home">
@@ -85,7 +81,7 @@ function Home() {
         {currentView === View.CHANNEL && (
           <>
             <h2 className="page-header">{selectedChannel.name}</h2>
-            <Channel channel={selectedChannel} user = {user}/>
+            <Channel channel={selectedChannel} user={user} />
           </>
         )}
         {currentView === View.SEARCH && (
@@ -99,7 +95,7 @@ function Home() {
               </button>
               Search
             </h2>
-            <Search user = {user} />
+            <Search user={user} />
           </>
         )}
         {currentView === View.PROFILE && (
