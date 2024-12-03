@@ -104,7 +104,7 @@ function Message({ user, message }) {
         className={`message ${message.sender === user.user._id ? "sent" : "received"}`}
       >
         <p onClick={toggleTimestamp}>{message.contents}</p>
-        {message.sender === user.id && (
+        {message.sender === user.user._id && (
           <div className="message-actions">
             <button className="edit-btn">
               <i className="fa-solid fa-pen"></i>
@@ -117,7 +117,7 @@ function Message({ user, message }) {
       </div>
       {showTimestamp && (
         <p
-          className={`message-timestamp ${message.sender === user ? "sent" : "received"}`}
+          className={`message-timestamp ${message.sender === user.user._id ? "sent" : "received"}`}
         >
           {message.timestamp.toLocaleTimeString("en-US", {
             hour: "numeric",
