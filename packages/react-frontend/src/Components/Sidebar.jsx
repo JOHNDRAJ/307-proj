@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import formatTimestamp from "../utils/utils";
 import "./Sidebar.css";
 
+
 //will make everything props once backend is good
 //also have to create the search bar
 
@@ -52,7 +53,6 @@ function ContactsList({ onSelectContact }) {
         alert("An error occurred during channel fetch.");
       }
     };
-
     fetchChannels();
   }, []);
 
@@ -92,7 +92,7 @@ function ContactItem({ contact, onSelectContact }) {
       } catch (error) {
         console.error("Error during fetch:", error); // More specific error output
       }
-    }
+    };
 
     fetchMessage();
   }, [contact.recentMessage]);
@@ -117,7 +117,7 @@ function ContactItem({ contact, onSelectContact }) {
       } catch (error) {
         console.error("Error during fetch:", error); // More specific error output
       }
-    }
+    };
     fetchUser();
   }, [message]);
   return (
@@ -133,8 +133,8 @@ function ContactItem({ contact, onSelectContact }) {
           <p>
             {message.userMessage?.contents && messageSender.user?.name
               ? message.userMessage.sender === messageSender.user._id
-                ?`You: ${message.userMessage.contents}` 
-                :`${messageSender.user.name}: ${message.userMessage.contents}` 
+                ? `You: ${message.userMessage.contents}`
+                : `${messageSender.user.name}: ${message.userMessage.contents}`
               : "No Messages"}
           </p>
         </div>

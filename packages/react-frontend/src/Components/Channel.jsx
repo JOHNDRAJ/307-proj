@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./Channel.css";
 
+import { io } from "socket.io-client";
+
+const socket = io("http://localhost:5001");
+
 //will make everything props once backend is good
 
 //add MessageList when needed
@@ -12,11 +16,12 @@ function Channel({ channel, user }) {
       <div className="channel">
         <div className="channel-contents">
           <ContactHeader name={channel.name} />
-          <MessageList 
-            channel={channel} 
+          <MessageList
+            channel={channel}
             user={user}
             refreshMessages={refreshMessages}
-            setRefreshMessages={setRefreshMessages} />
+            setRefreshMessages={setRefreshMessages}
+          />
         </div>
       </div>
       <MessageInput channel={channel} setRefreshMessages={setRefreshMessages} />
@@ -76,13 +81,30 @@ function MessageList({ channel, user, refreshMessages, setRefreshMessages }) {
       }
     };
     fetchMessages();
-    setRefreshMessages(false);
+
+    // Join the channel's socket room
+    socket.emit("joinChannel", channel._id);
+    console.log(`Joined socket room for channel: ${channel._id}`);
+
+    // Listen for new messages
+    socket.on("newMessage", (newMessage) => {
+      console.log("New message received via socket:", newMessage);
+
+      // Update the messages state with the new message
+      setMessages((prevMessages) => [...prevMessages, newMessage]);
+    });
+
+    // Cleanup when component unmounts or channel changes
+    return () => {
+      socket.emit("leaveChannel", channel._id);
+      console.log(`Left socket room for channel: ${channel._id}`);
+      socket.off("newMessage"); // Remove event listener
+    };
   }, [channel._id, refreshMessages]);
 
   return (
     <div className="message-list">
-      {messages
-        .map((message) => (
+      {messages.map((message) => (
         // <MessageItem key={message.id} message={message} />
         <Message key={message._id} user={user} message={message} />
       ))}
