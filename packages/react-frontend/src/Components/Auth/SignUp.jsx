@@ -33,7 +33,7 @@ const SignUp = () => {
         if (response.ok) {
           localStorage.setItem("token", data.token); // Store token
           // Handle successful login
-          navigate("/profile-setup");
+          navigate("/profile-setup", { state: { from: "/signup" } });
           // You can store the JWT token or redirect the user here
         } else {
           // Handle errors (e.g., invalid credentials)

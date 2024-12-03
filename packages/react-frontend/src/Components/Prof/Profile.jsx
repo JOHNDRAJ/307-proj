@@ -1,11 +1,18 @@
 import React, { useState } from "react";
 import "./Profile.css";
+import { useNavigate } from "react-router-dom";
 
 function Profile() {
   // add props for which user the profile is for
   // have some way of determining if it is their profile or someone else's
   // return a slightly different UI based on whether or not it's your own profile
   const [isCurrentUser, setIsCurrentUser] = useState(true);
+
+  const navigate = useNavigate();
+
+  const handleEditNavigate = () => {
+    navigate("/profile-setup", { state: { from: "/home" } });
+  };
 
   return (
     <div className="profile">
@@ -18,7 +25,7 @@ function Profile() {
         <h3>student@calpoly.edu</h3>
       </div>
       {isCurrentUser ? (
-        <button className="profile-action-btn">
+        <button className="profile-action-btn" onClick={handleEditNavigate}>
           <i className="fa-solid fa-pencil"></i>Edit Profile
         </button>
       ) : (
