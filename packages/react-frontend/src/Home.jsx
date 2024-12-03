@@ -22,7 +22,14 @@ function Home() {
   */
   const [previousView, setPreviousView] = useState(View.HOME);
   const [currentView, setCurrentView] = useState(View.HOME);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    name: "User Name",
+    email: "student@calpoly.edu",
+    bio: "bio",
+    grade: "grade",
+    major: "major",
+    classes: ["classes"],
+  });
 
   const handleSelectView = (view) => {
     const prev = currentView;
@@ -43,6 +50,7 @@ function Home() {
         const data = await response.json();
         setUser(data.user);
         console.log("Fetched User:", data);
+        console.log("User state:", user);
       } catch (error) {
         console.error("Error fetching user:", error);
       }
@@ -109,7 +117,7 @@ function Home() {
               </button>
               Profile
             </h2>
-            <Profile />
+            <Profile user={user} currentUser={user} />
           </>
         )}
       </main>
