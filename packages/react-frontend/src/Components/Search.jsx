@@ -116,7 +116,7 @@ function Search({ user }) {
       console.log("Response data:", data); // Debugging output
 
       if (response.ok) {
-        alert("Channel successfully created");
+        //alert("Channel successfully created");
         setSelectedUsers([]);
         // navigate("/home");
       } else {

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Channel.css";
-import { removeName } from "../utils/utils";
+import { removeName, formatTimestamp } from "../utils/utils";
 
 import { io } from "socket.io-client";
 
@@ -16,7 +16,7 @@ function Channel({ channel, user }) {
     <>
       <div className="channel">
         <div className="channel-contents">
-          <ContactHeader name={channel.name} user={user}/>
+          <ContactHeader name={channel.name} user={user} />
           <MessageList
             channel={channel}
             user={user}
@@ -102,32 +102,51 @@ function MessageList({ channel, user, refreshMessages, setRefreshMessages }) {
       socket.off("newMessage"); // Remove event listener
     };
   }, [channel._id, refreshMessages]);
+  //console.log(messages)
+  const shouldShowTime = (prevTimestamp, currTimestamp) => {
+    const date1 = new Date(prevTimestamp);
+    const date2 = new Date(currTimestamp);
+    return (Math.abs(date1 - date2) / (1000 * 60 * 60)) > 1;
+  };
 
   return (
     <div className="message-list">
-      {messages.map((message) => (
+      {messages.map((message, index) => (
         // <MessageItem key={message.id} message={message} />
-        <Message key={message._id} user={user} message={message} />
+        <Message
+          key={message._id}
+          user={user}
+          message={message}
+          showName={
+            index === 0 || messages[index - 1].sender._id !== message.sender._id
+          }
+          showTime={index === 0 || shouldShowTime(
+            messages[index - 1]?.timestamp,
+            message?.timestamp
+          )}
+        />
       ))}
     </div>
   );
 }
 
-function Message({ user, message }) {
-  // console.log("MessageID:", message.sender, "UserID:", user._id);
-  const [showTimestamp, setShowTimestamp] = useState(false);
-
-  const toggleTimestamp = () => {
-    setShowTimestamp(!showTimestamp);
-  };
-
+function Message({ user, message, showName, showTime }) {
+  console.log(showTime);
   return (
     <>
-      <div
-        className={`message ${message.sender === user._id ? "sent" : "received"}`}
+      <p className="user-name">
+        {showTime && formatTimestamp(message?.timestamp)}
+      </p>
+      <p
+        className={`user-name ${message.sender._id === user._id ? "sent" : "received"}`}
       >
-        <p onClick={toggleTimestamp}>{message.contents}</p>
-        {message.sender === user.id && (
+        {showName && message.sender.name}
+      </p>
+      <div
+        className={`message ${message.sender._id === user._id ? "sent" : "received"}`}
+      >
+        <p>{message.contents}</p>
+        {message.sender._id === user.id && (
           <div className="message-actions">
             <button className="edit-btn">
               <i className="fa-solid fa-pen"></i>
@@ -138,17 +157,6 @@ function Message({ user, message }) {
           </div>
         )}
       </div>
-      {showTimestamp && (
-        <p
-          className={`message-timestamp ${message.sender === user ? "sent" : "received"}`}
-        >
-          {message.timestamp.toLocaleTimeString("en-US", {
-            hour: "numeric",
-            minute: "2-digit",
-            hour12: true,
-          })}
-        </p>
-      )}
     </>
   );
 }
@@ -158,7 +166,8 @@ function MessageInput({ channel, setRefreshMessages }) {
   const [text, setText] = useState("");
   const sendMessage = async () => {
     if (text.trim()) {
-      console.log(text);
+      const message = text;
+      setText("");
       try {
         const response = await fetch(
           `http://localhost:5001/api/message/send`,
@@ -171,7 +180,7 @@ function MessageInput({ channel, setRefreshMessages }) {
             },
             body: JSON.stringify({
               channelId: channel._id, // Pass the ID of the channel where the message is being sent
-              contents: text, // The message content
+              contents: message, // The message content
             }),
           }
         );
@@ -181,7 +190,7 @@ function MessageInput({ channel, setRefreshMessages }) {
 
         if (response.ok) {
           setRefreshMessages(true);
-          alert(data.message || "Message sent successfully!"); // Notify on success
+          //alert(data.message || "Message sent successfully!"); // Notify on success
         } else {
           alert(data.message || "Failed to send message."); // Handle server-side errors
         }
@@ -189,8 +198,13 @@ function MessageInput({ channel, setRefreshMessages }) {
         console.error("Error while sending message:", error);
         alert("An error occurred while sending the message.");
       }
+    }
+  };
 
-      setText("");
+  const handleKeyDown = (event) => {
+    if (event.key === "Enter") {
+      // Call your function here
+      sendMessage();
     }
   };
 
@@ -202,6 +216,7 @@ function MessageInput({ channel, setRefreshMessages }) {
           value={text}
           onChange={(e) => setText(e.target.value)}
           placeholder="Message..."
+          onKeyDown={handleKeyDown}
         />
         <button onClick={sendMessage}>
           <i className="fa-solid fa-paper-plane"></i>

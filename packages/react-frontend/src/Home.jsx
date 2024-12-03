@@ -4,6 +4,7 @@ import Profile from "./Components/Prof/Profile";
 import Channel from "./Components/Channel";
 import Search from "./Components/Search";
 import { removeName } from "./utils/utils";
+import { useNavigate } from "react-router-dom";
 
 // Enum for the different page views on the app
 const View = Object.freeze({
@@ -14,6 +15,7 @@ const View = Object.freeze({
 });
 
 function Home() {
+  const navigate = useNavigate();
   const [selectedChannel, setSelectedChannel] = useState({});
   /*
   set the default view to home/default once that gets made
@@ -49,6 +51,9 @@ function Home() {
           },
         });
         const data = await response.json();
+        if(data.message == "Invalid token."){
+          navigate("/")
+        }
         setUser(data.user);
         console.log("Fetched User:", data);
         console.log("User state:", user);

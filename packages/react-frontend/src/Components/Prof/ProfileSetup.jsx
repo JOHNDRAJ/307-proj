@@ -84,7 +84,7 @@ const ProfileSetup = () => {
       console.log("Response data:", data); // Debugging output
 
       if (response.ok) {
-        alert("Profile updated successfully");
+        //alert("Profile updated successfully");
         navigate("/home");
       } else {
         alert(data.message || "An error occurred."); // Corrected error message handling

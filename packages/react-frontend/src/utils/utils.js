@@ -1,39 +1,32 @@
-function formatTimestamp(date, showMins) {
+function formatTimestamp(timestamp) {
+  try {
+    const date = new Date(timestamp);
   const now = new Date();
-  const diff = now - date; // Difference in milliseconds
-  const diffMins = diff / (1000 * 60);
-  const diffHours = diffMins / 60;
-  const diffDays = diffHours / 24;
-  const diffWeeks = diffDays / 7;
 
-  // Show mins for sidebar timestamps, skip to hours for channel timestamps
-  if (showMins && diffMins < 1) {
-    return "Now";
+  const isToday =
+    date.toDateString() === now.toDateString();
+
+  const yesterday = new Date();
+  yesterday.setDate(now.getDate() - 1);
+  const isYesterday =
+    date.toDateString() === yesterday.toDateString();
+
+  const options = { hour: 'numeric', minute: '2-digit', hour12: true };
+  const time = new Intl.DateTimeFormat('en-US', options).format(date);
+
+  if (isToday) {
+    return `Today ${time.toLowerCase()}`;
+  } else if (isYesterday) {
+    return `Yesterday ${time.toLowerCase()}`;
+  } else {
+    // Day of the week + time
+    const day = new Intl.DateTimeFormat('en-US', { weekday: 'long' }).format(date);
+    return `${day} ${time.toLowerCase()}`;
   }
-  if (showMins && diffMins < 60) {
-    return `${Math.floor(diffMins)} min`;
+  } catch (error) {
+    return "err"
   }
-  if (diffHours < 24) {
-    return date.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "2-digit",
-      hour12: true,
-    });
-  }
-  if (diffDays < 7) {
-    return date.toLocaleDateString("en-US", {
-      weekday: "short",
-    });
-  }
-  if (diffWeeks < 52) {
-    return date.toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    });
-  }
-  return date.toLocaleDateString("en-US");
 }
-
 function removeName(namesString, nameToRemove) {
   if (namesString.includes(nameToRemove)) {
     const namesArray = namesString.split(", ");

@@ -9,9 +9,16 @@
   width: 85%;
   margin: 0 auto;
   padding: 1.5em;
+  overflow-y: auto;
 }
 
 .contact-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.user-name{
   display: flex;
   flex-direction: column;
   align-items: center;

@@ -88,7 +88,12 @@ export const getMessages = [
       if (!channel) {
         return res.status(404).json({ message: "Channel not found" });
       }
-      const messages = await Message.find({ _id: { $in: channel.messages } });
+      const messages = await Message.find({
+        _id: { $in: channel.messages },
+      }).populate({
+        path: "sender",
+        select: "_id name",
+      });
       res
         .status(200)
         .json({ message: "Messages retrieved successfully", messages });
