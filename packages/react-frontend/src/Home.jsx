@@ -3,6 +3,7 @@ import Sidebar from "./Components/Sidebar";
 import Profile from "./Components/Prof/Profile";
 import Channel from "./Components/Channel";
 import Search from "./Components/Search";
+import { removeName } from "./utils/utils";
 
 // Enum for the different page views on the app
 const View = Object.freeze({
@@ -88,7 +89,7 @@ function Home() {
         )}
         {currentView === View.CHANNEL && (
           <>
-            <h2 className="page-header">{selectedChannel.name}</h2>
+            <h2 className="page-header">{removeName(selectedChannel.name,user?.name)}</h2>
             <Channel channel={selectedChannel} user={user} />
           </>
         )}
