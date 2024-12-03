@@ -123,7 +123,7 @@ function Message({ user, message }) {
   return (
     <>
       <div
-        className={`message ${message.sender === user.user._id ? "sent" : "received"}`}
+        className={`message ${message.sender === user._id ? "sent" : "received"}`}
       >
         <p onClick={toggleTimestamp}>{message.contents}</p>
         {message.sender === user.id && (
