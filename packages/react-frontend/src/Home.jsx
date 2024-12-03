@@ -47,7 +47,14 @@ function Home() {
       <main>
         {/* Add other conditionally rendered views once they get made */}
         {currentView === View.HOME && (
-          <h3>insert hero image here (in the center)</h3>
+          <div className="hero">
+            {/* Insert hero image here */}
+            <h1>Welcome!</h1>
+            <br></br>
+            <h3>Open a chat from the sidebar</h3>
+            <h3>Click search to find other students</h3>
+            <h3>View your profile at the top right</h3>
+          </div>
         )}
         {currentView === View.CHANNEL && (
           <>

@@ -28,6 +28,14 @@ main {
   overflow: hidden;
 }
 
+.hero {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+}
+
 .back-btn,
 .profile-btn {
   background: none;
