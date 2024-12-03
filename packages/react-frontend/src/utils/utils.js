@@ -34,4 +34,15 @@ function formatTimestamp(date, showMins) {
   return date.toLocaleDateString("en-US");
 }
 
-export default formatTimestamp;
+function removeName(namesString, nameToRemove) {
+  if (namesString.includes(nameToRemove)) {
+    const namesArray = namesString.split(", ");
+    const filteredNames = namesArray.filter(
+      (name) => name.toLowerCase() !== nameToRemove.toLowerCase()
+    );
+    return filteredNames.join(", ");
+  }
+  return namesString
+}
+
+export { formatTimestamp, removeName };

@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from "react";
-import formatTimestamp from "../utils/utils";
+import {formatTimestamp} from "../utils/utils";
 import "./Sidebar.css";
+import { removeName } from "../utils/utils";
 
 
 //will make everything props once backend is good
 //also have to create the search bar
 
-function Sidebar({ onSelectContact, onSelectSearch }) {
+function Sidebar({ onSelectContact, onSelectSearch, user }) {
   return (
     <div className="sidebar">
       <h1>PolyMessages</h1>
       <button className="search-button" onClick={() => onSelectSearch()}>
         <i className="fa-solid fa-magnifying-glass"></i> Search
       </button>
-      <ContactsList onSelectContact={onSelectContact} />
+      <ContactsList onSelectContact={onSelectContact}  user={user}/>
     </div>
   );
 }
 
 //will pass in contacts list through props from backend when it works
-function ContactsList({ onSelectContact }) {
+function ContactsList({ onSelectContact, user}) {
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
@@ -64,15 +65,19 @@ function ContactsList({ onSelectContact }) {
           key={contact._id}
           contact={contact}
           onSelectContact={onSelectContact}
+          user={user}
         />
       ))}
     </div>
   );
 }
 
-function ContactItem({ contact, onSelectContact }) {
+function ContactItem({ contact, onSelectContact, user }) {
   const [message, setMessage] = useState({});
   const [messageSender, setMessageSender] = useState({});
+
+
+
   useEffect(() => {
     const fetchMessage = async () => {
       try {
@@ -120,6 +125,8 @@ function ContactItem({ contact, onSelectContact }) {
     };
     fetchUser();
   }, [message]);
+
+  //console.log(user)
   return (
     <div
       className="contact-item"
@@ -129,10 +136,10 @@ function ContactItem({ contact, onSelectContact }) {
         {/* Get image from contact object when the actual schema is setup for it */}
         <img className="contact-pic" src="/assets/default-profile-pic.webp" />
         <div className="contact-details">
-          <h3>{contact.name}</h3>
+          <h3>{removeName(contact.name, user.name)}</h3>
           <p>
-            {message.userMessage?.contents && messageSender.user?.name
-              ? message.userMessage.sender === messageSender.user._id
+            {message.userMessage?.contents && messageSender.user?.name && user
+              ? message.userMessage.sender === user?._id
                 ? `You: ${message.userMessage.contents}`
                 : `${messageSender.user.name}: ${message.userMessage.contents}`
               : "No Messages"}

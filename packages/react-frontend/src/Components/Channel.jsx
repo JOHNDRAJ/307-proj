@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import "./Channel.css";
+import { removeName } from "../utils/utils";
 
 import { io } from "socket.io-client";
 
@@ -15,7 +16,7 @@ function Channel({ channel, user }) {
     <>
       <div className="channel">
         <div className="channel-contents">
-          <ContactHeader name={channel.name} />
+          <ContactHeader name={channel.name} user={user}/>
           <MessageList
             channel={channel}
             user={user}
@@ -30,14 +31,14 @@ function Channel({ channel, user }) {
 }
 
 //name changed based on button click, and what name gets passed in
-function ContactHeader({ name }) {
+function ContactHeader({ name, user }) {
   return (
     <div className="contact-header">
       <img
         className="profile-pic-medium"
         src="/assets/default-profile-pic.webp"
       />
-      <h2>{name}</h2>
+      <h2>{removeName(name, user.name)}</h2>
       <button className="view-profile-btn">
         <i className="fa-solid fa-user"></i>View Profile
       </button>
