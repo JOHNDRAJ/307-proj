@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Sidebar from "./Components/Sidebar";
 import Profile from "./Components/Prof/Profile";
 import Channel from "./Components/Channel";
@@ -22,12 +22,37 @@ function Home() {
   */
   const [previousView, setPreviousView] = useState(View.HOME);
   const [currentView, setCurrentView] = useState(View.HOME);
+  const [user, setUser] = useState({});
 
   const handleSelectView = (view) => {
     const prev = currentView;
     setPreviousView(prev);
     setCurrentView(view);
   };
+
+  useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5001/api/user/user`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        const data = await response.json();
+        setUser(data);
+        console.log("Fetched User:", data);
+      } catch (error) {
+        console.error("Error fetching user:", error);
+      }
+    };
+    fetchUser();
+  }, []);
+
 
   return (
     <div className="home">
@@ -43,6 +68,7 @@ function Home() {
           handleSelectView(View.CHANNEL);
         }}
         onSelectSearch={() => handleSelectView(View.SEARCH)}
+        user={user}
       />
       <main>
         {/* Add other conditionally rendered views once they get made */}
@@ -59,7 +85,7 @@ function Home() {
         {currentView === View.CHANNEL && (
           <>
             <h2 className="page-header">{selectedChannel.name}</h2>
-            <Channel channel={selectedChannel} />
+            <Channel channel={selectedChannel} user = {user}/>
           </>
         )}
         {currentView === View.SEARCH && (
@@ -73,7 +99,7 @@ function Home() {
               </button>
               Search
             </h2>
-            <Search />
+            <Search user = {user} />
           </>
         )}
         {currentView === View.PROFILE && (

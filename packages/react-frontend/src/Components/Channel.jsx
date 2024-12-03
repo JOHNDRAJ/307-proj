@@ -5,16 +5,21 @@ import "./Channel.css";
 
 //add MessageList when needed
 //maybe update contactName to be the whole user object?
-function Channel({ channel }) {
+function Channel({ channel, user }) {
+  const [refreshMessages, setRefreshMessages] = useState(false);
   return (
     <>
       <div className="channel">
         <div className="channel-contents">
           <ContactHeader name={channel.name} />
-          <MessageList channel={channel} />
+          <MessageList 
+            channel={channel} 
+            user={user}
+            refreshMessages={refreshMessages}
+            setRefreshMessages={setRefreshMessages} />
         </div>
       </div>
-      <MessageInput channel={channel} />
+      <MessageInput channel={channel} setRefreshMessages={setRefreshMessages} />
     </>
   );
 }
@@ -36,7 +41,7 @@ function ContactHeader({ name }) {
 }
 
 //again will do messaging in database once set up
-function MessageList({ channel }) {
+function MessageList({ channel, user, refreshMessages, setRefreshMessages }) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -45,7 +50,8 @@ function MessageList({ channel }) {
     const fetchMessages = async () => {
       try {
         const response = await fetch(
-          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/${channel._id}`, // Use channel.id dynamically
+          `http://localhost:5001/api/message/${channel._id}`,
+          // `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/${channel._id}`, // Use channel.id dynamically
           {
             method: "GET",
             headers: {
@@ -69,21 +75,23 @@ function MessageList({ channel }) {
         alert("An error occurred while fetching messages.");
       }
     };
-
     fetchMessages();
-  }, []);
+    setRefreshMessages(false);
+  }, [channel._id, refreshMessages]);
 
   return (
     <div className="message-list">
-      {messages.map((message) => (
+      {messages
+        .map((message) => (
         // <MessageItem key={message.id} message={message} />
-        <Message key={message.id} user={"john"} message={message} />
+        <Message key={message._id} user={user} message={message} />
       ))}
     </div>
   );
 }
 
 function Message({ user, message }) {
+  // console.log("MessageID:", message.sender, "UserID:", user._id);
   const [showTimestamp, setShowTimestamp] = useState(false);
 
   const toggleTimestamp = () => {
@@ -93,10 +101,10 @@ function Message({ user, message }) {
   return (
     <>
       <div
-        className={`message ${message.sender === user ? "sent" : "received"}`}
+        className={`message ${message.sender === user.user._id ? "sent" : "received"}`}
       >
         <p onClick={toggleTimestamp}>{message.contents}</p>
-        {message.sender === user && (
+        {message.sender === user.id && (
           <div className="message-actions">
             <button className="edit-btn">
               <i className="fa-solid fa-pen"></i>
@@ -123,14 +131,15 @@ function Message({ user, message }) {
 }
 
 //console.log replace with whatever prop to display on the chat window
-function MessageInput({ channel }) {
+function MessageInput({ channel, setRefreshMessages }) {
   const [text, setText] = useState("");
   const sendMessage = async () => {
     if (text.trim()) {
       console.log(text);
       try {
         const response = await fetch(
-          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/send`,
+          `http://localhost:5001/api/message/send`,
+          // `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/send`,
           {
             method: "POST",
             headers: {
@@ -148,6 +157,7 @@ function MessageInput({ channel }) {
         console.log("Response data:", data);
 
         if (response.ok) {
+          setRefreshMessages(true);
           alert(data.message || "Message sent successfully!"); // Notify on success
         } else {
           alert(data.message || "Failed to send message."); // Handle server-side errors

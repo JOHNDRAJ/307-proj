@@ -10,8 +10,8 @@ const messageSchema = new mongoose.Schema({
   contents: {
     type: String,
     required: true,
-    minLength: 3,
-    maxLength: 30,
+    minLength: 1,
+    maxLength: 512,
   },
   sender: {
     type: mongoose.Schema.Types.ObjectId,

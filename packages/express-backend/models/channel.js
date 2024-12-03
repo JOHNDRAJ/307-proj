@@ -6,7 +6,7 @@ const channelSchema = new mongoose.Schema({
     type: String,
     required: true,
     minLength: 3,
-    maxLength: 30,
+    maxLength: 100,
   },
   recentMessage: {
     type: mongoose.Schema.Types.ObjectId,
