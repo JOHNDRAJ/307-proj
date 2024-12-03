@@ -6,7 +6,9 @@ import "./Channel.css";
 //add MessageList when needed
 //maybe update contactName to be the whole user object?
 function Channel({ channel, user }) {
+  const [editActive, setEditActive] = useState(false);
   const [refreshMessages, setRefreshMessages] = useState(false);
+  const [currentMessage, setCurrentMessage] = useState({});
   return (
     <>
       <div className="channel">
@@ -16,10 +18,20 @@ function Channel({ channel, user }) {
             channel={channel} 
             user={user}
             refreshMessages={refreshMessages}
-            setRefreshMessages={setRefreshMessages} />
+            setRefreshMessages={setRefreshMessages}
+            editActive={editActive}
+            setEditActive={setEditActive} 
+            currentMessage={currentMessage} 
+            setCurrentMessage={setCurrentMessage} />
         </div>
       </div>
-      <MessageInput channel={channel} setRefreshMessages={setRefreshMessages} />
+      <MessageInput
+        channel={channel}
+        setRefreshMessages={setRefreshMessages}
+        editActive={editActive}
+        setEditActive={setEditActive}
+        currentMessage={currentMessage}
+        setCurrentMessage={setCurrentMessage} />
     </>
   );
 }
@@ -41,7 +53,7 @@ function ContactHeader({ name }) {
 }
 
 //again will do messaging in database once set up
-function MessageList({ channel, user, refreshMessages, setRefreshMessages }) {
+function MessageList({ channel, user, refreshMessages, setRefreshMessages, editActive, setEditActive, currentMessage, setCurrentMessage }) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
@@ -84,15 +96,42 @@ function MessageList({ channel, user, refreshMessages, setRefreshMessages }) {
       {messages
         .map((message) => (
         // <MessageItem key={message.id} message={message} />
-        <Message key={message._id} user={user} message={message} />
+        <Message key={message._id} user={user} message={message} editActive={editActive} setEditActive={setEditActive} currentMessage={currentMessage} setCurrentMessage={setCurrentMessage} />
       ))}
     </div>
   );
 }
 
-function Message({ user, message }) {
+function Message({ user, message, editActive, setEditActive, currentMessage, setCurrentMessage }) {
   // console.log("MessageID:", message.sender, "UserID:", user._id);
   const [showTimestamp, setShowTimestamp] = useState(false);
+  const deleteMessage = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:5001/api/message/del/`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            messageId: message._id, // Pass the ID of the channel where the message is being sent
+          }),
+
+        }
+      );
+      if (response.ok) {
+        const data = await response.json();
+        console.log("Deleted Message Data:", data);
+      } else {
+        alert(data.message || "An error occurred while deleteing message.");
+      }
+    } catch (error) {
+      console.error("Error during fetch:", error);
+      alert("An error occurred while deleting message.");
+    }
+  }
 
   const toggleTimestamp = () => {
     setShowTimestamp(!showTimestamp);
@@ -101,15 +140,21 @@ function Message({ user, message }) {
   return (
     <>
       <div
-        className={`message ${message.sender === user.user._id ? "sent" : "received"}`}
+        className={`message ${
+          message.sender === user.user._id && editActive 
+          ? 'sent-editing' 
+          : message.sender === user.user._id && !editActive
+          ? 'sent'
+          : 'received'
+        }`}
       >
         <p onClick={toggleTimestamp}>{message.contents}</p>
         {message.sender === user.user._id && (
           <div className="message-actions">
-            <button className="edit-btn">
+            <button onClick={() => {setCurrentMessage(message); setEditActive(true)}} className="edit-btn">
               <i className="fa-solid fa-pen"></i>
             </button>
-            <button className="delete-btn">
+            <button onClick={deleteMessage} className="delete-btn">
               <i className="fa-solid fa-trash"></i>
             </button>
           </div>
@@ -131,8 +176,19 @@ function Message({ user, message }) {
 }
 
 //console.log replace with whatever prop to display on the chat window
-function MessageInput({ channel, setRefreshMessages }) {
+function MessageInput({ channel, setRefreshMessages, editActive, setEditActive, currentMessage }) {
   const [text, setText] = useState("");
+  const [inputValue, setInputValue] = useState(""); // Local state for the input
+
+  // Update the local state when editActive or currentMessage changes
+  useEffect(() => {
+    if (editActive && currentMessage) {
+      setInputValue(currentMessage.contents); // Populate input with currentMessage contents
+    } else {
+      setInputValue(""); // Reset the input for new messages
+    }
+  }, [editActive, currentMessage]);
+
   const sendMessage = async () => {
     if (text.trim()) {
       console.log(text);
@@ -158,7 +214,46 @@ function MessageInput({ channel, setRefreshMessages }) {
 
         if (response.ok) {
           setRefreshMessages(true);
-          alert(data.message || "Message sent successfully!"); // Notify on success
+          alert(data.message || "Message updated successfully!"); // Notify on success
+        } else {
+          alert(data.message || "Failed to update message."); // Handle server-side errors
+        }
+      } catch (error) {
+        console.error("Error while updating message:", error);
+        alert("An error occurred while updating the message.");
+      }
+
+      setText("");
+    }
+  };
+
+  /////////////////////////////////////////////////////////////
+  const updateMessage = async () => {
+    if (text.trim()) {
+      console.log(text);
+      try {
+        const response = await fetch(
+          `http://localhost:5001/api/message/update`,
+          // `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/send`,
+          {
+            method: "PUT",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify({
+              contents: text, // The message content
+              messageId: currentMessage._id
+            }),
+          }
+        );
+
+        const data = await response.json();
+        console.log("Response data:", data);
+
+        if (response.ok) {
+          setRefreshMessages(true);
+          //alert(data.message || "Message sent successfully!"); // Notify on success
         } else {
           alert(data.message || "Failed to send message."); // Handle server-side errors
         }
@@ -168,6 +263,7 @@ function MessageInput({ channel, setRefreshMessages }) {
       }
 
       setText("");
+      setEditActive(false);
     }
   };
 
@@ -176,11 +272,11 @@ function MessageInput({ channel, setRefreshMessages }) {
       <div className="message-input-container">
         <input
           type="text"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          placeholder="Message..."
+          value={editActive ? inputValue : text}
+          onChange={editActive ? (e) => {setInputValue(e.target.value); setText(e.target.value)} : (e) => setText(e.target.value)}
+          placeholder={editActive ? "Editing..." : "Message..."}
         />
-        <button onClick={sendMessage}>
+        <button onClick={() => (editActive ? updateMessage() : sendMessage())}>
           <i className="fa-solid fa-paper-plane"></i>
         </button>
       </div>
