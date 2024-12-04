@@ -2,6 +2,9 @@ import React, { useEffect, useState } from "react";
 import {formatTimestamp} from "../utils/utils";
 import "./Sidebar.css";
 import { removeName } from "../utils/utils";
+import { useNavigate } from "react-router-dom";
+
+
 
 
 //will make everything props once backend is good
@@ -21,6 +24,7 @@ function Sidebar({ onSelectContact, onSelectSearch, user }) {
 
 //will pass in contacts list through props from backend when it works
 function ContactsList({ onSelectContact, user}) {
+  const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
@@ -39,11 +43,14 @@ function ContactsList({ onSelectContact, user}) {
         );
 
         const data = await response.json();
-        console.log("Response data:", data); // Debugging output
+        //console.log("Response data:", data); // Debugging output
+        if(data.message == "Invalid token."){
+          navigate("/")
+        }
 
         if (response.ok) {
           const extractedData = data.cxus.map((item) => item.channel);
-          console.log("Extracted data:", extractedData);
+          //console.log("Extracted data:", extractedData);
           setContacts(extractedData);
           //alert(data.message || "Channels fetched successfully!");
         } else {
@@ -93,7 +100,7 @@ function ContactItem({ contact, onSelectContact, user }) {
         );
         const data = await response.json();
         setMessage(data);
-        console.log("Fetched Message:", data);
+        //console.log("Fetched Message:", data);
       } catch (error) {
         console.error("Error during fetch:", error); // More specific error output
       }
@@ -105,7 +112,7 @@ function ContactItem({ contact, onSelectContact, user }) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        console.log("sender:", message);
+        //console.log("sender:", message);
         const response = await fetch(
           `http://localhost:5001/api/user/id/${message.userMessage.sender}`,
           {
@@ -118,7 +125,7 @@ function ContactItem({ contact, onSelectContact, user }) {
         );
         const data = await response.json();
         setMessageSender(data);
-        console.log("Fetched messageSender:", data);
+        //console.log("Fetched messageSender:", data);
       } catch (error) {
         console.error("Error during fetch:", error); // More specific error output
       }

@@ -55,8 +55,8 @@ function Home() {
           navigate("/")
         }
         setUser(data.user);
-        console.log("Fetched User:", data);
-        console.log("User state:", user);
+        //console.log("Fetched User:", data);
+        //console.log("User state:", user);
       } catch (error) {
         console.error("Error fetching user:", error);
       }

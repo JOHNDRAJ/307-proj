@@ -55,6 +55,7 @@ green button = main style, gray button = secondary style
   display: flex;
   flex-direction: column;
   gap: 0.125em;
+  overflow-y: auto;
 }
 
 .message {

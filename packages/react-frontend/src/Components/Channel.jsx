@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./Channel.css";
 import { removeName, formatTimestamp } from "../utils/utils";
-
 import { io } from "socket.io-client";
+import { useNavigate } from "react-router-dom";
+
 
 const socket = io("http://localhost:5001");
 
@@ -10,22 +11,24 @@ const socket = io("http://localhost:5001");
 
 //add MessageList when needed
 //maybe update contactName to be the whole user object?
+
 function Channel({ channel, user }) {
-  const [refreshMessages, setRefreshMessages] = useState(false);
+  //const [refreshMessages, setRefreshMessages] = useState(false);
   return (
     <>
       <div className="channel">
         <div className="channel-contents">
-          <ContactHeader name={channel.name} user={user} />
           <MessageList
             channel={channel}
             user={user}
-            refreshMessages={refreshMessages}
-            setRefreshMessages={setRefreshMessages}
+            //refreshMessages={refreshMessages}
+            //setRefreshMessages={setRefreshMessages}
           />
         </div>
       </div>
-      <MessageInput channel={channel} setRefreshMessages={setRefreshMessages} />
+      <MessageInput
+        channel={channel} /**setRefreshMessages={setRefreshMessages}**/
+      />
     </>
   );
 }
@@ -47,12 +50,19 @@ function ContactHeader({ name, user }) {
 }
 
 //again will do messaging in database once set up
-function MessageList({ channel, user, refreshMessages, setRefreshMessages }) {
+function MessageList({ channel, user }) {
+  const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
+  const messagesEndRef = useRef(null);
+
+  const scrollToBottom = () => {
+    console.log("SCROLLED");
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  };
 
   useEffect(() => {
     if (!channel) return;
-    console.log(channel._id);
+    //console.log(channel._id);
     const fetchMessages = async () => {
       try {
         const response = await fetch(
@@ -68,11 +78,14 @@ function MessageList({ channel, user, refreshMessages, setRefreshMessages }) {
         );
 
         const data = await response.json();
-        console.log("Response data:", data); // Debugging output
+        //console.log("Response data:", data); // Debugging output
+        if(data.message == "Invalid token."){
+          navigate("/")
+        }
 
         if (response.ok) {
           setMessages(data.messages); // Assuming `data` is an array of messages
-          console.log("Fetched messages:", data.messages);
+          //console.log("Fetched messages:", data.messages);
         } else {
           alert(data.message || "An error occurred while fetching messages.");
         }
@@ -89,10 +102,11 @@ function MessageList({ channel, user, refreshMessages, setRefreshMessages }) {
 
     // Listen for new messages
     socket.on("newMessage", (newMessage) => {
+
       console.log("New message received via socket:", newMessage);
 
       // Update the messages state with the new message
-      setMessages((prevMessages) => [...prevMessages, newMessage]);
+      fetchMessages();
     });
 
     // Cleanup when component unmounts or channel changes
@@ -101,37 +115,48 @@ function MessageList({ channel, user, refreshMessages, setRefreshMessages }) {
       console.log(`Left socket room for channel: ${channel._id}`);
       socket.off("newMessage"); // Remove event listener
     };
-  }, [channel._id, refreshMessages]);
+  }, [channel._id]);
+
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
   //console.log(messages)
   const shouldShowTime = (prevTimestamp, currTimestamp) => {
     const date1 = new Date(prevTimestamp);
     const date2 = new Date(currTimestamp);
-    return (Math.abs(date1 - date2) / (1000 * 60 * 60)) > 1;
+    return Math.abs(date1 - date2) / (1000 * 60 * 60) > 1;
   };
 
   return (
-    <div className="message-list">
-      {messages.map((message, index) => (
-        // <MessageItem key={message.id} message={message} />
-        <Message
-          key={message._id}
-          user={user}
-          message={message}
-          showName={
-            index === 0 || messages[index - 1].sender._id !== message.sender._id
-          }
-          showTime={index === 0 || shouldShowTime(
-            messages[index - 1]?.timestamp,
-            message?.timestamp
-          )}
-        />
-      ))}
+    <div>
+      <ContactHeader name={channel.name} user={user} />
+      <div className="message-list">
+        {messages.map((message, index) => (
+          // <MessageItem key={message.id} message={message} />
+          <Message
+            key={message._id}
+            user={user}
+            message={message}
+            showName={
+              index === 0 ||
+              messages[index - 1].sender._id !== message.sender._id
+            }
+            showTime={
+              index === 0 ||
+              shouldShowTime(messages[index - 1]?.timestamp, message?.timestamp)
+            }
+          />
+        ))}
+        <div ref={messagesEndRef}></div>
+      </div>
     </div>
   );
 }
 
 function Message({ user, message, showName, showTime }) {
-  console.log(showTime);
+  //console.log(showTime);
   return (
     <>
       <p className="user-name">
@@ -162,7 +187,7 @@ function Message({ user, message, showName, showTime }) {
 }
 
 //console.log replace with whatever prop to display on the chat window
-function MessageInput({ channel, setRefreshMessages }) {
+function MessageInput({ channel }) {
   const [text, setText] = useState("");
   const sendMessage = async () => {
     if (text.trim()) {
@@ -189,7 +214,7 @@ function MessageInput({ channel, setRefreshMessages }) {
         console.log("Response data:", data);
 
         if (response.ok) {
-          setRefreshMessages(true);
+          // setRefreshMessages(true);
           //alert(data.message || "Message sent successfully!"); // Notify on success
         } else {
           alert(data.message || "Failed to send message."); // Handle server-side errors
