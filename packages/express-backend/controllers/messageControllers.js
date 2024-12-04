@@ -75,10 +75,10 @@ export const updateMessage = [
 export const deleteMessage = [
   authenticateToken,
   async (req, res) => {
-    const userId =req.user._id;
-    const {messageId} = req.body;
+    const userId = req.user._id;
+    const { messageId } = req.body;
     console.log(messageId);
-    
+
     try {
       const message = await Message.findById(messageId);
       console.log("sender:", message);

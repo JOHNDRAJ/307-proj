@@ -85,9 +85,10 @@ export const createChannel = [
       });
       await channel.save();
 
-      const channelxUserForRequester = new Cxu({ 
-        user: userId, 
-        channel: channel._id });
+      const channelxUserForRequester = new Cxu({
+        user: userId,
+        channel: channel._id,
+      });
       await channelxUserForRequester.save();
 
       for (const user of users) {
