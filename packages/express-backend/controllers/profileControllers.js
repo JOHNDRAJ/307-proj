@@ -50,17 +50,17 @@ export const getAllUsers = [
     const userId = req.user._id;
     try {
       const users = await User.find({ _id: { $ne: userId } });
-        res.status(200).json(users);
+      res.status(200).json(users);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch users' });
+      res.status(500).json({ error: "Failed to fetch users" });
     }
-  }
+  },
 ];
 
 export const getUserByID = [
   authenticateToken,
   async (req, res) => {
-    const {userId} = req.params;
+    const { userId } = req.params;
     // console.log("debug message:", userId)
     try {
       const user = await User.findById(userId);

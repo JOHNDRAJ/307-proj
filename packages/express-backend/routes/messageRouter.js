@@ -8,7 +8,6 @@ import {
 
 const router = express.Router();
 
-
 router.post("/send", sendMessage);
 
 router.put("/update", updateMessage);
