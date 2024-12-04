@@ -1,6 +1,7 @@
 /* Center wrapper without a background color */
 .profile-setup-wrapper {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
   min-height: 100vh; /* Full height of viewport for centering */

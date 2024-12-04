@@ -6,10 +6,20 @@ import userRoutes from "./routes/userRoutes.js";
 import channelRoutes from "./routes/channelRoutes.js";
 import messageRoutes from "./routes/messageRouter.js";
 import cors from "cors";
+import { Server } from "socket.io";
+import http from 'http'
 
 dotenv.config();
 
 const app = express();
+
+const server = http.createServer(app);
+const io = new Server(server, {
+    cors: {
+        origin: "*", // Update with your frontend URL for security
+        methods: ["GET", "POST"]
+    }
+});
 
 app.use(cors());
 app.use(express.json());
@@ -36,6 +46,27 @@ app.get("/", (req, res) => {
   res.send("Welcome to our messaging app...");
 });
 
-app.listen(port, () => {
+io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
+
+  socket.on("joinChannel", (channelId) => {
+    socket.join(channelId);
+    console.log(`User ${socket.id} joined channel ${channelId}`);
+  });
+
+  socket.on("leaveChannel", (channelId) => {
+    socket.leave(channelId);
+    console.log(`User ${socket.id} left channel ${channelId}`);
+  });
+
+  socket.on("disconnect", () => {
+    console.log("A user disconnected:", socket.id);
+  });
+});
+
+// Start the server
+server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
+
+export {io}

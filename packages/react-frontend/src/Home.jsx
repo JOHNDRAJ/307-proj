@@ -3,6 +3,8 @@ import Sidebar from "./Components/Sidebar";
 import Profile from "./Components/Prof/Profile";
 import Channel from "./Components/Channel";
 import Search from "./Components/Search";
+import { removeName } from "./utils/utils";
+import { useNavigate } from "react-router-dom";
 
 // Enum for the different page views on the app
 const View = Object.freeze({
@@ -13,6 +15,7 @@ const View = Object.freeze({
 });
 
 function Home() {
+  const navigate = useNavigate();
   const [selectedChannel, setSelectedChannel] = useState({});
   /*
   set the default view to home/default once that gets made
@@ -22,7 +25,14 @@ function Home() {
   */
   const [previousView, setPreviousView] = useState(View.HOME);
   const [currentView, setCurrentView] = useState(View.HOME);
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState({
+    name: "User Name",
+    email: "student@calpoly.edu",
+    bio: "bio",
+    grade: "grade",
+    major: "major",
+    classes: ["classes"],
+  });
 
   const handleSelectView = (view) => {
     const prev = currentView;
@@ -33,26 +43,26 @@ function Home() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch(
-          `http://localhost:5001/api/user/user`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        )
+        const response = await fetch(`http://localhost:5001/api/user/user`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         const data = await response.json();
-        setUser(data);
-        console.log("Fetched User:", data);
+        if(data.message == "Invalid token."){
+          navigate("/")
+        }
+        setUser(data.user);
+        //console.log("Fetched User:", data);
+        //console.log("User state:", user);
       } catch (error) {
         console.error("Error fetching user:", error);
       }
     };
     fetchUser();
   }, []);
-
 
   return (
     <div className="home">
@@ -84,8 +94,8 @@ function Home() {
         )}
         {currentView === View.CHANNEL && (
           <>
-            <h2 className="page-header">{selectedChannel.name}</h2>
-            <Channel channel={selectedChannel} user = {user}/>
+            <h2 className="page-header">{removeName(selectedChannel.name,user?.name)}</h2>
+            <Channel channel={selectedChannel} user={user} />
           </>
         )}
         {currentView === View.SEARCH && (
@@ -99,7 +109,7 @@ function Home() {
               </button>
               Search
             </h2>
-            <Search user = {user} />
+            <Search user={user} />
           </>
         )}
         {currentView === View.PROFILE && (
@@ -113,7 +123,7 @@ function Home() {
               </button>
               Profile
             </h2>
-            <Profile />
+            <Profile user={user} currentUser={user} />
           </>
         )}
       </main>

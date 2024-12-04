@@ -4,6 +4,8 @@ import User from "../models/user.js";
 import Cxu from "../models/channelxuser.js";
 import { authenticateToken } from "../tokenAuth.js";
 
+import { io } from "../index.js";
+
 export const sendMessage = [
   authenticateToken,
   async (req, res) => {
@@ -21,15 +23,18 @@ export const sendMessage = [
       const recentMessage = new Message({ contents, sender: userId });
       await recentMessage.save();
       channel.messages.push(recentMessage);
-      const updatedChannel = await Channel.findByIdAndUpdate(
-        channelId,
-        {
-          $set: { recentMessage: recentMessage },
-        },
-      );
+      const updatedChannel = await Channel.findByIdAndUpdate(channelId, {
+        $set: { recentMessage: recentMessage },
+      });
       //channel.recentMessage = recentMessage;
       channel.recentTimestamp = Date.now();
       await channel.save();
+      io.to(channelId).emit("newMessage", {
+        contents: recentMessage.contents,
+        sender: recentMessage.sender,
+        channelId,
+        timestamp: recentMessage.createdAt,
+      });
       res.status(201).json({ message: "Message sent successfully", channel });
     } catch (error) {
       console.log(error);
@@ -113,7 +118,12 @@ export const getMessages = [
       if (!channel) {
         return res.status(404).json({ message: "Channel not found" });
       }
-      const messages = await Message.find({ _id: { $in: channel.messages } });
+      const messages = await Message.find({
+        _id: { $in: channel.messages },
+      }).populate({
+        path: "sender",
+        select: "_id name",
+      });
       res
         .status(200)
         .json({ message: "Messages retrieved successfully", messages });
@@ -127,14 +137,16 @@ export const getMessages = [
 export const getMessage = [
   authenticateToken,
   async (req, res) => {
-    const {messageId} = req.params;
-    console.log("debug message:", messageId)
+    const { messageId } = req.params;
+    //console.log("debug message:", messageId);
     try {
       const userMessage = await Message.findById(messageId);
       if (!userMessage) {
         return res.status(404).json({ message: "Message not found" });
       }
-      res.status(200).json({ message: "Message retrieved successfully", userMessage });
+      res
+        .status(200)
+        .json({ message: "Message retrieved successfully", userMessage });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: `Server error ${error}`, error });

@@ -1,11 +1,38 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Profile.css";
+import { useNavigate } from "react-router-dom";
 
-function Profile() {
+function Profile({ user, currentUser }) {
   // add props for which user the profile is for
   // have some way of determining if it is their profile or someone else's
   // return a slightly different UI based on whether or not it's your own profile
-  const [isCurrentUser, setIsCurrentUser] = useState(true);
+  const [isCurrentUser, setIsCurrentUser] = useState(user === currentUser);
+  const [profileData, setProfileData] = useState({
+    name: "User Name",
+    email: "student@calpoly.edu",
+    bio: "bio",
+    grade: "grade",
+    major: "major",
+    classes: ["classes"],
+  });
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    console.log("User:", user);
+    setProfileData({
+      name: user.name,
+      email: user.email,
+      bio: user.bio,
+      grade: user.grade,
+      major: user.major,
+      classes: user.classes.trim().split(","),
+    });
+  }, []);
+
+  const handleEditNavigate = () => {
+    navigate("/profile-setup", { state: { from: "/home" } });
+  };
 
   return (
     <div className="profile">
@@ -14,11 +41,11 @@ function Profile() {
         src="/assets/default-profile-pic.webp"
       />
       <div className="user-info">
-        <h2>User Name</h2>
-        <h3>student@calpoly.edu</h3>
+        <h2>{profileData.name}</h2>
+        <h3>{profileData.email}</h3>
       </div>
       {isCurrentUser ? (
-        <button className="profile-action-btn">
+        <button className="profile-action-btn" onClick={handleEditNavigate}>
           <i className="fa-solid fa-pencil"></i>Edit Profile
         </button>
       ) : (
@@ -26,20 +53,19 @@ function Profile() {
           <i className="fa-solid fa-message"></i>Send Message
         </button>
       )}
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua.
-      </p>
+      <p>{profileData.bio}</p>
       <div className="profile-tags">
         <p className="profile-tag info-tag">
-          <i className="fa-solid fa-graduation-cap"></i>Sophomore
+          <i className="fa-solid fa-graduation-cap"></i>
+          {profileData.grade}
         </p>
         <p className="profile-tag info-tag">
-          <i className="fa-solid fa-book"></i>Computer Science
+          <i className="fa-solid fa-book"></i>
+          {profileData.major}
         </p>
-        <p className="profile-tag class-tag">CSC 307</p>
-        <p className="profile-tag class-tag">CSC 349</p>
-        <p className="profile-tag class-tag">CSC 365</p>
+        {profileData.classes.map((classItem) => (
+          <p className="profile-tag class-tag">{classItem}</p>
+        ))}
       </div>
     </div>
   );

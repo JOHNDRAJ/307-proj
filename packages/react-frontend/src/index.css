@@ -61,7 +61,8 @@ p {
   color: #c4cac8;
 }
 
-input {
+input,
+textarea {
   font-family: inherit;
 }
 
