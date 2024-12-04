@@ -137,13 +137,17 @@ function Message({ user, message, editActive, setEditActive, currentMessage, set
     setShowTimestamp(!showTimestamp);
   };
 
+  const toggleEditActive = () => {
+    setEditActive(!editActive);
+  }
+
   return (
     <>
       <div
         className={`message ${
-          message.sender === user.user._id && editActive 
+          message.sender === user.user._id && editActive && message._id === currentMessage?._id
           ? 'sent-editing' 
-          : message.sender === user.user._id && !editActive
+          : message.sender === user.user._id
           ? 'sent'
           : 'received'
         }`}
@@ -151,8 +155,8 @@ function Message({ user, message, editActive, setEditActive, currentMessage, set
         <p onClick={toggleTimestamp}>{message.contents}</p>
         {message.sender === user.user._id && (
           <div className="message-actions">
-            <button onClick={() => {setCurrentMessage(message); setEditActive(true)}} className="edit-btn">
-              <i className="fa-solid fa-pen"></i>
+            <button onClick={editActive ? () => {setEditActive(false)} : () => {setCurrentMessage(message); setEditActive(true)}} className="edit-btn">
+              <i className={editActive ? "fa-solid fa-xmark" : "fa-solid fa-pen"}></i>
             </button>
             <button onClick={deleteMessage} className="delete-btn">
               <i className="fa-solid fa-trash"></i>
