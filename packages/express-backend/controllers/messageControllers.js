@@ -64,7 +64,37 @@ export const updateMessage = [
       await message.save();
       res
         .status(200)
-        .json({ message: "Message updated successfully", channel });
+        .json({ message: "Message updated successfully", message });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: `Server error ${error}`, error });
+    }
+  },
+];
+
+export const deleteMessage = [
+  authenticateToken,
+  async (req, res) => {
+    const userId = req.user._id;
+    const { messageId } = req.body;
+    console.log(messageId);
+
+    try {
+      const message = await Message.findById(messageId);
+      console.log("sender:", message);
+      if (!message) {
+        return res.status(404).json({ message: "Message not found" });
+      }
+      if (message.sender != userId) {
+        console.log("Sender != user: ", message.sender, " | ", userId);
+        return res.status(401).json({
+          message: "Access Denied. you are not allowed to edit this message.",
+        });
+      }
+      await Message.findByIdAndDelete(messageId);
+      res
+        .status(200)
+        .json({ message: "Message deleted successfully", message });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: `Server error ${error}`, error });

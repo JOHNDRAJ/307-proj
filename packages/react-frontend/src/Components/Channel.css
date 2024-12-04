@@ -72,13 +72,19 @@ green button = main style, gray button = secondary style
   flex-direction: row-reverse;
 }
 
+.message.sent-editing {
+  flex-direction: row-reverse;
+}
+
 .message.received {
   flex-direction: row;
 }
 
 /* Adds extra spacing between messages from different users */
 .sent + .received,
-.received + .sent {
+.received + .sent,
+.sent-editing + .received,
+.received + .sent-editing {
   margin-top: 0.5em;
 }
 
@@ -88,6 +94,15 @@ green button = main style, gray button = secondary style
 
 .sent p {
   background: #789f90;
+  color: #282828;
+}
+
+.sent-editing {
+  align-self: flex-end;
+}
+
+.sent-editing p {
+  background: #bbc3bf;
   color: #282828;
 }
 
