@@ -54,7 +54,7 @@ function Home() {
       try {
         const response = await fetch(
           // `http://localhost:5001/api/user/user`,
-          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/user/user`, 
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/user/`, 
           {
           method: "GET",
           headers: {
