@@ -10,7 +10,7 @@ export const sendMessage = [
   authenticateToken,
   async (req, res) => {
     const userId = req.user._id;
-    const { contents, channelId } = req.body;
+    const { contents, channelId, image } = req.body;
     try {
       const u = await User.findById(userId);
       if (!u) {
@@ -20,20 +20,13 @@ export const sendMessage = [
       if (!channel) {
         return res.status(404).json({ message: "Channel not found, Message" });
       }
-      const recentMessage = new Message({ contents, sender: userId });
+      const recentMessage = new Message({ contents, sender: userId, image });
       await recentMessage.save();
       channel.messages.push(recentMessage);
-      const updatedChannel = await Channel.findByIdAndUpdate(channelId, {
-        $set: { recentMessage: recentMessage },
-      });
-      //channel.recentMessage = recentMessage;
       channel.recentTimestamp = Date.now();
       await channel.save();
       io.to(channelId).emit("newMessage", {
         contents: recentMessage.contents,
-        sender: recentMessage.sender,
-        channelId,
-        timestamp: recentMessage.createdAt,
       });
       res.status(201).json({ message: "Message sent successfully", channel });
     } catch (error) {
@@ -48,7 +41,7 @@ export const updateMessage = [
   authenticateToken,
   async (req, res) => {
     const userId = req.user._id;
-    const { contents, messageId } = req.body;
+    const { contents, messageId, channelId } = req.body;
     try {
       const message = await Message.findById(messageId);
       if (!message) {
@@ -62,6 +55,9 @@ export const updateMessage = [
       }
       message.contents = contents;
       await message.save();
+      io.to(channelId).emit("newMessage", {
+        contents: contents,
+      });
       res
         .status(200)
         .json({ message: "Message updated successfully", message });
@@ -76,7 +72,7 @@ export const deleteMessage = [
   authenticateToken,
   async (req, res) => {
     const userId = req.user._id;
-    const { messageId } = req.body;
+    const { messageId, channelId } = req.body;
     console.log(messageId);
 
     try {
@@ -92,6 +88,7 @@ export const deleteMessage = [
         });
       }
       await Message.findByIdAndDelete(messageId);
+      io.to(channelId).emit("newMessage", {});
       res
         .status(200)
         .json({ message: "Message deleted successfully", message });

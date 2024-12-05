@@ -13,8 +13,63 @@ const socket = io("http://localhost:5001");
 
 function Channel({ channel, user }) {
   const [editActive, setEditActive] = useState(false);
-  const [refreshMessages, setRefreshMessages] = useState(false);
   const [currentMessage, setCurrentMessage] = useState({});
+
+  const [isPopupVisible, setIsPopupVisible] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
+
+  const handleChangeImageUrl = (e) => {
+    setImageUrl(e.target.value);
+  };
+
+  const sendImage = async () => {
+    if (imageUrl.trim()) {
+      const image = imageUrl;
+      setImageUrl("");
+      try {
+        const response = await fetch(
+          `http://localhost:5001/api/message/send`,
+          // `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/send`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+            body: JSON.stringify({
+              channelId: channel._id, // Pass the ID of the channel where the message is being sent
+              contents: image, // The message content
+              image: true,
+            }),
+          }
+        );
+
+        const data = await response.json();
+        console.log("Response data:", data);
+
+        if (response.ok) {
+          //alert(data.message || "Message updated successfully!"); // Notify on success
+        } else {
+          alert(data.message || "Failed to update message."); // Handle server-side errors
+        }
+      } catch (error) {
+        console.error("Error while updating message:", error);
+        alert("An error occurred while updating the message.");
+      }
+
+      setImageUrl("");
+    }
+  };
+
+  const togglePopup = () => {
+    if (!isPopupVisible) {
+      setIsPopupVisible(!isPopupVisible);
+    } else {
+      setIsPopupVisible(!isPopupVisible);
+      setImageUrl("");
+    }
+  };
+
   return (
     <>
       <div className="channel">
@@ -22,8 +77,6 @@ function Channel({ channel, user }) {
           <MessageList
             channel={channel}
             user={user}
-            refreshMessages={refreshMessages}
-            setRefreshMessages={setRefreshMessages}
             editActive={editActive}
             setEditActive={setEditActive}
             currentMessage={currentMessage}
@@ -31,14 +84,48 @@ function Channel({ channel, user }) {
           />
         </div>
       </div>
-      <MessageInput
-        channel={channel}
-        setRefreshMessages={setRefreshMessages}
-        editActive={editActive}
-        setEditActive={setEditActive}
-        currentMessage={currentMessage}
-        setCurrentMessage={setCurrentMessage}
-      />
+      <div className="message-input">
+        <div className="message-input-container">
+          <button onClick={() => togglePopup()}>
+            <i className="fa-solid fa-plus"></i>
+          </button>
+          <MessageInput
+            channel={channel}
+            editActive={editActive}
+            setEditActive={setEditActive}
+            currentMessage={currentMessage}
+            setCurrentMessage={setCurrentMessage}
+          />
+        </div>
+      </div>
+      {isPopupVisible && (
+        <div className="popup-container">
+          <div className="popup-box">
+            <h2 className="popup-header">Image URL</h2>
+            <input
+              className="popup-input"
+              type="text"
+              value={imageUrl}
+              onChange={handleChangeImageUrl}
+              placeholder="image url..."
+            />
+            <div className="popup-buttons">
+              <button
+                className="popup-button submit"
+                onClick={() => {
+                  sendImage();
+                  togglePopup();
+                }}
+              >
+                Send
+              </button>
+              <button className="popup-button close" onClick={togglePopup}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 }
@@ -63,8 +150,6 @@ function ContactHeader({ name, user }) {
 function MessageList({
   channel,
   user,
-  refreshMessages,
-  setRefreshMessages,
   editActive,
   setEditActive,
   currentMessage,
@@ -75,7 +160,6 @@ function MessageList({
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    console.log("SCROLLED");
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
@@ -156,6 +240,7 @@ function MessageList({
             key={message._id}
             user={user}
             message={message}
+            channel={channel._id}
             editActive={editActive}
             setEditActive={setEditActive}
             currentMessage={currentMessage}
@@ -179,6 +264,7 @@ function MessageList({
 function Message({
   user,
   message,
+  channel,
   editActive,
   setEditActive,
   currentMessage,
@@ -188,6 +274,7 @@ function Message({
 }) {
   const [showTimestamp, setShowTimestamp] = useState(false);
   const deleteMessage = async () => {
+    console.log(channel)
     try {
       const response = await fetch(`http://localhost:5001/api/message/del/`, {
         method: "DELETE",
@@ -197,6 +284,7 @@ function Message({
         },
         body: JSON.stringify({
           messageId: message._id, // Pass the ID of the channel where the message is being sent
+          channelId: channel,
         }),
       });
       if (response.ok) {
@@ -240,7 +328,15 @@ function Message({
               : "received"
         }`}
       >
-        <p>{message.contents}</p>
+        {message.image ? (
+          <img
+            src={message.contents}
+            alt="--Unable to Load Image"
+            style={{ maxWidth: "100%", maxHeight: "300px" }}
+          />
+        ) : (
+          <p>{message.contents}</p>
+        )}
         {message.sender._id === user._id && (
           <div className="message-actions">
             <button
@@ -271,13 +367,7 @@ function Message({
 }
 
 //console.log replace with whatever prop to display on the chat window
-function MessageInput({
-  channel,
-  setRefreshMessages,
-  editActive,
-  setEditActive,
-  currentMessage,
-}) {
+function MessageInput({ channel, editActive, setEditActive, currentMessage }) {
   const [text, setText] = useState("");
   const [inputValue, setInputValue] = useState(""); // Local state for the input
 
@@ -315,8 +405,7 @@ function MessageInput({
         console.log("Response data:", data);
 
         if (response.ok) {
-          setRefreshMessages(true);
-          alert(data.message || "Message updated successfully!"); // Notify on success
+          //alert(data.message || "Message updated successfully!"); // Notify on success
         } else {
           alert(data.message || "Failed to update message."); // Handle server-side errors
         }
@@ -346,6 +435,7 @@ function MessageInput({
             body: JSON.stringify({
               contents: text, // The message content
               messageId: currentMessage._id,
+              channelId: channel._id,
             }),
           }
         );
@@ -354,7 +444,6 @@ function MessageInput({
         console.log("Response data:", data);
 
         if (response.ok) {
-          setRefreshMessages(true);
           setText("");
           setEditActive(false);
 
@@ -377,27 +466,25 @@ function MessageInput({
   };
 
   return (
-    <div className="message-input">
-      <div className="message-input-container">
-        <input
-          type="text"
-          value={editActive ? inputValue : text}
-          onChange={
-            editActive
-              ? (e) => {
-                  setInputValue(e.target.value);
-                  setText(e.target.value);
-                }
-              : (e) => setText(e.target.value)
-          }
-          placeholder={editActive ? "Editing..." : "Message..."}
-          onKeyDown={handleKeyDown}
-        />
-        <button onClick={() => (editActive ? updateMessage() : sendMessage())}>
-          <i className="fa-solid fa-paper-plane"></i>
-        </button>
-      </div>
-    </div>
+    <>
+      <input
+        type="text"
+        value={editActive ? inputValue : text}
+        onChange={
+          editActive
+            ? (e) => {
+                setInputValue(e.target.value);
+                setText(e.target.value);
+              }
+            : (e) => setText(e.target.value)
+        }
+        placeholder={editActive ? "Editing..." : "Message..."}
+        onKeyDown={handleKeyDown}
+      />
+      <button onClick={() => (editActive ? updateMessage() : sendMessage())}>
+        <i className="fa-solid fa-paper-plane"></i>
+      </button>
+    </>
   );
 }
 
