@@ -18,6 +18,11 @@
 
 .profile-action-btn {
   margin: 0;
+  transition: background-color 0.3s ease;
+}
+
+.profile-action-btn:hover {
+  background-color: #a7c7ba; /* Optional hover effect */
 }
 
 .profile-tags {

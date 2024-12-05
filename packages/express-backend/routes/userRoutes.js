@@ -1,5 +1,10 @@
 import express from "express";
-import { updateProfile, getUser, getAllUsers, getUserByID } from "../controllers/profileControllers.js";
+import {
+  updateProfile,
+  getUser,
+  getAllUsers,
+  getUserByID,
+} from "../controllers/profileControllers.js";
 
 const router = express.Router();
 
@@ -12,6 +17,5 @@ router.get("/allusers", getAllUsers);
 router.get("/user", getUser);
 
 router.get("/id/:userId", getUserByID);
-
 
 export default router;

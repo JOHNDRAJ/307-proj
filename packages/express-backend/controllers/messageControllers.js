@@ -10,7 +10,7 @@ export const sendMessage = [
   authenticateToken,
   async (req, res) => {
     const userId = req.user._id;
-    const { contents, channelId } = req.body;
+    const { contents, channelId, image } = req.body;
     try {
       const u = await User.findById(userId);
       if (!u) {
@@ -20,20 +20,13 @@ export const sendMessage = [
       if (!channel) {
         return res.status(404).json({ message: "Channel not found, Message" });
       }
-      const recentMessage = new Message({ contents, sender: userId });
+      const recentMessage = new Message({ contents, sender: userId, image });
       await recentMessage.save();
       channel.messages.push(recentMessage);
-      const updatedChannel = await Channel.findByIdAndUpdate(channelId, {
-        $set: { recentMessage: recentMessage },
-      });
-      //channel.recentMessage = recentMessage;
       channel.recentTimestamp = Date.now();
       await channel.save();
       io.to(channelId).emit("newMessage", {
         contents: recentMessage.contents,
-        sender: recentMessage.sender,
-        channelId,
-        timestamp: recentMessage.createdAt,
       });
       res.status(201).json({ message: "Message sent successfully", channel });
     } catch (error) {
@@ -48,7 +41,7 @@ export const updateMessage = [
   authenticateToken,
   async (req, res) => {
     const userId = req.user._id;
-    const { contents, messageId } = req.body;
+    const { contents, messageId, channelId } = req.body;
     try {
       const message = await Message.findById(messageId);
       if (!message) {
@@ -62,9 +55,43 @@ export const updateMessage = [
       }
       message.contents = contents;
       await message.save();
+      io.to(channelId).emit("newMessage", {
+        contents: contents,
+      });
       res
         .status(200)
-        .json({ message: "Message updated successfully", channel });
+        .json({ message: "Message updated successfully", message });
+    } catch (error) {
+      console.log(error);
+      res.status(500).json({ message: `Server error ${error}`, error });
+    }
+  },
+];
+
+export const deleteMessage = [
+  authenticateToken,
+  async (req, res) => {
+    const userId = req.user._id;
+    const { messageId, channelId } = req.body;
+    console.log(messageId);
+
+    try {
+      const message = await Message.findById(messageId);
+      console.log("sender:", message);
+      if (!message) {
+        return res.status(404).json({ message: "Message not found" });
+      }
+      if (message.sender != userId) {
+        console.log("Sender != user: ", message.sender, " | ", userId);
+        return res.status(401).json({
+          message: "Access Denied. you are not allowed to edit this message.",
+        });
+      }
+      await Message.findByIdAndDelete(messageId);
+      io.to(channelId).emit("newMessage", {});
+      res
+        .status(200)
+        .json({ message: "Message deleted successfully", message });
     } catch (error) {
       console.log(error);
       res.status(500).json({ message: `Server error ${error}`, error });
@@ -88,7 +115,12 @@ export const getMessages = [
       if (!channel) {
         return res.status(404).json({ message: "Channel not found" });
       }
-      const messages = await Message.find({ _id: { $in: channel.messages } });
+      const messages = await Message.find({
+        _id: { $in: channel.messages },
+      }).populate({
+        path: "sender",
+        select: "_id name",
+      });
       res
         .status(200)
         .json({ message: "Messages retrieved successfully", messages });

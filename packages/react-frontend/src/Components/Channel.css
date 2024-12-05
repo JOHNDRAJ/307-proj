@@ -2,6 +2,7 @@
 .channel {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .channel-contents {
@@ -9,12 +10,25 @@
   width: 85%;
   margin: 0 auto;
   padding: 1.5em;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .contact-header {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.channel-timestamp {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 1em;
+}
+
+.user-name {
+  padding-top: 1em;
 }
 
 .profile-pic-medium {
@@ -48,6 +62,8 @@ green button = main style, gray button = secondary style
   display: flex;
   flex-direction: column;
   gap: 0.125em;
+  overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .message {
@@ -58,9 +74,20 @@ green button = main style, gray button = secondary style
 .message p {
   padding: 0.5em 1em;
   border-radius: 1.25em;
+  word-wrap: break-word;
+  max-width: 500px;
+}
+
+.message img {
+  padding: 1em 1em;
+  border-radius: 1.25em;
 }
 
 .message.sent {
+  flex-direction: row-reverse;
+}
+
+.message.sent-editing {
   flex-direction: row-reverse;
 }
 
@@ -70,7 +97,9 @@ green button = main style, gray button = secondary style
 
 /* Adds extra spacing between messages from different users */
 .sent + .received,
-.received + .sent {
+.received + .sent,
+.sent-editing + .received,
+.received + .sent-editing {
   margin-top: 0.5em;
 }
 
@@ -78,8 +107,19 @@ green button = main style, gray button = secondary style
   align-self: flex-end;
 }
 
-.sent p {
+.sent p,
+.sent img {
   background: #789f90;
+  color: #282828;
+}
+
+.sent-editing {
+  align-self: flex-end;
+}
+
+.sent-editing p,
+.sent-editing img {
+  background: #bbc3bf;
   color: #282828;
 }
 
@@ -87,7 +127,8 @@ green button = main style, gray button = secondary style
   align-self: flex-start;
 }
 
-.received p {
+.received p,
+.received img {
   background: #474947;
   color: #fff;
 }
@@ -116,6 +157,20 @@ green button = main style, gray button = secondary style
   color: white;
   cursor: pointer;
   font-size: 1.125rem;
+  transition: color 0.3s ease;
+}
+
+.edit-btn:focus,
+.delete-btn:focus {
+  outline: none;
+}
+
+.delete-btn:hover {
+  color: rgb(219, 38, 38);
+}
+
+.edit-btn:hover {
+  color: rgb(0, 91, 248);
 }
 
 .received .fa-solid {
@@ -151,8 +206,87 @@ green button = main style, gray button = secondary style
 .message-input button {
   border-radius: 2em;
   font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.message-input button:focus {
+  outline: none;
+}
+
+.message-input button:hover {
+  background-color: #a7c7ba;
 }
 
 .message-input .fa-solid {
   margin-right: 0;
+}
+
+.popup-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.popup-box {
+  background-color: #474947;
+  padding: 1.5em;
+  border-radius: 8px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%; /* Responsive width */
+  max-width: 500px; /* Maximum width for the popup */
+}
+
+.popup-header {
+  font-size: 1.25rem;
+  font-weight: bold;
+  margin-bottom: 1em;
+}
+
+.popup-input {
+  width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.5em;
+  font-size: 1rem;
+  margin-bottom: 1em;
+}
+
+.popup-buttons {
+  display: flex;
+  gap: 0.5em;
+  justify-content: center;
+}
+
+.popup-button {
+  padding: 0.5em 1em;
+  font-size: 1rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.popup-button.submit {
+  background-color: #5c8461; /* Same green as selected contact item */
+  color: white;
+}
+
+.popup-button.submit:hover {
+  background-color: #4a6b4f;
+}
+
+.popup-button.close {
+  background-color: #ccc;
+}
+
+.popup-button.close:hover {
+  background-color: #b3b3b3;
 }

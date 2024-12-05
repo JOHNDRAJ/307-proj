@@ -13,6 +13,8 @@
   font-family: "Source Sans 3"; /* move this input style to index.css later as a general input style */
 }
 
+
+
 .search-results {
   flex-grow: 1; /* Allow results to stretch if space is available */
   min-height: 100px; /* Minimum height for the results container */
@@ -21,7 +23,7 @@
 }
 
 .contact-item.selected {
-  background-color: #5c8461; /* Light green background for selected users */
+  background-color: #789f90; /* Light green background for selected users */
   border-color: #a0e6a0; /* Optional: Change border color for selected users */
 }
 
@@ -80,12 +82,12 @@
 }
 
 .popup-button.submit {
-  background-color: #5c8461; /* Same green as selected contact item */
-  color: white;
+  background-color: #789f90; /* Same green as selected contact item */
+  color: black;
 }
 
 .popup-button.submit:hover {
-  background-color: #4a6b4f;
+  background-color: #5b8f7a;
 }
 
 .popup-button.close {
@@ -94,4 +96,32 @@
 
 .popup-button.close:hover {
   background-color: #b3b3b3;
+}
+
+.create-channel-button {
+  /* Add styles here */
+  background-color: #789f90;
+  color: black;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.create-channel-button:hover {
+  background-color: #a7c7ba; /* Optional hover effect */
+}
+
+.not-found-message {
+  font-size: 1.5rem; /* Adjust the size as needed */
+  color: #ffffff; /* Customize the text color */
+  text-align: center;
+}
+
+.major-info {
+  font-size: 0.8rem; /* Adjust size to be smaller */
+  color: #789f90; /* Optional: make it lighter */
+  margin-left: 1px; /* Optional: add spacing between the name and extra info */
 }

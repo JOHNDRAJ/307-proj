@@ -1,25 +1,30 @@
 import React, { useEffect, useState } from "react";
-import formatTimestamp from "../utils/utils";
+import {formatTimestamp} from "../utils/utils";
 import "./Sidebar.css";
+import { removeName } from "../utils/utils";
+import { useNavigate } from "react-router-dom";
+
+
 
 
 //will make everything props once backend is good
 //also have to create the search bar
 
-function Sidebar({ onSelectContact, onSelectSearch }) {
+function Sidebar({ onSelectContact, onSelectSearch, user }) {
   return (
     <div className="sidebar">
       <h1>PolyMessages</h1>
       <button className="search-button" onClick={() => onSelectSearch()}>
         <i className="fa-solid fa-magnifying-glass"></i> Search
       </button>
-      <ContactsList onSelectContact={onSelectContact} />
+      <ContactsList onSelectContact={onSelectContact}  user={user}/>
     </div>
   );
 }
 
 //will pass in contacts list through props from backend when it works
-function ContactsList({ onSelectContact }) {
+function ContactsList({ onSelectContact, user}) {
+  const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
 
   useEffect(() => {
@@ -38,11 +43,14 @@ function ContactsList({ onSelectContact }) {
         );
 
         const data = await response.json();
-        console.log("Response data:", data); // Debugging output
+        //console.log("Response data:", data); // Debugging output
+        if(data.message == "Invalid token."){
+          navigate("/")
+        }
 
         if (response.ok) {
           const extractedData = data.cxus.map((item) => item.channel);
-          console.log("Extracted data:", extractedData);
+          //console.log("Extracted data:", extractedData);
           setContacts(extractedData);
           //alert(data.message || "Channels fetched successfully!");
         } else {
@@ -64,15 +72,19 @@ function ContactsList({ onSelectContact }) {
           key={contact._id}
           contact={contact}
           onSelectContact={onSelectContact}
+          user={user}
         />
       ))}
     </div>
   );
 }
 
-function ContactItem({ contact, onSelectContact }) {
+function ContactItem({ contact, onSelectContact, user }) {
   const [message, setMessage] = useState({});
   const [messageSender, setMessageSender] = useState({});
+
+
+
   useEffect(() => {
     const fetchMessage = async () => {
       try {
@@ -88,7 +100,7 @@ function ContactItem({ contact, onSelectContact }) {
         );
         const data = await response.json();
         setMessage(data);
-        console.log("Fetched Message:", data);
+        //console.log("Fetched Message:", data);
       } catch (error) {
         console.error("Error during fetch:", error); // More specific error output
       }
@@ -100,7 +112,7 @@ function ContactItem({ contact, onSelectContact }) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        console.log("sender:", message);
+        //console.log("sender:", message);
         const response = await fetch(
           `http://localhost:5001/api/user/id/${message.userMessage.sender}`,
           {
@@ -113,13 +125,15 @@ function ContactItem({ contact, onSelectContact }) {
         );
         const data = await response.json();
         setMessageSender(data);
-        console.log("Fetched messageSender:", data);
+        //console.log("Fetched messageSender:", data);
       } catch (error) {
         console.error("Error during fetch:", error); // More specific error output
       }
     };
     fetchUser();
   }, [message]);
+
+  //console.log(user)
   return (
     <div
       className="contact-item"
@@ -129,10 +143,10 @@ function ContactItem({ contact, onSelectContact }) {
         {/* Get image from contact object when the actual schema is setup for it */}
         <img className="contact-pic" src="/assets/default-profile-pic.webp" />
         <div className="contact-details">
-          <h3>{contact.name}</h3>
+          <h3>{removeName(contact.name, user.name)}</h3>
           <p>
-            {message.userMessage?.contents && messageSender.user?.name
-              ? message.userMessage.sender === messageSender.user._id
+            {message.userMessage?.contents && messageSender.user?.name && user
+              ? message.userMessage.sender === user?._id
                 ? `You: ${message.userMessage.contents}`
                 : `${messageSender.user.name}: ${message.userMessage.contents}`
               : "No Messages"}

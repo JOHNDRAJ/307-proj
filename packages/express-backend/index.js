@@ -7,7 +7,7 @@ import channelRoutes from "./routes/channelRoutes.js";
 import messageRoutes from "./routes/messageRouter.js";
 import cors from "cors";
 import { Server } from "socket.io";
-import http from 'http'
+import http from "http";
 
 dotenv.config();
 
@@ -15,10 +15,10 @@ const app = express();
 
 const server = http.createServer(app);
 const io = new Server(server, {
-    cors: {
-        origin: "*", // Update with your frontend URL for security
-        methods: ["GET", "POST"]
-    }
+  cors: {
+    origin: "*", // Update with your frontend URL for security
+    methods: ["GET", "POST"],
+  },
 });
 
 app.use(cors());
@@ -69,4 +69,4 @@ server.listen(port, () => {
   console.log(`Server running on port ${port}`);
 });
 
-export {io}
+export { io };
