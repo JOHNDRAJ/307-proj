@@ -274,7 +274,7 @@ function Message({
 }) {
   const [showTimestamp, setShowTimestamp] = useState(false);
   const deleteMessage = async () => {
-    console.log(channel)
+    console.log(channel);
     try {
       const response = await fetch(`http://localhost:5001/api/message/del/`, {
         method: "DELETE",
@@ -306,17 +306,21 @@ function Message({
   const toggleEditActive = () => {
     setEditActive(!editActive);
   };
-  console.log(message);
+
   return (
     <>
-      <p className="user-name">
-        {showTime && formatTimestamp(message?.timestamp)}
-      </p>
-      <p
-        className={`user-name ${message.sender._id === user._id ? "sent" : "received"}`}
-      >
-        {showName && message.sender.name}
-      </p>
+      {showTime && (
+        <p className="channel-timestamp">
+          {formatTimestamp(message?.timestamp)}
+        </p>
+      )}
+      {showName && (
+        <p
+          className={`user-name ${message.sender._id === user._id ? "sent" : "received"}`}
+        >
+          {message.sender.name}
+        </p>
+      )}
       <div
         className={`message ${
           message.sender._id === user._id &&
@@ -327,6 +331,7 @@ function Message({
               ? "sent"
               : "received"
         }`}
+        onClick={toggleTimestamp}
       >
         {message.image ? (
           <img
@@ -362,6 +367,21 @@ function Message({
           </div>
         )}
       </div>
+      {showTimestamp && (
+        <p
+          className={`message ${
+            message.sender._id === user._id &&
+            editActive &&
+            message._id === currentMessage?._id
+              ? "sent-editing"
+              : message.sender._id === user._id
+                ? "sent"
+                : "received"
+          }`}
+        >
+          {formatTimestamp(message?.timestamp).split(" ").slice(1).join(" ")}
+        </p>
+      )}
     </>
   );
 }

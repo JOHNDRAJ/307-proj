@@ -18,10 +18,15 @@
   align-items: center;
 }
 
-.user-name{
+.channel-timestamp {
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 1em;
+}
+
+.user-name {
+  padding-top: 1em;
 }
 
 .profile-pic-medium {
@@ -97,7 +102,8 @@ green button = main style, gray button = secondary style
   align-self: flex-end;
 }
 
-.sent p, .sent img {
+.sent p,
+.sent img {
   background: #789f90;
   color: #282828;
 }
@@ -106,7 +112,8 @@ green button = main style, gray button = secondary style
   align-self: flex-end;
 }
 
-.sent-editing p, .sent-editing img {
+.sent-editing p,
+.sent-editing img {
   background: #bbc3bf;
   color: #282828;
 }
@@ -115,7 +122,8 @@ green button = main style, gray button = secondary style
   align-self: flex-start;
 }
 
-.received p, .received img {
+.received p,
+.received img {
   background: #474947;
   color: #fff;
 }
