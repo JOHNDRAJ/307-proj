@@ -161,7 +161,7 @@ function Home() {
               </button>
               Profile
             </h2>
-            <Profile user={user} currentUser={currentUser} />
+            <Profile user={user} currentUser={currentUser} setUser={setUser} />
           </>
         )}
       </main>

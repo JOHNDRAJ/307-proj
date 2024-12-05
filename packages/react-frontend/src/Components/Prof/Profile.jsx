@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Profile.css";
 import { useNavigate } from "react-router-dom";
 
-function Profile({ user, currentUser }) {
+function Profile({ user, currentUser, setUser }) {
   // add props for which user the profile is for
   // have some way of determining if it is their profile or someone else's
   // return a slightly different UI based on whether or not it's your own profile
@@ -27,6 +27,8 @@ function Profile({ user, currentUser }) {
       major: user.major,
       classes: user.classes.trim().split(","),
     });
+    // Set the user back to yourself as the default
+    setUser(currentUser);
   }, []);
 
   const handleEditNavigate = () => {
@@ -43,13 +45,9 @@ function Profile({ user, currentUser }) {
         <h2>{profileData.name}</h2>
         <h3>{profileData.email}</h3>
       </div>
-      {isCurrentUser ? (
+      {isCurrentUser && (
         <button className="profile-action-btn" onClick={handleEditNavigate}>
           <i className="fa-solid fa-pencil"></i>Edit Profile
-        </button>
-      ) : (
-        <button className="profile-action-btn">
-          <i className="fa-solid fa-message"></i>Send Message
         </button>
       )}
       <p>{profileData.bio}</p>
