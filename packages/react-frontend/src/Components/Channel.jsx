@@ -452,7 +452,13 @@ function Message({
 }
 
 //console.log replace with whatever prop to display on the chat window
-function MessageInput({ channel, editActive, setEditActive, currentMessage }) {
+function MessageInput({
+  channel,
+  editActive,
+  setEditActive,
+  currentMessage,
+  setRefresh,
+}) {
   const [text, setText] = useState("");
   const [inputValue, setInputValue] = useState(""); // Local state for the input
 
