@@ -76,12 +76,12 @@ function Home() {
 
   return (
     <div className="home">
-      <div
+      {currentView === View.PROFILE || (<div
         className="profile-header"
         onClick={() => handleSelectView(View.PROFILE)}
       >
         <img className="contact-pic" src="/assets/default-profile-pic.webp" />
-      </div>
+      </div>)}
       <Sidebar
         onSelectContact={(name) => {
           setSelectedChannel(name);
@@ -146,7 +146,10 @@ function Home() {
             <h2 className="page-header">
               <button
                 className="back-btn"
-                onClick={() => handleSelectView(previousView)}
+                onClick={() => {
+                  setUser(currentUser);
+                  handleSelectView(previousView);
+                }}
               >
                 <i className="fa-solid fa-arrow-left"></i>
               </button>
