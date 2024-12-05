@@ -13,15 +13,15 @@ function formatTimestamp(timestamp) {
     const time = new Intl.DateTimeFormat("en-US", options).format(date);
 
     if (isToday) {
-      return `Today ${time.toLowerCase()}`;
+      return `Today ${time}`;
     } else if (isYesterday) {
-      return `Yesterday ${time.toLowerCase()}`;
+      return `Yesterday ${time}`;
     } else {
       // Day of the week + time
       const day = new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
-        date,
+        date
       );
-      return `${day} ${time.toLowerCase()}`;
+      return `${day} ${time}`;
     }
   } catch (error) {
     return "err";
@@ -31,11 +31,63 @@ function removeName(namesString, nameToRemove) {
   if (namesString.includes(nameToRemove)) {
     const namesArray = namesString.split(", ");
     const filteredNames = namesArray.filter(
-      (name) => name.toLowerCase() !== nameToRemove.toLowerCase(),
+      (name) => name.toLowerCase() !== nameToRemove.toLowerCase()
     );
     return filteredNames.join(", ");
   }
   return namesString;
 }
 
-export { formatTimestamp, removeName };
+function formatLastTimestamp(timestamp) {
+  try {
+    const now = new Date();
+    const date = new Date(timestamp);
+    console.log("Date:", date);
+    let diff = now - date;
+    console.log("Diff:", diff);
+
+    // Timestamps within in the past hour
+    diff = diff / (1000 * 60);
+    if (diff < 1) {
+      console.log("Now");
+      return "Now";
+    } else if (diff < 60) {
+      console.log("Past hr");
+      return `${Math.floor(diff)} min`;
+    }
+
+    // Timestamps within the past day
+    diff /= 60;
+    if (diff < 24) {
+      console.log("Past day");
+      return date.toLocaleTimeString("en-US", {
+        hour: "numeric",
+        minute: "2-digit",
+        hour12: true,
+      });
+    }
+
+    // Timestamps within the past week
+    diff /= 24;
+    if (diff < 7) {
+      console.log("Past week");
+      return date.toLocaleDateString("en-US", {
+        weekday: "short",
+      });
+    }
+
+    // Timestamps within the past year
+    diff /= 7;
+    if (diff < 52) {
+      console.log("past year");
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+      });
+    }
+  } catch {
+    return "err";
+  }
+}
+
+export { formatTimestamp, removeName, formatLastTimestamp };

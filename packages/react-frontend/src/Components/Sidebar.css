@@ -47,6 +47,7 @@
 }
 
 .contact-preview {
+  width: 100%;
   display: flex;
   flex-direction: row;
   gap: 1em;
@@ -60,6 +61,13 @@
 }
 
 .contact-details {
+  width: 100%;
   display: flex;
   flex-direction: column;
+}
+
+.contact-details-top {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }

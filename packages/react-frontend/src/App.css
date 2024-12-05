@@ -47,6 +47,12 @@ main {
   font-weight: bold;
 }
 
+.back-btn:hover,
+.profile-btn:hover {
+  background: none;
+  color: #ddd;
+}
+
 .fa-solid {
   margin-right: 0.5em;
 }

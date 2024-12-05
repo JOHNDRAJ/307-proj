@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {formatTimestamp} from "../utils/utils";
+import { formatLastTimestamp } from "../utils/utils";
 import "./Sidebar.css";
 import { removeName } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
-
-
-
 
 //will make everything props once backend is good
 //also have to create the search bar
@@ -17,13 +14,13 @@ function Sidebar({ onSelectContact, onSelectSearch, user }) {
       <button className="search-button" onClick={() => onSelectSearch()}>
         <i className="fa-solid fa-magnifying-glass"></i> Search
       </button>
-      <ContactsList onSelectContact={onSelectContact}  user={user}/>
+      <ContactsList onSelectContact={onSelectContact} user={user} />
     </div>
   );
 }
 
 //will pass in contacts list through props from backend when it works
-function ContactsList({ onSelectContact, user}) {
+function ContactsList({ onSelectContact, user }) {
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
 
@@ -44,8 +41,8 @@ function ContactsList({ onSelectContact, user}) {
 
         const data = await response.json();
         //console.log("Response data:", data); // Debugging output
-        if(data.message == "Invalid token."){
-          navigate("/")
+        if (data.message == "Invalid token.") {
+          navigate("/");
         }
 
         if (response.ok) {
@@ -82,8 +79,6 @@ function ContactsList({ onSelectContact, user}) {
 function ContactItem({ contact, onSelectContact, user }) {
   const [message, setMessage] = useState({});
   const [messageSender, setMessageSender] = useState({});
-
-
 
   useEffect(() => {
     const fetchMessage = async () => {
@@ -143,7 +138,11 @@ function ContactItem({ contact, onSelectContact, user }) {
         {/* Get image from contact object when the actual schema is setup for it */}
         <img className="contact-pic" src="/assets/default-profile-pic.webp" />
         <div className="contact-details">
-          <h3>{removeName(contact.name, user.name)}</h3>
+          <div className="contact-details-top">
+            <h3>{removeName(contact.name, user.name)}</h3>
+            <p>{formatLastTimestamp(message.userMessage?.timestamp)}</p>
+          </div>
+
           <p>
             {message.userMessage?.contents && messageSender.user?.name && user
               ? message.userMessage.sender === user?._id

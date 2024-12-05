@@ -25,13 +25,22 @@ function Home() {
   */
   const [previousView, setPreviousView] = useState(View.HOME);
   const [currentView, setCurrentView] = useState(View.HOME);
+  const [currentUser, setCurrentUser] = useState({
+    name: "User Name",
+    email: "student@calpoly.edu",
+    bio: "bio",
+    grade: "grade",
+    major: "major",
+    classes: "classes",
+  });
+  // The selected user for profile view
   const [user, setUser] = useState({
     name: "User Name",
     email: "student@calpoly.edu",
     bio: "bio",
     grade: "grade",
     major: "major",
-    classes: ["classes"],
+    classes: "classes",
   });
 
   const handleSelectView = (view) => {
@@ -51,10 +60,10 @@ function Home() {
           },
         });
         const data = await response.json();
-        if(data.message == "Invalid token."){
-          navigate("/")
+        if (data.message == "Invalid token.") {
+          navigate("/");
         }
-        setUser(data.user);
+        setCurrentUser(data.user);
         //console.log("Fetched User:", data);
         //console.log("User state:", user);
       } catch (error) {
@@ -78,7 +87,7 @@ function Home() {
           handleSelectView(View.CHANNEL);
         }}
         onSelectSearch={() => handleSelectView(View.SEARCH)}
-        user={user}
+        user={currentUser}
       />
       <main>
         {/* Add other conditionally rendered views once they get made */}
@@ -94,8 +103,10 @@ function Home() {
         )}
         {currentView === View.CHANNEL && (
           <>
-            <h2 className="page-header">{removeName(selectedChannel.name,user?.name)}</h2>
-            <Channel channel={selectedChannel} user={user} />
+            <h2 className="page-header">
+              {removeName(selectedChannel.name, currentUser?.name)}
+            </h2>
+            <Channel channel={selectedChannel} user={currentUser} />
           </>
         )}
         {currentView === View.SEARCH && (
@@ -109,7 +120,14 @@ function Home() {
               </button>
               Search
             </h2>
-            <Search user={user} />
+            <Search
+              user={currentUser}
+              onSelectContact={(name) => {
+                setSelectedChannel(name);
+                handleSelectView(View.CHANNEL);
+              }}
+              onSelectProfile={() => handleSelectView(View.PROFILE)}
+            />
           </>
         )}
         {currentView === View.PROFILE && (
@@ -123,7 +141,7 @@ function Home() {
               </button>
               Profile
             </h2>
-            <Profile user={user} currentUser={user} />
+            <Profile user={user} currentUser={currentUser} />
           </>
         )}
       </main>
