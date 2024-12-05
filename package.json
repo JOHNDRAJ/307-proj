@@ -33,6 +33,7 @@
   },
   "type": "module",
   "dependencies": {
-    "jsonwebtoken": "^9.0.2"
+    "jsonwebtoken": "^9.0.2",
+    "postcss": "^8.4.49"
   }
 }
