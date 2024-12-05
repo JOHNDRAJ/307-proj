@@ -31,7 +31,7 @@ function Sidebar({
 }
 
 //will pass in contacts list through props from backend when it works
-function ContactsList({ onSelectContact, user, refresh }) {
+function ContactsList({ onSelectContact, user, refresh, setRefresh }) {
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
 
