@@ -4,7 +4,7 @@ import { removeName, formatTimestamp } from "../utils/utils";
 import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 
-const socket = io("http://localhost:5001");
+const socket = io("https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net");
 
 //will make everything props once backend is good
 
