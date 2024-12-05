@@ -84,6 +84,7 @@ function Channel({ channel, user, onSelectProfile, setRefresh }) {
             currentMessage={currentMessage}
             setCurrentMessage={setCurrentMessage}
             onSelectProfile={onSelectProfile}
+            setRefresh={setRefresh}
           />
         </div>
       </div>
@@ -210,6 +211,7 @@ function MessageList({
   currentMessage,
   setCurrentMessage,
   onSelectProfile,
+  setRefresh,
 }) {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
@@ -261,10 +263,11 @@ function MessageList({
 
     // Listen for new messages
     socket.on("newMessage", (newMessage) => {
-      console.log("New message received via socket:", newMessage);
-
       // Update the messages state with the new message
       fetchMessages();
+
+      // Rerender the last message on the sidebar component
+      setRefresh(true);
     });
 
     // Cleanup when component unmounts or channel changes
@@ -551,7 +554,7 @@ function MessageInput({
 
   const handleKeyDown = (event) => {
     if (event.key === "Enter") {
-      // Call your function here
+      setRefresh(true);
       editActive ? updateMessage() : sendMessage();
     }
   };
