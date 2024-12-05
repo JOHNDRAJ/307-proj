@@ -11,7 +11,7 @@ const socket = io("http://localhost:5001");
 //add MessageList when needed
 //maybe update contactName to be the whole user object?
 
-function Channel({ channel, user }) {
+function Channel({ channel, user, onSelectProfile }) {
   const [editActive, setEditActive] = useState(false);
   const [currentMessage, setCurrentMessage] = useState({});
 
@@ -81,6 +81,7 @@ function Channel({ channel, user }) {
             setEditActive={setEditActive}
             currentMessage={currentMessage}
             setCurrentMessage={setCurrentMessage}
+            onSelectProfile={onSelectProfile}
           />
         </div>
       </div>
@@ -131,7 +132,42 @@ function Channel({ channel, user }) {
 }
 
 //name changed based on button click, and what name gets passed in
-function ContactHeader({ name, user }) {
+function ContactHeader({ channel, name, user, onSelectProfile }) {
+  const [channelUsers, setChannelUsers] = useState({});
+  useEffect(() => {
+    const getUsers = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5001/api/channel/${channel._id}`,
+          // `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/channel/${channel._id}`, // Use channel.id dynamically
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+
+        const data = await response.json();
+        //console.log("Response data:", data); // Debugging output
+
+        if (response.ok) {
+          setChannelUsers(data.cxus);
+          console.log("cxus:", data.cxus.length);
+        } else {
+          alert(
+            data.message || "An error occurred while fetching channel users."
+          );
+        }
+      } catch (error) {
+        console.error("Error during fetch:", error);
+        alert("An error occurred while fetching channel users.");
+      }
+    };
+    getUsers();
+  }, [channel._id]);
+
   return (
     <div className="contact-header">
       <img
@@ -139,9 +175,23 @@ function ContactHeader({ name, user }) {
         src="/assets/default-profile-pic.webp"
       />
       <h2>{removeName(name, user.name)}</h2>
-      <button className="view-profile-btn">
-        <i className="fa-solid fa-user"></i>View Profile
-      </button>
+      {channelUsers?.length === 2 && (
+        <button
+          onClick={() => {
+            let desiredUser = null;
+            for (const channelUser of channelUsers) {
+              {console.log(channelUser)}
+              if (channelUser.user._id !== user._id) {
+                desiredUser = channelUser.user;
+              }
+            }
+            onSelectProfile(desiredUser)
+          }}
+          className="view-profile-btn"
+        >
+          <i className="fa-solid fa-user"></i>View Profile
+        </button>
+      )}
     </div>
   );
 }
@@ -154,6 +204,7 @@ function MessageList({
   setEditActive,
   currentMessage,
   setCurrentMessage,
+  onSelectProfile,
 }) {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
@@ -232,7 +283,12 @@ function MessageList({
 
   return (
     <div>
-      <ContactHeader name={channel.name} user={user} />
+      <ContactHeader
+        channel={channel}
+        name={channel.name}
+        user={user}
+        onSelectProfile={onSelectProfile}
+      />
       <div className="message-list">
         {messages.map((message, index) => (
           // <MessageItem key={message.id} message={message} />

@@ -225,7 +225,7 @@ function Search({ user, onSelectContact, onSelectProfile }) {
               type="text"
               value={channelName}
               onChange={handleChangeChannelName}
-              placeholder="Group Chat Name"
+              placeholder="Group Chat Name (optional)"
             />
             <div className="popup-buttons">
               <button
