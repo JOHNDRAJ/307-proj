@@ -78,6 +78,11 @@ button {
   color: #282828;
   cursor: pointer;
   transition: border-color 0.25s;
+  transition: background-color 0.2s ease;
+}
+
+button:hover {
+  background-color: #b7cdc2;
 }
 
 button:focus,
