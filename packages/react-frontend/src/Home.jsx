@@ -97,6 +97,7 @@ function Home() {
         onSelectSearch={() => handleNextView(View.SEARCH)}
         user={currentUser}
         refresh={refresh}
+        setRefresh={setRefresh}
       />
       <main>
         {/* Add other conditionally rendered views once they get made */}
