@@ -2,6 +2,7 @@
 .channel {
   flex: 1;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .channel-contents {
@@ -10,6 +11,7 @@
   margin: 0 auto;
   padding: 1.5em;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .contact-header {
@@ -61,6 +63,7 @@ green button = main style, gray button = secondary style
   flex-direction: column;
   gap: 0.125em;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 .message {
@@ -71,6 +74,8 @@ green button = main style, gray button = secondary style
 .message p {
   padding: 0.5em 1em;
   border-radius: 1.25em;
+  word-wrap: break-word;
+  max-width: 500px;
 }
 
 .message img {
@@ -152,6 +157,20 @@ green button = main style, gray button = secondary style
   color: white;
   cursor: pointer;
   font-size: 1.125rem;
+  transition: color 0.3s ease;
+}
+
+.edit-btn:focus,
+.delete-btn:focus {
+  outline: none;
+}
+
+.delete-btn:hover {
+  color: rgb(219, 38, 38);
+}
+
+.edit-btn:hover {
+  color: rgb(0, 91, 248);
 }
 
 .received .fa-solid {
@@ -187,6 +206,15 @@ green button = main style, gray button = secondary style
 .message-input button {
   border-radius: 2em;
   font-size: 1rem;
+  transition: background-color 0.3s ease;
+}
+
+.message-input button:focus {
+  outline: none;
+}
+
+.message-input button:hover {
+  background-color: #a7c7ba;
 }
 
 .message-input .fa-solid {

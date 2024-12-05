@@ -157,7 +157,7 @@ const ProfileSetup = () => {
           />
         </div>
         {/* Save Button */}
-        <button type="submit" className="btn-submit">
+        <button type="submit" className="save-btn">
           Save
         </button>{" "}
         {/* Changed label to "Save" */}

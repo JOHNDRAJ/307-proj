@@ -38,7 +38,10 @@ function Search({ user }) {
     const filtered = users.filter(
       (user) =>
         user.name.toLowerCase().includes(value) ||
-        user.email.toLowerCase().includes(value)
+        user.email.toLowerCase().includes(value) ||
+        user.major.toLowerCase().includes(value) ||
+        user.grade.toLowerCase().includes(value) ||
+        user.classes.toLowerCase().includes(value)
     );
     setFilteredUsers(filtered); // Update the filtered users state
   };
@@ -135,7 +138,7 @@ function Search({ user }) {
         <input
           className="search-input"
           type="text"
-          placeholder="Name or email..."
+          placeholder="Search by name, email, grade, major, or class..."
           onChange={handleSearchChange}
         />
       </div>
@@ -156,14 +159,16 @@ function Search({ user }) {
                   alt={`${user.name}'s profile`}
                 />
                 <div className="contact-details">
-                  <h3>{user.name}</h3>
+                  <h3>
+                    {user.name} <span className="major-info">{user.major}</span>
+                  </h3>
                   <p>{user.email}</p>
                 </div>
               </div>
             </div>
           ))
         ) : (
-          <p>Loading users...</p>
+          <p className="not-found-message">No Users Found</p>
         )}
       </div>
       <button
