@@ -11,7 +11,7 @@ const socket = io("http://localhost:5001");
 //add MessageList when needed
 //maybe update contactName to be the whole user object?
 
-function Channel({ channel, user }) {
+function Channel({ channel, user, onSelectProfile }) {
   const [editActive, setEditActive] = useState(false);
   const [currentMessage, setCurrentMessage] = useState({});
 
@@ -81,6 +81,7 @@ function Channel({ channel, user }) {
             setEditActive={setEditActive}
             currentMessage={currentMessage}
             setCurrentMessage={setCurrentMessage}
+            onSelectProfile={onSelectProfile}
           />
         </div>
       </div>
@@ -131,7 +132,7 @@ function Channel({ channel, user }) {
 }
 
 //name changed based on button click, and what name gets passed in
-function ContactHeader({ channel, name, user }) {
+function ContactHeader({ channel, name, user, onSelectProfile }) {
   const [channelUsers, setChannelUsers] = useState({});
   useEffect(() => {
     const getUsers = async () => {
@@ -165,7 +166,7 @@ function ContactHeader({ channel, name, user }) {
       }
     };
     getUsers();
-  }, []);
+  }, [channel._id]);
 
   return (
     <div className="contact-header">
@@ -174,12 +175,22 @@ function ContactHeader({ channel, name, user }) {
         src="/assets/default-profile-pic.webp"
       />
       <h2>{removeName(name, user.name)}</h2>
-      {channelUsers?.length === 2 ? (
-        <button className="view-profile-btn">
+      {channelUsers?.length === 2 && (
+        <button
+          onClick={() => {
+            let desiredUser = null;
+            for (const channelUser of channelUsers) {
+              {console.log(channelUser)}
+              if (channelUser.user._id !== user._id) {
+                desiredUser = channelUser.user;
+              }
+            }
+            onSelectProfile(desiredUser)
+          }}
+          className="view-profile-btn"
+        >
           <i className="fa-solid fa-user"></i>View Profile
         </button>
-      ) : (
-        <></>
       )}
     </div>
   );
@@ -193,6 +204,7 @@ function MessageList({
   setEditActive,
   currentMessage,
   setCurrentMessage,
+  onSelectProfile,
 }) {
   const navigate = useNavigate();
   const [messages, setMessages] = useState([]);
@@ -271,7 +283,12 @@ function MessageList({
 
   return (
     <div>
-      <ContactHeader channel={channel} name={channel.name} user={user} />
+      <ContactHeader
+        channel={channel}
+        name={channel.name}
+        user={user}
+        onSelectProfile={onSelectProfile}
+      />
       <div className="message-list">
         {messages.map((message, index) => (
           // <MessageItem key={message.id} message={message} />

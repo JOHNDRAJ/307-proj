@@ -107,7 +107,14 @@ function Home() {
             <h2 className="page-header">
               {removeName(selectedChannel.name, currentUser?.name)}
             </h2>
-            <Channel channel={selectedChannel} user={currentUser} />
+            <Channel
+              channel={selectedChannel}
+              user={currentUser}
+              onSelectProfile={(user) => {
+                setUser(user);
+                handleSelectView(View.PROFILE);
+              }}
+            />
           </>
         )}
         {currentView === View.SEARCH && (
