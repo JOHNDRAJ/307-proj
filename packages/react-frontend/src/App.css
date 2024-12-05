@@ -47,6 +47,11 @@ main {
   font-weight: bold;
 }
 
+.back-btn:focus,
+.profile-btn:focus {
+  outline: none;
+}
+
 .fa-solid {
   margin-right: 0.5em;
 }

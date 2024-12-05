@@ -28,6 +28,10 @@ export const sendMessage = [
       io.to(channelId).emit("newMessage", {
         contents: recentMessage.contents,
       });
+      const updatedChannel = await Channel.findByIdAndUpdate(channelId, {
+        $set: { recentMessage: recentMessage },
+      });
+      await channel.save();
       res.status(201).json({ message: "Message sent successfully", channel });
     } catch (error) {
       console.log(error);
