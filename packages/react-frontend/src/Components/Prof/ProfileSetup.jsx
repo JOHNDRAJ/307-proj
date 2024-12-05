@@ -6,7 +6,7 @@ import "./ProfileSetup.css";
 
 const ProfileSetup = () => {
   // State to store the form input values
-  const [token, setToken] = useState(null);
+  //const [token, setToken] = useState(null);
   const [input, setInput] = useState({
     bio: "",
     grade: "",
@@ -21,7 +21,8 @@ const ProfileSetup = () => {
 
     try {
       const response = await fetch(
-        `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/profile`,
+        "http://localhost:5001/api/user/profile",
+        //`https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/profile`,
         {
           method: "PUT",
           headers: {
