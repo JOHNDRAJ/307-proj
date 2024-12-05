@@ -17,13 +17,7 @@ const View = Object.freeze({
 function Home() {
   const navigate = useNavigate();
   const [selectedChannel, setSelectedChannel] = useState({});
-  /*
-  set the default view to home/default once that gets made
-  profile and search will have back navigation, home and channel won't
-  might need to change previous view to a stack of multiple previous views
-  (ex: Home > Search > Profile)
-  */
-  const [previousView, setPreviousView] = useState(View.HOME);
+  const [viewStack, setViewStack] = useState([View.HOME]);
   const [currentView, setCurrentView] = useState(View.HOME);
   const [currentUser, setCurrentUser] = useState({
     name: "User Name",
@@ -43,10 +37,16 @@ function Home() {
     classes: "classes",
   });
 
-  const handleSelectView = (view) => {
-    const prev = currentView;
-    setPreviousView(prev);
+  const handleNextView = (view) => {
+    setViewStack([...viewStack, view]);
     setCurrentView(view);
+  };
+
+  const handlePrevView = () => {
+    if (viewStack.length > 1) {
+      setCurrentView(viewStack[viewStack.length - 2]);
+      setViewStack(viewStack.slice(0, viewStack.length - 1));
+    }
   };
 
   useEffect(() => {
@@ -76,18 +76,20 @@ function Home() {
 
   return (
     <div className="home">
-      {currentView === View.PROFILE || (<div
-        className="profile-header"
-        onClick={() => handleSelectView(View.PROFILE)}
-      >
-        <img className="contact-pic" src="/assets/default-profile-pic.webp" />
-      </div>)}
+      {currentView === View.PROFILE || (
+        <div
+          className="profile-header"
+          onClick={() => handleNextView(View.PROFILE)}
+        >
+          <img className="contact-pic" src="/assets/default-profile-pic.webp" />
+        </div>
+      )}
       <Sidebar
         onSelectContact={(name) => {
           setSelectedChannel(name);
-          handleSelectView(View.CHANNEL);
+          handleNextView(View.CHANNEL);
         }}
-        onSelectSearch={() => handleSelectView(View.SEARCH)}
+        onSelectSearch={() => handleNextView(View.SEARCH)}
         user={currentUser}
       />
       <main>
@@ -112,7 +114,7 @@ function Home() {
               user={currentUser}
               onSelectProfile={(user) => {
                 setUser(user);
-                handleSelectView(View.PROFILE);
+                handleNextView(View.PROFILE);
               }}
             />
           </>
@@ -120,10 +122,7 @@ function Home() {
         {currentView === View.SEARCH && (
           <>
             <h2 className="page-header">
-              <button
-                className="back-btn"
-                onClick={() => handleSelectView(previousView)}
-              >
+              <button className="back-btn" onClick={() => handlePrevView()}>
                 <i className="fa-solid fa-arrow-left"></i>
               </button>
               Search
@@ -132,11 +131,11 @@ function Home() {
               user={currentUser}
               onSelectContact={(name) => {
                 setSelectedChannel(name);
-                handleSelectView(View.CHANNEL);
+                handleNextView(View.CHANNEL);
               }}
               onSelectProfile={(user) => {
                 setUser(user);
-                handleSelectView(View.PROFILE);
+                handleNextView(View.PROFILE);
               }}
             />
           </>
@@ -148,7 +147,7 @@ function Home() {
                 className="back-btn"
                 onClick={() => {
                   setUser(currentUser);
-                  handleSelectView(previousView);
+                  handlePrevView();
                 }}
               >
                 <i className="fa-solid fa-arrow-left"></i>

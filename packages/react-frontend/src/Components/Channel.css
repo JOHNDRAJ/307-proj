@@ -160,6 +160,11 @@ green button = main style, gray button = secondary style
   transition: color 0.3s ease;
 }
 
+.edit-btn:hover,
+.delete-btn:hover {
+  background: none;
+}
+
 .edit-btn:focus,
 .delete-btn:focus {
   outline: none;
