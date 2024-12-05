@@ -64,6 +64,7 @@ function Home() {
           navigate("/");
         }
         setCurrentUser(data.user);
+        setUser(data.user);
         //console.log("Fetched User:", data);
         //console.log("User state:", user);
       } catch (error) {
@@ -126,7 +127,10 @@ function Home() {
                 setSelectedChannel(name);
                 handleSelectView(View.CHANNEL);
               }}
-              onSelectProfile={() => handleSelectView(View.PROFILE)}
+              onSelectProfile={(user) => {
+                setUser(user);
+                handleSelectView(View.PROFILE);
+              }}
             />
           </>
         )}
