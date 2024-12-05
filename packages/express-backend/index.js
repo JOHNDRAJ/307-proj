@@ -16,8 +16,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin:
-      "https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net", // Update with your frontend URL for security
+    origin: "https://blue-mushroom-09a68691e.5.azurestaticapps.net/", // Update with your frontend URL for security
     methods: ["GET", "POST"],
   },
 });
