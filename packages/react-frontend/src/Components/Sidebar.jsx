@@ -142,6 +142,10 @@ function ContactItem({ contact, onSelectContact, user }) {
     fetchUser();
   }, [message]);
 
+  const limitPreviewText = (text, charLimit) => {
+    return text.length > charLimit ? text.slice(0, charLimit) + "..." : text;
+  };
+
   //console.log(user)
   return (
     <div
@@ -153,21 +157,21 @@ function ContactItem({ contact, onSelectContact, user }) {
         <img className="contact-pic" src="/assets/default-profile-pic.webp" />
         <div className="contact-details">
           <div className="contact-details-top">
-            <h3>{removeName(contact.name, user.name)}</h3>
+            <h3>{limitPreviewText(removeName(contact.name, user.name), 32)}</h3>
             <p>{formatLastTimestamp(message.userMessage?.timestamp)}</p>
           </div>
-
           <p>
             {message.userMessage?.contents && messageSender.user?.name && user
               ? message.userMessage.sender === user?._id
-                ? `You: ${message.userMessage.contents}`
-                : `${messageSender.user.name}: ${message.userMessage.contents}`
-              : "No Messages"}
+                ? limitPreviewText(`You: ${message.userMessage.contents}`, 48)
+                : limitPreviewText(
+                    `${messageSender.user.name}: ${message.userMessage.contents}`,
+                    45
+                  )
+              : "No messages"}
           </p>
         </div>
       </div>
-
-      {/* <p>{formatTimestamp(contact.lastTimestamp, true)}</p> */}
     </div>
   );
 }
