@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Search.css";
 
-function Search({ user }) {
-
+function Search({ user, onSelectContact, onSelectProfile }) {
   const [users, setUsers] = useState([]); // State to store users fetched from the database
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedUserNames, setSelectedUsernames] = useState([]);
@@ -89,11 +88,11 @@ function Search({ user }) {
 
   const handleChannelCreation = async ({ searchedUsers }) => {
     console.log(selectedUserNames);
-    let name = channelName
-    if(selectedUserNames.length === 1 || channelName == ""){
-      name = user.name
-      selectedUserNames.forEach(username => {
-        name = name + ", " + username
+    let name = channelName;
+    if (selectedUserNames.length === 1 || channelName == "") {
+      name = user.name;
+      selectedUserNames.forEach((username) => {
+        name = name + ", " + username;
       });
     }
     try {
@@ -171,13 +170,20 @@ function Search({ user }) {
           <p className="not-found-message">No Users Found</p>
         )}
       </div>
-      <button
-        className="create-channel-button"
-        onClick={togglePopup}
-        disabled={selectedUsers.length === 0} // Disable button if no users selected
-      >
-        Create Channel
-      </button>
+      <div className="search-page-buttons">
+        {selectedUsers.length >= 1 && (
+          <button
+            className="create-channel-button"
+            onClick={togglePopup}
+            disabled={selectedUsers.length === 0} // Disable button if no users selected
+          >
+            Create Channel
+          </button>
+        )}
+        {selectedUsers.length === 1 && (
+          <button className="view-profile-button">View Profile</button>
+        )}
+      </div>
 
       {/* Popup Logic */}
       {isPopupVisible && (

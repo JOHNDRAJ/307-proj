@@ -146,7 +146,8 @@ export const getUsers = [
           message: "Access Denied. you are not a member of this channel.",
         });
       }
-      const c = await User.findById(channelId);
+      const c = await User.findById(userId);
+      // console.log(c);
       if (!c) {
         return res.status(404).json({ message: "Channel not found" });
       }
