@@ -30,6 +30,7 @@
 .contact-list {
   position: sticky;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 /* Individual contact item styling */
