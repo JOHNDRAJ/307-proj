@@ -19,14 +19,13 @@ function Profile({ user, currentUser }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log("User:", currentUser);
     setProfileData({
-      name: currentUser.name,
-      email: currentUser.email,
-      bio: currentUser.bio,
-      grade: currentUser.grade,
-      major: currentUser.major,
-      classes: currentUser.classes.trim().split(","),
+      name: user.name,
+      email: user.email,
+      bio: user.bio,
+      grade: user.grade,
+      major: user.major,
+      classes: user.classes.trim().split(","),
     });
   }, []);
 

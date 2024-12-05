@@ -130,6 +130,32 @@ function Search({ user, onSelectContact, onSelectProfile }) {
     }
   };
 
+  const getSelectedUserById = async (id) => {
+    const fetchUser = async () => {
+      console.log("ID:", id);
+      try {
+        //console.log("sender:", message);
+        const response = await fetch(
+          `http://localhost:5001/api/user/id/${id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        const data = await response.json();
+        console.log("Fetched user:", data.user);
+        return data.user;
+      } catch (error) {
+        console.error("Error during fetch:", error); // More specific error output
+      }
+    };
+
+    return fetchUser();
+  };
+
   return (
     <>
       <div className="search-bar">
@@ -172,16 +198,20 @@ function Search({ user, onSelectContact, onSelectProfile }) {
       </div>
       <div className="search-page-buttons">
         {selectedUsers.length >= 1 && (
-          <button
-            className="create-channel-button"
-            onClick={togglePopup}
-            disabled={selectedUsers.length === 0} // Disable button if no users selected
-          >
+          <button className="create-channel-button" onClick={togglePopup}>
             Create Channel
           </button>
         )}
         {selectedUsers.length === 1 && (
-          <button className="view-profile-button">View Profile</button>
+          <button
+            className="view-profile-button"
+            onClick={async () => {
+              const selectedUser = await getSelectedUserById(selectedUsers[0]);
+              onSelectProfile(selectedUser);
+            }}
+          >
+            View Profile
+          </button>
         )}
       </div>
 
