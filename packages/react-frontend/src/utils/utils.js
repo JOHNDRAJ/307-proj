@@ -27,6 +27,7 @@ function formatTimestamp(timestamp) {
     return "err";
   }
 }
+
 function removeName(namesString, nameToRemove) {
   if (namesString.includes(nameToRemove)) {
     const namesArray = namesString.split(", ");
@@ -42,24 +43,19 @@ function formatLastTimestamp(timestamp) {
   try {
     const now = new Date();
     const date = new Date(timestamp);
-    console.log("Date:", date);
     let diff = now - date;
-    console.log("Diff:", diff);
 
     // Timestamps within in the past hour
     diff = diff / (1000 * 60);
     if (diff < 1) {
-      console.log("Now");
       return "Now";
     } else if (diff < 60) {
-      console.log("Past hr");
       return `${Math.floor(diff)} min`;
     }
 
     // Timestamps within the past day
     diff /= 60;
     if (diff < 24) {
-      console.log("Past day");
       return date.toLocaleTimeString("en-US", {
         hour: "numeric",
         minute: "2-digit",
@@ -70,7 +66,6 @@ function formatLastTimestamp(timestamp) {
     // Timestamps within the past week
     diff /= 24;
     if (diff < 7) {
-      console.log("Past week");
       return date.toLocaleDateString("en-US", {
         weekday: "short",
       });
@@ -79,7 +74,6 @@ function formatLastTimestamp(timestamp) {
     // Timestamps within the past year
     diff /= 7;
     if (diff < 52) {
-      console.log("past year");
       return date.toLocaleDateString("en-US", {
         month: "short",
         day: "numeric",
