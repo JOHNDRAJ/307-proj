@@ -16,6 +16,7 @@ const View = Object.freeze({
 
 function Home() {
   const navigate = useNavigate();
+  const [refresh, setRefresh] = useState(false);
   const [selectedChannel, setSelectedChannel] = useState({});
   const [viewStack, setViewStack] = useState([View.HOME]);
   const [currentView, setCurrentView] = useState(View.HOME);
@@ -54,14 +55,15 @@ function Home() {
       try {
         const response = await fetch(
           // `http://localhost:5001/api/user/user`,
-          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/user/`, 
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/user/`,
           {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         const data = await response.json();
         if (data.message == "Invalid token.") {
           navigate("/");
@@ -94,6 +96,7 @@ function Home() {
         }}
         onSelectSearch={() => handleNextView(View.SEARCH)}
         user={currentUser}
+        refresh={refresh}
       />
       <main>
         {/* Add other conditionally rendered views once they get made */}
@@ -140,6 +143,7 @@ function Home() {
                 setUser(user);
                 handleNextView(View.PROFILE);
               }}
+              setRefresh={setRefresh}
             />
           </>
         )}

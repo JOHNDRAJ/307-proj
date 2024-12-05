@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./Search.css";
 
-function Search({ user, onSelectContact, onSelectProfile }) {
+function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
   const [users, setUsers] = useState([]); // State to store users fetched from the database
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedUserNames, setSelectedUsernames] = useState([]);
@@ -121,6 +121,7 @@ function Search({ user, onSelectContact, onSelectProfile }) {
       if (response.ok) {
         //alert("Channel successfully created");
         setSelectedUsers([]);
+        setRefresh(true);
         // navigate("/home");
       } else {
         alert(data.message || "An error occurred."); // Corrected error message handling
