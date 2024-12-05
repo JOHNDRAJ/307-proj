@@ -80,7 +80,8 @@ describe("Login Component", () => {
 
     await waitFor(() => {
       expect(fetch).toHaveBeenCalledWith(
-        "http://localhost:5001/api/auth/signin",
+        // "http://localhost:5001/api/auth/signin",
+        `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/auth/signin`,
         expect.objectContaining({
           method: "POST",
           headers: { "Content-Type": "application/json" },

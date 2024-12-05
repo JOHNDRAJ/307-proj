@@ -22,7 +22,10 @@ const ProfileSetup = () => {
 
     const fetchUser = async () => {
       try {
-        const response = await fetch(`http://localhost:5001/api/user/user`, {
+        const response = await fetch(
+          // `http://localhost:5001/api/user/user`, 
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/user`,
+          {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -71,7 +74,10 @@ const ProfileSetup = () => {
     }
 
     try {
-      const response = await fetch(`http://localhost:5001/api/user/profile`, {
+      const response = await fetch(
+        // `http://localhost:5001/api/user/profile`, 
+        `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/profile`,
+        {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

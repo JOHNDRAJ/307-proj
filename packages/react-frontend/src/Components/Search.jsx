@@ -50,7 +50,8 @@ function Search({ user, onSelectContact, onSelectProfile }) {
     const fetchUsers = async () => {
       try {
         const response = await fetch(
-          "http://localhost:5001/api/user/allusers",
+          // "http://localhost:5001/api/user/allusers",
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/allusers`,
           {
             method: "GET",
             headers: {
@@ -98,8 +99,8 @@ function Search({ user, onSelectContact, onSelectProfile }) {
     try {
       console.log(selectedUserNames);
       const response = await fetch(
-        "http://localhost:5001/api/channel/create",
-        // 'https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/channel/create',
+        // "http://localhost:5001/api/channel/create",
+        `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/channel/create`,
         {
           method: "POST",
           headers: {
@@ -136,7 +137,8 @@ function Search({ user, onSelectContact, onSelectProfile }) {
       try {
         //console.log("sender:", message);
         const response = await fetch(
-          `http://localhost:5001/api/user/id/${id}`,
+          // `http://localhost:5001/api/user/id/${id}`,
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/id/${id}`,
           {
             method: "GET",
             headers: {

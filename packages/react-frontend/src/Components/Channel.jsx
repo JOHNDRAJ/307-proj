@@ -28,8 +28,8 @@ function Channel({ channel, user, onSelectProfile }) {
       setImageUrl("");
       try {
         const response = await fetch(
-          `http://localhost:5001/api/message/send`,
-          // `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/send`,
+          // `http://localhost:5001/api/message/send`,
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/send`,
           {
             method: "POST",
             headers: {
@@ -138,8 +138,8 @@ function ContactHeader({ channel, name, user, onSelectProfile }) {
     const getUsers = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5001/api/channel/${channel._id}`,
-          // `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/channel/${channel._id}`, // Use channel.id dynamically
+          // `http://localhost:5001/api/channel/${channel._id}`,
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/channel/${channel._id}`, // Use channel.id dynamically
           {
             method: "GET",
             headers: {
@@ -220,8 +220,8 @@ function MessageList({
     const fetchMessages = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5001/api/message/${channel._id}`,
-          // `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/${channel._id}`, // Use channel.id dynamically
+          // `http://localhost:5001/api/message/${channel._id}`,
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/${channel._id}`, // Use channel.id dynamically
           {
             method: "GET",
             headers: {
@@ -332,7 +332,10 @@ function Message({
   const deleteMessage = async () => {
     console.log(channel);
     try {
-      const response = await fetch(`http://localhost:5001/api/message/del/`, {
+      const response = await fetch(
+        // `http://localhost:5001/api/message/del/`,
+        `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/del/`, 
+        {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
@@ -462,8 +465,8 @@ function MessageInput({ channel, editActive, setEditActive, currentMessage }) {
       setText("");
       try {
         const response = await fetch(
-          `http://localhost:5001/api/message/send`,
-          // `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/send`,
+          // `http://localhost:5001/api/message/send`,
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/send`,
           {
             method: "POST",
             headers: {
@@ -500,8 +503,8 @@ function MessageInput({ channel, editActive, setEditActive, currentMessage }) {
       console.log(text);
       try {
         const response = await fetch(
-          `http://localhost:5001/api/message/update`,
-          // `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/send`,
+          // `http://localhost:5001/api/message/update`,
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/update`,
           {
             method: "PUT",
             headers: {

@@ -19,8 +19,8 @@ const Login = () => {
     if (input.email !== "" && input.password !== "") {
       try {
         const response = await fetch(
-          "http://localhost:5001/api/auth/signin",
-          // "https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/auth/signin",
+          // "http://localhost:5001/api/auth/signin",
+          "https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/auth/signin",
           {
             method: "POST",
             headers: {

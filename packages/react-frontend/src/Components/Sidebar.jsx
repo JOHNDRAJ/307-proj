@@ -28,8 +28,8 @@ function ContactsList({ onSelectContact, user }) {
     const fetchChannels = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5001/api/channel/`,
-          // `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/channel/`,
+          // `http://localhost:5001/api/channel/`,
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/channel/`,
           {
             method: "GET",
             headers: {
@@ -84,7 +84,8 @@ function ContactItem({ contact, onSelectContact, user }) {
     const fetchMessage = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5001/api/message/text/${contact.recentMessage}`,
+          // `http://localhost:5001/api/message/text/${contact.recentMessage}`,
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/text/${contact.recentMessage}`,
           {
             method: "GET",
             headers: {
@@ -109,7 +110,8 @@ function ContactItem({ contact, onSelectContact, user }) {
       try {
         //console.log("sender:", message);
         const response = await fetch(
-          `http://localhost:5001/api/user/id/${message.userMessage.sender}`,
+          // `http://localhost:5001/api/user/id/${message.userMessage.sender}`,
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/id/${message.userMessage.sender}`,
           {
             method: "GET",
             headers: {
