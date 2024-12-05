@@ -67,6 +67,10 @@
   flex-direction: column;
 }
 
+.contact-details p {
+  word-wrap: break-word;
+}
+
 .contact-details-top {
   display: flex;
   flex-direction: row;

@@ -7,7 +7,13 @@ import { useNavigate } from "react-router-dom";
 //will make everything props once backend is good
 //also have to create the search bar
 
-function Sidebar({ onSelectContact, onSelectSearch, user, refresh }) {
+function Sidebar({
+  onSelectContact,
+  onSelectSearch,
+  user,
+  refresh,
+  setRefresh,
+}) {
   return (
     <div className="sidebar">
       <h1>PolyMessages</h1>
@@ -18,6 +24,7 @@ function Sidebar({ onSelectContact, onSelectSearch, user, refresh }) {
         onSelectContact={onSelectContact}
         user={user}
         refresh={refresh}
+        setRefresh={setRefresh}
       />
     </div>
   );
@@ -63,6 +70,7 @@ function ContactsList({ onSelectContact, user, refresh }) {
       }
     };
     fetchChannels();
+    setRefresh(false);
   }, [refresh]);
 
   return (

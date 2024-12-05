@@ -122,6 +122,7 @@ function Home() {
                 setUser(user);
                 handleNextView(View.PROFILE);
               }}
+              setRefresh={setRefresh}
             />
           </>
         )}

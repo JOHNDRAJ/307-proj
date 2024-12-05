@@ -4,14 +4,16 @@ import { removeName, formatTimestamp } from "../utils/utils";
 import { io } from "socket.io-client";
 import { useNavigate } from "react-router-dom";
 
-const socket = io("https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net");
+const socket = io(
+  "https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net"
+);
 
 //will make everything props once backend is good
 
 //add MessageList when needed
 //maybe update contactName to be the whole user object?
 
-function Channel({ channel, user, onSelectProfile }) {
+function Channel({ channel, user, onSelectProfile, setRefresh }) {
   const [editActive, setEditActive] = useState(false);
   const [currentMessage, setCurrentMessage] = useState({});
 
@@ -96,6 +98,7 @@ function Channel({ channel, user, onSelectProfile }) {
             setEditActive={setEditActive}
             currentMessage={currentMessage}
             setCurrentMessage={setCurrentMessage}
+            setRefresh={setRefresh}
           />
         </div>
       </div>
@@ -180,12 +183,14 @@ function ContactHeader({ channel, name, user, onSelectProfile }) {
           onClick={() => {
             let desiredUser = null;
             for (const channelUser of channelUsers) {
-              {console.log(channelUser)}
+              {
+                console.log(channelUser);
+              }
               if (channelUser.user._id !== user._id) {
                 desiredUser = channelUser.user;
               }
             }
-            onSelectProfile(desiredUser)
+            onSelectProfile(desiredUser);
           }}
           className="view-profile-btn"
         >
@@ -334,18 +339,19 @@ function Message({
     try {
       const response = await fetch(
         // `http://localhost:5001/api/message/del/`,
-        `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/del/`, 
+        `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/del/`,
         {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({
-          messageId: message._id, // Pass the ID of the channel where the message is being sent
-          channelId: channel,
-        }),
-      });
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({
+            messageId: message._id, // Pass the ID of the channel where the message is being sent
+            channelId: channel,
+          }),
+        }
+      );
       if (response.ok) {
         const data = await response.json();
         console.log("Deleted Message Data:", data);
@@ -560,7 +566,12 @@ function MessageInput({ channel, editActive, setEditActive, currentMessage }) {
         placeholder={editActive ? "Editing..." : "Message..."}
         onKeyDown={handleKeyDown}
       />
-      <button onClick={() => (editActive ? updateMessage() : sendMessage())}>
+      <button
+        onClick={() => {
+          setRefresh(true);
+          editActive ? updateMessage() : sendMessage();
+        }}
+      >
         <i className="fa-solid fa-paper-plane"></i>
       </button>
     </>
