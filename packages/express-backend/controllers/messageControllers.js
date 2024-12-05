@@ -34,7 +34,7 @@ export const sendMessage = [
       await channel.save();
       res.status(201).json({ message: "Message sent successfully", channel });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ message: `Server error ${error}`, error });
     }
   },
@@ -52,7 +52,6 @@ export const updateMessage = [
         return res.status(404).json({ message: "Message not found" });
       }
       if (message.sender != userId) {
-        console.log("Sender != user: ", message.sender, " | ", userId);
         return res.status(401).json({
           message: "Access Denied. you are not allowed to edit this message.",
         });
@@ -66,7 +65,7 @@ export const updateMessage = [
         .status(200)
         .json({ message: "Message updated successfully", message });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ message: `Server error ${error}`, error });
     }
   },
@@ -77,16 +76,13 @@ export const deleteMessage = [
   async (req, res) => {
     const userId = req.user._id;
     const { messageId, channelId } = req.body;
-    console.log(messageId);
 
     try {
       const message = await Message.findById(messageId);
-      console.log("sender:", message);
       if (!message) {
         return res.status(404).json({ message: "Message not found" });
       }
       if (message.sender != userId) {
-        console.log("Sender != user: ", message.sender, " | ", userId);
         return res.status(401).json({
           message: "Access Denied. you are not allowed to edit this message.",
         });
@@ -97,7 +93,7 @@ export const deleteMessage = [
         .status(200)
         .json({ message: "Message deleted successfully", message });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ message: `Server error ${error}`, error });
     }
   },
@@ -129,7 +125,7 @@ export const getMessages = [
         .status(200)
         .json({ message: "Messages retrieved successfully", messages });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ message: `Server error ${error}`, error });
     }
   },
@@ -139,7 +135,6 @@ export const getMessage = [
   authenticateToken,
   async (req, res) => {
     const { messageId } = req.params;
-    //console.log("debug message:", messageId);
     try {
       const userMessage = await Message.findById(messageId);
       if (!userMessage) {
@@ -149,7 +144,7 @@ export const getMessage = [
         .status(200)
         .json({ message: "Message retrieved successfully", userMessage });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ message: `Server error ${error}`, error });
     }
   },

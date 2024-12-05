@@ -12,7 +12,6 @@ function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
   const [filteredUsers, setFilteredUsers] = useState([]);
 
   const togglePopup = () => {
-    console.log(selectedUsers.length);
     if (!isPopupVisible) {
       if (selectedUsers.length === 1) {
         handleChannelCreation({ searchedUsers: selectedUsers });
@@ -63,7 +62,6 @@ function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
         const data = await response.json();
         setUsers(data); // Update state with the list of users
         setFilteredUsers(data);
-        console.log("Fetched Userss:", data);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
@@ -88,7 +86,6 @@ function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
   };
 
   const handleChannelCreation = async ({ searchedUsers }) => {
-    console.log(selectedUserNames);
     let name = channelName;
     if (selectedUserNames.length === 1 || channelName == "") {
       name = user.name;
@@ -97,7 +94,6 @@ function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
       });
     }
     try {
-      console.log(selectedUserNames);
       const response = await fetch(
         // "http://localhost:5001/api/channel/create",
         `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/channel/create`,
@@ -116,13 +112,10 @@ function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
       );
 
       const data = await response.json();
-      console.log("Response data:", data); // Debugging output
 
       if (response.ok) {
-        //alert("Channel successfully created");
         setSelectedUsers([]);
         setRefresh(true);
-        // navigate("/home");
       } else {
         alert(data.message || "An error occurred."); // Corrected error message handling
       }
@@ -134,9 +127,7 @@ function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
 
   const getSelectedUserById = async (id) => {
     const fetchUser = async () => {
-      console.log("ID:", id);
       try {
-        //console.log("sender:", message);
         const response = await fetch(
           // `http://localhost:5001/api/user/id/${id}`,
           `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/id/${id}`,
@@ -149,7 +140,6 @@ function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
           }
         );
         const data = await response.json();
-        console.log("Fetched user:", data.user);
         return data.user;
       } catch (error) {
         console.error("Error during fetch:", error); // More specific error output

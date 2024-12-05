@@ -9,7 +9,6 @@ export const updateChannelName = [
   async (req, res) => {
     const userId = req.user._id;
     const { name, channelId } = req.body;
-    console.log("Received name:", name);
     try {
       const cxu = await Cxu.findOne({ channel: channelId, user: userId });
       if (!cxu) {
@@ -55,7 +54,7 @@ export const addUser = [
         .status(200)
         .json({ message: "Channel updated successfully", channel });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ message: `Server error ${error}`, error });
     }
   },
@@ -103,7 +102,7 @@ export const createChannel = [
         .status(201)
         .json({ message: "Channel created successfully", channel });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ message: `Server error ${error}`, error });
     }
   },
@@ -128,7 +127,7 @@ export const getChannels = [
         .status(200)
         .json({ message: "Cxu objects retrieved successfully", cxus });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ message: `Server error ${error}`, error });
     }
   },
@@ -147,7 +146,6 @@ export const getUsers = [
         });
       }
       const c = await User.findById(userId);
-      // console.log(c);
       if (!c) {
         return res.status(404).json({ message: "Channel not found" });
       }
@@ -161,7 +159,7 @@ export const getUsers = [
         .status(200)
         .json({ message: "Cxu objects retrieved successfully", cxus });
     } catch (error) {
-      console.log(error);
+      console.error(error);
       res.status(500).json({ message: `Server error ${error}`, error });
     }
   },

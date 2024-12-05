@@ -8,11 +8,6 @@ const socket = io(
   "https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net"
 );
 
-//will make everything props once backend is good
-
-//add MessageList when needed
-//maybe update contactName to be the whole user object?
-
 function Channel({ channel, user, onSelectProfile, setRefresh }) {
   const [editActive, setEditActive] = useState(false);
   const [currentMessage, setCurrentMessage] = useState({});
@@ -47,11 +42,8 @@ function Channel({ channel, user, onSelectProfile, setRefresh }) {
         );
 
         const data = await response.json();
-        console.log("Response data:", data);
 
-        if (response.ok) {
-          //alert(data.message || "Message updated successfully!"); // Notify on success
-        } else {
+        if (!response.ok) {
           alert(data.message || "Failed to update message."); // Handle server-side errors
         }
       } catch (error) {
@@ -135,7 +127,6 @@ function Channel({ channel, user, onSelectProfile, setRefresh }) {
   );
 }
 
-//name changed based on button click, and what name gets passed in
 function ContactHeader({ channel, name, user, onSelectProfile }) {
   const [channelUsers, setChannelUsers] = useState({});
   useEffect(() => {
@@ -154,11 +145,9 @@ function ContactHeader({ channel, name, user, onSelectProfile }) {
         );
 
         const data = await response.json();
-        //console.log("Response data:", data); // Debugging output
 
         if (response.ok) {
           setChannelUsers(data.cxus);
-          console.log("cxus:", data.cxus.length);
         } else {
           alert(
             data.message || "An error occurred while fetching channel users."
@@ -184,9 +173,6 @@ function ContactHeader({ channel, name, user, onSelectProfile }) {
           onClick={() => {
             let desiredUser = null;
             for (const channelUser of channelUsers) {
-              {
-                console.log(channelUser);
-              }
               if (channelUser.user._id !== user._id) {
                 desiredUser = channelUser.user;
               }
@@ -202,7 +188,6 @@ function ContactHeader({ channel, name, user, onSelectProfile }) {
   );
 }
 
-//again will do messaging in database once set up
 function MessageList({
   channel,
   user,
@@ -223,7 +208,6 @@ function MessageList({
 
   useEffect(() => {
     if (!channel) return;
-    //console.log(channel._id);
     const fetchMessages = async () => {
       try {
         const response = await fetch(
@@ -239,14 +223,12 @@ function MessageList({
         );
 
         const data = await response.json();
-        //console.log("Response data:", data); // Debugging output
         if (data.message == "Invalid token.") {
           navigate("/");
         }
 
         if (response.ok) {
           setMessages(data.messages); // Assuming `data` is an array of messages
-          //console.log("Fetched messages:", data.messages);
         } else {
           alert(data.message || "An error occurred while fetching messages.");
         }
@@ -259,7 +241,6 @@ function MessageList({
 
     // Join the channel's socket room
     socket.emit("joinChannel", channel._id);
-    console.log(`Joined socket room for channel: ${channel._id}`);
 
     // Listen for new messages
     socket.on("newMessage", (newMessage) => {
@@ -273,7 +254,6 @@ function MessageList({
     // Cleanup when component unmounts or channel changes
     return () => {
       socket.emit("leaveChannel", channel._id);
-      console.log(`Left socket room for channel: ${channel._id}`);
       socket.off("newMessage"); // Remove event listener
     };
   }, [channel._id]);
@@ -282,7 +262,6 @@ function MessageList({
     scrollToBottom();
   }, [messages]);
 
-  //console.log(messages)
   const shouldShowTime = (prevTimestamp, currTimestamp) => {
     const date1 = new Date(prevTimestamp);
     const date2 = new Date(currTimestamp);
@@ -299,7 +278,6 @@ function MessageList({
       />
       <div className="message-list">
         {messages.map((message, index) => (
-          // <MessageItem key={message.id} message={message} />
           <Message
             key={message._id}
             user={user}
@@ -338,7 +316,6 @@ function Message({
 }) {
   const [showTimestamp, setShowTimestamp] = useState(false);
   const deleteMessage = async () => {
-    console.log(channel);
     try {
       const response = await fetch(
         // `http://localhost:5001/api/message/del/`,
@@ -357,7 +334,6 @@ function Message({
       );
       if (response.ok) {
         const data = await response.json();
-        console.log("Deleted Message Data:", data);
       } else {
         alert(data.message || "An error occurred while deleteing message.");
       }
@@ -454,7 +430,6 @@ function Message({
   );
 }
 
-//console.log replace with whatever prop to display on the chat window
 function MessageInput({
   channel,
   editActive,
@@ -496,11 +471,8 @@ function MessageInput({
         );
 
         const data = await response.json();
-        console.log("Response data:", data);
 
-        if (response.ok) {
-          //alert(data.message || "Message updated successfully!"); // Notify on success
-        } else {
+        if (!response.ok) {
           alert(data.message || "Failed to update message."); // Handle server-side errors
         }
       } catch (error) {
@@ -512,10 +484,8 @@ function MessageInput({
     }
   };
 
-  /////////////////////////////////////////////////////////////
   const updateMessage = async () => {
     if (text.trim()) {
-      console.log(text);
       try {
         const response = await fetch(
           // `http://localhost:5001/api/message/update`,
@@ -535,13 +505,10 @@ function MessageInput({
         );
 
         const data = await response.json();
-        console.log("Response data:", data);
 
         if (response.ok) {
           setText("");
           setEditActive(false);
-
-          //alert(data.message || "Message sent successfully!"); // Notify on success
         } else {
           alert(data.message || "Failed to send message."); // Handle server-side errors
         }

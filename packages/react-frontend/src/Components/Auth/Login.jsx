@@ -13,9 +13,6 @@ const Login = () => {
   const handleSubmitEvent = async (e) => {
     e.preventDefault();
 
-    //console.log(input)
-    // navigate('/home');
-
     if (input.email !== "" && input.password !== "") {
       try {
         const response = await fetch(

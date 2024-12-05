@@ -3,10 +3,7 @@ import "./Profile.css";
 import { useNavigate } from "react-router-dom";
 
 function Profile({ user, currentUser, setUser }) {
-  // add props for which user the profile is for
-  // have some way of determining if it is their profile or someone else's
-  // return a slightly different UI based on whether or not it's your own profile
-  const [isCurrentUser, setIsCurrentUser] = useState(user === currentUser);
+  const isCurrentUser = user === currentUser;
   const [profileData, setProfileData] = useState({
     name: "User Name",
     email: "student@calpoly.edu",

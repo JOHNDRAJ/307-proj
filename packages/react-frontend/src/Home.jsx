@@ -70,8 +70,6 @@ function Home() {
         }
         setCurrentUser(data.user);
         setUser(data.user);
-        //console.log("Fetched User:", data);
-        //console.log("User state:", user);
       } catch (error) {
         console.error("Error fetching user:", error);
       }
@@ -100,7 +98,6 @@ function Home() {
         setRefresh={setRefresh}
       />
       <main>
-        {/* Add other conditionally rendered views once they get made */}
         {currentView === View.HOME && (
           <div className="hero">
             {/* Insert hero image here */}

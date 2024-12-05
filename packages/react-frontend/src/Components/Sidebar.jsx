@@ -4,9 +4,6 @@ import "./Sidebar.css";
 import { removeName } from "../utils/utils";
 import { useNavigate } from "react-router-dom";
 
-//will make everything props once backend is good
-//also have to create the search bar
-
 function Sidebar({
   onSelectContact,
   onSelectSearch,
@@ -30,7 +27,6 @@ function Sidebar({
   );
 }
 
-//will pass in contacts list through props from backend when it works
 function ContactsList({ onSelectContact, user, refresh, setRefresh }) {
   const navigate = useNavigate();
   const [contacts, setContacts] = useState([]);
@@ -51,16 +47,13 @@ function ContactsList({ onSelectContact, user, refresh, setRefresh }) {
         );
 
         const data = await response.json();
-        //console.log("Response data:", data); // Debugging output
         if (data.message == "Invalid token.") {
           navigate("/");
         }
 
         if (response.ok) {
           const extractedData = data.cxus.map((item) => item.channel);
-          //console.log("Extracted data:", extractedData);
           setContacts(extractedData);
-          //alert(data.message || "Channels fetched successfully!");
         } else {
           alert(data.message || "An error occurred."); // Corrected error message handling
         }
@@ -76,7 +69,6 @@ function ContactsList({ onSelectContact, user, refresh, setRefresh }) {
   return (
     <div className="contact-list">
       {contacts.map((contact) => (
-        /* Pass in user object for contact */
         <ContactItem
           key={contact._id}
           contact={contact}
@@ -108,7 +100,6 @@ function ContactItem({ contact, onSelectContact, user }) {
         );
         const data = await response.json();
         setMessage(data);
-        //console.log("Fetched Message:", data);
       } catch (error) {
         console.error("Error during fetch:", error); // More specific error output
       }
@@ -120,7 +111,6 @@ function ContactItem({ contact, onSelectContact, user }) {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        //console.log("sender:", message);
         const response = await fetch(
           // `http://localhost:5001/api/user/id/${message.userMessage.sender}`,
           `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/id/${message.userMessage.sender}`,
@@ -134,7 +124,6 @@ function ContactItem({ contact, onSelectContact, user }) {
         );
         const data = await response.json();
         setMessageSender(data);
-        //console.log("Fetched messageSender:", data);
       } catch (error) {
         console.error("Error during fetch:", error); // More specific error output
       }
@@ -146,14 +135,12 @@ function ContactItem({ contact, onSelectContact, user }) {
     return text.length > charLimit ? text.slice(0, charLimit) + "..." : text;
   };
 
-  //console.log(user)
   return (
     <div
       className="contact-item"
       onClick={() => onSelectContact(contact)} // Pass contact name on click
     >
       <div className="contact-preview">
-        {/* Get image from contact object when the actual schema is setup for it */}
         <img className="contact-pic" src="/assets/default-profile-pic.webp" />
         <div className="contact-details">
           <div className="contact-details-top">

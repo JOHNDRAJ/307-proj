@@ -13,9 +13,6 @@ const SignUp = () => {
   const handleSubmitEvent = async (e) => {
     e.preventDefault();
 
-    console.log(input);
-    // navigate('/profile-setup')
-
     if (input.email !== "" && input.password !== "") {
       try {
         const response = await fetch(

@@ -1,6 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { jwtDecode } from "jwt-decode";
-import axios from "axios"; // For making HTTP requests
 import { useLocation, useNavigate } from "react-router-dom"; // For navigation
 import "./ProfileSetup.css";
 
@@ -23,30 +21,27 @@ const ProfileSetup = () => {
     const fetchUser = async () => {
       try {
         const response = await fetch(
-          // `http://localhost:5001/api/user/user`, 
+          // `http://localhost:5001/api/user/user`,
           `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/user`,
           {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        });
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
         const data = await response.json();
 
         if (response.ok) {
           // Update the state with fetched data
-          console.log("test");
-          console.log("input before:", input);
           setInput({
             bio: data.user.bio,
             grade: data.user.grade,
             major: data.user.major,
             classes: data.user.classes,
           });
-          console.log("input after:", input);
         }
-        console.log("Fetched current user:", data);
       } catch (error) {
         console.error("Error during fetch:", error); // More specific error output
       }
@@ -54,16 +49,6 @@ const ProfileSetup = () => {
 
     fetchUser();
   }, []);
-
-  const handleProfileData = (user) => {
-    const newInput = {
-      bio: user.bio,
-      grade: user.grade,
-      major: user.major,
-      classes: user.classes,
-    };
-    setInput(newInput);
-  };
 
   const handleSubmitEvent = async (e) => {
     e.preventDefault();
@@ -75,22 +60,21 @@ const ProfileSetup = () => {
 
     try {
       const response = await fetch(
-        // `http://localhost:5001/api/user/profile`, 
+        // `http://localhost:5001/api/user/profile`,
         `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/user/profile`,
         {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${localStorage.getItem("token")}`,
-        },
-        body: JSON.stringify({ input }),
-      });
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+          body: JSON.stringify({ input }),
+        }
+      );
 
       const data = await response.json();
-      console.log("Response data:", data); // Debugging output
 
       if (response.ok) {
-        //alert("Profile updated successfully");
         navigate("/home");
       } else {
         alert(data.message || "An error occurred."); // Corrected error message handling
@@ -166,7 +150,6 @@ const ProfileSetup = () => {
         <button type="submit" className="save-btn">
           Save
         </button>{" "}
-        {/* Changed label to "Save" */}
       </form>
     </div>
   );
