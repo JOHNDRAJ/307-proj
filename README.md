@@ -28,25 +28,32 @@ Follow these steps to set up Prettier and ESLint in your local development envir
 npm install eslint prettier eslint-config-prettier eslint-plugin-prettier --save-dev
 ```
 
-#### 2. Configure ESLint (.eslintrc.json):
+#### 2. Configure ESLint (.eslint.config.js):
 
-```json
-{
-  "env": {
-    "browser": true,
-    "es2021": true,
-    "jest": true
+```js
+import { defineConfig } from "eslint-define-config";
+import eslintPluginReact from "eslint-plugin-react";
+import eslintPluginPrettier from "eslint-plugin-prettier";
+
+export default defineConfig({
+  languageOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+    globals: {
+      browser: true,
+      es2021: true,
+      jest: true,
+    },
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/recommended",
-    "plugin:prettier/recommended"
-  ],
-  "rules": {
+  plugins: {
+    react: eslintPluginReact,
+    prettier: eslintPluginPrettier,
+  },
+  rules: {
     "react/react-in-jsx-scope": "off",
-    "prettier/prettier": ["error"]
-  }
-}
+    "prettier/prettier": ["error"],
+  },
+});
 ```
 
 #### 3. Set Up Auto-Formatting on Save (VSCode):
@@ -60,4 +67,9 @@ npm install eslint prettier eslint-config-prettier eslint-plugin-prettier --save
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "eslint.validate": ["javascript", "javascriptreact"]
 }
+```
+
+### 4. Install Jest
+```bash
+npm install jest
 ```
