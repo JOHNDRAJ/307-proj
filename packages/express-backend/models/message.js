@@ -1,6 +1,4 @@
 import mongoose from "mongoose";
-import User from "./user.js";
-import Channel from "./channel.js";
 
 const messageSchema = new mongoose.Schema({
   timestamp: {

@@ -146,7 +146,6 @@ const ProfileSetup = () => {
             onChange={handleInput}
           />
         </div>
-        {/* Save Button */}
         <button type="submit" className="save-btn">
           Save
         </button>{" "}

@@ -79,8 +79,8 @@ export const createChannel = [
       }
       const channel = new Channel({
         name,
-        ...(contents && { recentMessage }), // Include recentMessage only if contents is truthy
-        messages: contents ? [recentMessage] : [], // Add recentMessage to messages only if contents is valid
+        ...(contents && { recentMessage }),
+        messages: contents ? [recentMessage] : [],
       });
       await channel.save();
 

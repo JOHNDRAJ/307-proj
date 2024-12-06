@@ -8,7 +8,7 @@ const SignUp = () => {
     password: "",
   });
 
-  const navigate = useNavigate(); // useNavigate hook for navigation
+  const navigate = useNavigate();
 
   const handleSubmitEvent = async (e) => {
     e.preventDefault();
@@ -29,10 +29,8 @@ const SignUp = () => {
 
         const data = await response.json();
         if (response.ok) {
-          localStorage.setItem("token", data.token); // Store token
-          // Handle successful login
+          localStorage.setItem("token", data.token);
           navigate("/profile-setup", { state: { from: "/signup" } });
-          // You can store the JWT token or redirect the user here
         } else {
           // Handle errors (e.g., invalid credentials)
           alert(data.message);
@@ -55,7 +53,7 @@ const SignUp = () => {
   };
 
   const handleSignUpNavigate = () => {
-    navigate("/"); // Navigate to the login page
+    navigate("/"); 
   };
 
   return (

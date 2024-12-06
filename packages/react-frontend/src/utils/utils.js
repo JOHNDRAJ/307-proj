@@ -17,7 +17,6 @@ function formatTimestamp(timestamp) {
     } else if (isYesterday) {
       return `Yesterday ${time}`;
     } else {
-      // Day of the week + time
       const day = new Intl.DateTimeFormat("en-US", { weekday: "long" }).format(
         date
       );
@@ -44,7 +43,6 @@ function formatLastTimestamp(timestamp) {
     const now = new Date();
     const date = new Date(timestamp);
     let diff = now - date;
-
     // Timestamps within in the past hour
     diff = diff / (1000 * 60);
     if (diff < 1) {
@@ -52,7 +50,6 @@ function formatLastTimestamp(timestamp) {
     } else if (diff < 60) {
       return `${Math.floor(diff)} min`;
     }
-
     // Timestamps within the past day
     diff /= 60;
     if (diff < 24) {
@@ -62,7 +59,6 @@ function formatLastTimestamp(timestamp) {
         hour12: true,
       });
     }
-
     // Timestamps within the past week
     diff /= 24;
     if (diff < 7) {
@@ -70,7 +66,6 @@ function formatLastTimestamp(timestamp) {
         weekday: "short",
       });
     }
-
     // Timestamps within the past year
     diff /= 7;
     if (diff < 52) {

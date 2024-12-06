@@ -2,7 +2,7 @@ import jwt from "jsonwebtoken";
 
 export const authenticateToken = (req, res, next) => {
   const authHeader = req.headers["authorization"];
-  const token = authHeader && authHeader.split(" ")[1]; // Get the token from 'Bearer <token>'
+  const token = authHeader && authHeader.split(" ")[1];
 
   if (!token) {
     return res
@@ -14,7 +14,7 @@ export const authenticateToken = (req, res, next) => {
     if (err) {
       return res.status(403).json({ message: "Invalid token." });
     }
-    req.user = user; // Attach the user payload to the request object
-    next(); // Move to the next middleware/route handler
+    req.user = user;
+    next();
   });
 };

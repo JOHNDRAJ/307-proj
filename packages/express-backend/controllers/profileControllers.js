@@ -1,6 +1,4 @@
 import User from "../models/user.js";
-import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
 import { authenticateToken } from "../tokenAuth.js";
 
 export const updateProfile = [

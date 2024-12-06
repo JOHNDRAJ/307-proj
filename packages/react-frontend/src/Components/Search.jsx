@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import "./Search.css";
 
-function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
-  const [users, setUsers] = useState([]); // State to store users fetched from the database
+function Search({ user, onSelectProfile, setRefresh }) {
+  const [users, setUsers] = useState([]);
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [selectedUserNames, setSelectedUsernames] = useState([]);
 
@@ -32,7 +32,6 @@ function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
 
   const handleSearchChange = (e) => {
     const value = e.target.value.toLowerCase();
-    // Filter users based on the input
     const filtered = users.filter(
       (user) =>
         user.name.toLowerCase().includes(value) ||
@@ -41,11 +40,10 @@ function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
         user.grade.toLowerCase().includes(value) ||
         user.classes.toLowerCase().includes(value)
     );
-    setFilteredUsers(filtered); // Update the filtered users state
+    setFilteredUsers(filtered);
   };
 
   useEffect(() => {
-    // Fetch users from backend
     const fetchUsers = async () => {
       try {
         const response = await fetch(
@@ -55,12 +53,12 @@ function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
             method: "GET",
             headers: {
               "Content-Type": "application/json",
-              Authorization: `Bearer ${localStorage.getItem("token")}`, // Add token from localStorage
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
         );
         const data = await response.json();
-        setUsers(data); // Update state with the list of users
+        setUsers(data); 
         setFilteredUsers(data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -117,10 +115,10 @@ function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
         setSelectedUsers([]);
         setRefresh(true);
       } else {
-        alert(data.message || "An error occurred."); // Corrected error message handling
+        alert(data.message || "An error occurred.");
       }
     } catch (error) {
-      console.error("Error during fetch:", error); // More specific error output
+      console.error("Error during fetch:", error);
       alert("An error occurred during channel creation.");
     }
   };
@@ -142,7 +140,7 @@ function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
         const data = await response.json();
         return data.user;
       } catch (error) {
-        console.error("Error during fetch:", error); // More specific error output
+        console.error("Error during fetch:", error);
       }
     };
 
@@ -207,8 +205,6 @@ function Search({ user, onSelectContact, onSelectProfile, setRefresh }) {
           </button>
         )}
       </div>
-
-      {/* Popup Logic */}
       {isPopupVisible && (
         <div className="popup-container">
           <div className="popup-box">

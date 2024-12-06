@@ -16,7 +16,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "*", // Update with your frontend URL for security
+    origin: "https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net",
     methods: ["GET", "POST"],
   },
 });
@@ -26,8 +26,6 @@ app.use(express.json());
 
 const connection_string = process.env.CONNECTION_STRING;
 const port = process.env.PORT || 5001;
-
-console.log(connection_string);
 
 mongoose
   .connect(connection_string)
@@ -47,20 +45,12 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
-  console.log("A user connected:", socket.id);
-
   socket.on("joinChannel", (channelId) => {
     socket.join(channelId);
-    console.log(`User ${socket.id} joined channel ${channelId}`);
   });
 
   socket.on("leaveChannel", (channelId) => {
     socket.leave(channelId);
-    console.log(`User ${socket.id} left channel ${channelId}`);
-  });
-
-  socket.on("disconnect", () => {
-    console.log("A user disconnected:", socket.id);
   });
 });
 

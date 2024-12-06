@@ -29,7 +29,7 @@ function Home() {
     classes: "classes",
   });
   // The selected user for profile view
-  const [user, setUser] = useState({
+  const [selectedUser, setSelectedUser] = useState({
     name: "User Name",
     email: "student@calpoly.edu",
     bio: "bio",
@@ -69,7 +69,7 @@ function Home() {
           navigate("/");
         }
         setCurrentUser(data.user);
-        setUser(data.user);
+        setSelectedUser(data.user);
       } catch (error) {
         console.error("Error fetching user:", error);
       }
@@ -100,7 +100,6 @@ function Home() {
       <main>
         {currentView === View.HOME && (
           <div className="hero">
-            {/* Insert hero image here */}
             <h1>Welcome!</h1>
             <br></br>
             <h3>Open a chat from the sidebar</h3>
@@ -117,7 +116,7 @@ function Home() {
               channel={selectedChannel}
               user={currentUser}
               onSelectProfile={(user) => {
-                setUser(user);
+                setSelectedUser(user);
                 handleNextView(View.PROFILE);
               }}
               setRefresh={setRefresh}
@@ -134,12 +133,8 @@ function Home() {
             </h2>
             <Search
               user={currentUser}
-              onSelectContact={(name) => {
-                setSelectedChannel(name);
-                handleNextView(View.CHANNEL);
-              }}
               onSelectProfile={(user) => {
-                setUser(user);
+                setSelectedUser(user);
                 handleNextView(View.PROFILE);
               }}
               setRefresh={setRefresh}
@@ -152,7 +147,7 @@ function Home() {
               <button
                 className="back-btn"
                 onClick={() => {
-                  setUser(currentUser);
+                  setSelectedUser(currentUser);
                   handlePrevView();
                 }}
               >
@@ -160,7 +155,7 @@ function Home() {
               </button>
               Profile
             </h2>
-            <Profile user={user} currentUser={currentUser} setUser={setUser} />
+            <Profile user={selectedUser} currentUser={currentUser} setUser={setSelectedUser} />
           </>
         )}
       </main>

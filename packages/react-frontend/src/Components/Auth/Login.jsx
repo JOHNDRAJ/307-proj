@@ -8,8 +8,7 @@ const Login = () => {
     password: "",
   });
 
-  const navigate = useNavigate(); // useNavigate hook for navigation
-
+  const navigate = useNavigate();
   const handleSubmitEvent = async (e) => {
     e.preventDefault();
 
@@ -30,12 +29,9 @@ const Login = () => {
         const data = await response.json();
 
         if (response.ok) {
-          localStorage.setItem("token", data.token); // Store token
-          // Handle successful login
+          localStorage.setItem("token", data.token); 
           navigate("/home");
-          // You can store the JWT token or redirect the user here
         } else {
-          // Handle errors (e.g., invalid credentials)
           alert(data.message);
         }
       } catch (error) {
@@ -56,7 +52,7 @@ const Login = () => {
   };
 
   const handleSignUpNavigate = () => {
-    navigate("/signup"); // Navigate to the sign-up page
+    navigate("/signup");
   };
 
   return (

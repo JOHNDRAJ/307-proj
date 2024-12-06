@@ -55,10 +55,10 @@ function ContactsList({ onSelectContact, user, refresh, setRefresh }) {
           const extractedData = data.cxus.map((item) => item.channel);
           setContacts(extractedData);
         } else {
-          alert(data.message || "An error occurred."); // Corrected error message handling
+          alert(data.message || "An error occurred.");
         }
       } catch (error) {
-        console.error("Error during fetch:", error); // More specific error output
+        console.error("Error during fetch:", error);
         alert("An error occurred during channel fetch.");
       }
     };
@@ -101,7 +101,7 @@ function ContactItem({ contact, onSelectContact, user }) {
         const data = await response.json();
         setMessage(data);
       } catch (error) {
-        console.error("Error during fetch:", error); // More specific error output
+        console.error("Error during fetch:", error);
       }
     };
 
@@ -125,7 +125,7 @@ function ContactItem({ contact, onSelectContact, user }) {
         const data = await response.json();
         setMessageSender(data);
       } catch (error) {
-        console.error("Error during fetch:", error); // More specific error output
+        console.error("Error during fetch:", error);
       }
     };
     fetchUser();
@@ -138,7 +138,7 @@ function ContactItem({ contact, onSelectContact, user }) {
   return (
     <div
       className="contact-item"
-      onClick={() => onSelectContact(contact)} // Pass contact name on click
+      onClick={() => onSelectContact(contact)}
     >
       <div className="contact-preview">
         <img className="contact-pic" src="/assets/default-profile-pic.webp" />
