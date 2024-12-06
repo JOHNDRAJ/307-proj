@@ -55,7 +55,7 @@ function ContactsList({ onSelectContact, user, refresh, setRefresh }) {
           const extractedData = data.cxus.map((item) => item.channel);
           setContacts(extractedData);
         } else {
-          alert(data.message || "An error occurred.");
+          console.log(data.message || "An error occurred.");
         }
       } catch (error) {
         console.error("Error during fetch:", error);
