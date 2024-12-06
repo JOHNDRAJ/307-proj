@@ -45,15 +45,20 @@ app.get("/", (req, res) => {
 });
 
 io.on("connection", (socket) => {
+  console.log("A user connected:", socket.id);
   socket.on("joinChannel", (channelId) => {
     socket.join(channelId);
+    console.log(`User ${socket.id} joined channel ${channelId}`);
   });
 
   socket.on("leaveChannel", (channelId) => {
     socket.leave(channelId);
+    console.log(`User ${socket.id} left channel ${channelId}`);
+  });
+  socket.on("disconnect", () => {
+    console.log("A user disconnected:", socket.id);
   });
 });
-
 // Start the server
 server.listen(port, () => {
   console.log(`Server running on port ${port}`);
