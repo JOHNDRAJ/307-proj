@@ -16,7 +16,7 @@ const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
-    origin: "https://blue-mushroom-09a68691e.5.azurestaticapps.net/",
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
