@@ -53,7 +53,7 @@ const SignUp = () => {
   };
 
   const handleSignUpNavigate = () => {
-    navigate("/"); 
+    navigate("/");
   };
 
   return (

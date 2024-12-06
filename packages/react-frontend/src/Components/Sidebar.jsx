@@ -136,10 +136,7 @@ function ContactItem({ contact, onSelectContact, user }) {
   };
 
   return (
-    <div
-      className="contact-item"
-      onClick={() => onSelectContact(contact)}
-    >
+    <div className="contact-item" onClick={() => onSelectContact(contact)}>
       <div className="contact-preview">
         <img className="contact-pic" src="/assets/default-profile-pic.webp" />
         <div className="contact-details">
