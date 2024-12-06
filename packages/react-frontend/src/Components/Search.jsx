@@ -58,7 +58,7 @@ function Search({ user, onSelectProfile, setRefresh }) {
           }
         );
         const data = await response.json();
-        setUsers(data); 
+        setUsers(data);
         setFilteredUsers(data);
       } catch (error) {
         console.error("Error fetching users:", error);

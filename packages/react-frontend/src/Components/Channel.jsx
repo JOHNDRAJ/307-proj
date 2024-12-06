@@ -34,7 +34,7 @@ function Channel({ channel, user, onSelectProfile, setRefresh }) {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             body: JSON.stringify({
-              channelId: channel._id, 
+              channelId: channel._id,
               contents: image,
               image: true,
             }),
@@ -44,7 +44,7 @@ function Channel({ channel, user, onSelectProfile, setRefresh }) {
         const data = await response.json();
 
         if (!response.ok) {
-          alert(data.message || "Failed to update message."); 
+          alert(data.message || "Failed to update message.");
         }
       } catch (error) {
         console.error("Error while updating message:", error);
@@ -212,7 +212,7 @@ function MessageList({
       try {
         const response = await fetch(
           // `http://localhost:5001/api/message/${channel._id}`,
-          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/${channel._id}`, 
+          `https://poly-messages-avgzbvbybqg4hhha.westus3-01.azurewebsites.net/api/message/${channel._id}`,
           {
             method: "GET",
             headers: {
@@ -321,7 +321,7 @@ function Message({
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },
           body: JSON.stringify({
-            messageId: message._id, 
+            messageId: message._id,
             channelId: channel,
           }),
         }
@@ -430,7 +430,6 @@ function MessageInput({
   const [text, setText] = useState("");
   const [inputValue, setInputValue] = useState("");
 
-
   useEffect(() => {
     if (editActive && currentMessage) {
       setInputValue(currentMessage.contents);
@@ -454,8 +453,8 @@ function MessageInput({
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             body: JSON.stringify({
-              channelId: channel._id, 
-              contents: message, 
+              channelId: channel._id,
+              contents: message,
             }),
           }
         );
@@ -463,7 +462,7 @@ function MessageInput({
         const data = await response.json();
 
         if (!response.ok) {
-          alert(data.message || "Failed to update message."); 
+          alert(data.message || "Failed to update message.");
         }
       } catch (error) {
         console.error("Error while updating message:", error);
@@ -487,7 +486,7 @@ function MessageInput({
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
             body: JSON.stringify({
-              contents: text, 
+              contents: text,
               messageId: currentMessage._id,
               channelId: channel._id,
             }),
@@ -500,7 +499,7 @@ function MessageInput({
           setText("");
           setEditActive(false);
         } else {
-          alert(data.message || "Failed to send message."); 
+          alert(data.message || "Failed to send message.");
         }
       } catch (error) {
         console.error("Error while sending message:", error);

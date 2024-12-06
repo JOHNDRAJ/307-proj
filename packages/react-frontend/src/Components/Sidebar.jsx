@@ -55,7 +55,7 @@ function ContactsList({ onSelectContact, user, refresh, setRefresh }) {
           const extractedData = data.cxus.map((item) => item.channel);
           setContacts(extractedData);
         } else {
-          alert(data.message || "An error occurred.");
+          console.log(data.message || "An error occurred.");
         }
       } catch (error) {
         console.error("Error during fetch:", error);
@@ -136,10 +136,7 @@ function ContactItem({ contact, onSelectContact, user }) {
   };
 
   return (
-    <div
-      className="contact-item"
-      onClick={() => onSelectContact(contact)}
-    >
+    <div className="contact-item" onClick={() => onSelectContact(contact)}>
       <div className="contact-preview">
         <img className="contact-pic" src="/assets/default-profile-pic.webp" />
         <div className="contact-details">
